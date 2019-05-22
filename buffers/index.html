@@ -101,6 +101,10 @@
 <li >
     <a href="../tracers/">Tracers</a>
 </li>
+                                    
+<li >
+    <a href="../logger/">Logger</a>
+</li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -290,6 +294,7 @@ mmap_file:
   retry_period: 1s
 </code></pre>
 
+<p>DEPRECATED: This buffer type is due to be removed in V3.</p>
 <p>The mmap file buffer type uses memory mapped files to perform low-latency,
 file-persisted buffering of messages.</p>
 <p>To configure the mmap file buffer you need to designate a writeable directory

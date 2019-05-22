@@ -101,6 +101,10 @@
 <li >
     <a href="../tracers/">Tracers</a>
 </li>
+                                    
+<li >
+    <a href="../logger/">Logger</a>
+</li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -943,7 +947,7 @@ messages with boolean queries please instead use the
 <h2 id="json"><code>json</code></h2>
 <pre><code class="yaml">type: json
 json:
-  operator: get
+  operator: clean
   parts: []
   path: &quot;&quot;
   value: &quot;&quot;
@@ -1450,6 +1454,8 @@ columns value in the row.</p>
 <li><code>mysql</code>: <code>[username[:password]@][protocol[(address)]]/dbname[?param1=value1&amp;...&amp;paramN=valueN]</code></li>
 <li><code>postgres</code>: <code>postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&amp;...]</code></li>
 </ul>
+<p>Please note that the <code>postgres</code> driver enforces SSL by default, you
+can override this with the parameter <code>sslmode=disable</code> if required.</p>
 <h2 id="subprocess"><code>subprocess</code></h2>
 <pre><code class="yaml">type: subprocess
 subprocess:

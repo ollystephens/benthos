@@ -101,6 +101,10 @@
 <li >
     <a href="../tracers/">Tracers</a>
 </li>
+                                    
+<li >
+    <a href="../logger/">Logger</a>
+</li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -585,10 +589,14 @@ client_certs:
 - kafka_topic
 - kafka_partition
 - kafka_offset
+- kafka_lag
 - kafka_timestamp_unix
 - All existing message headers (version 0.11+)
 </code></pre>
 
+<p>The field <code>kafka_lag</code> is the calculated difference between the high
+water mark offset of the partition at the time of ingestion and the current
+message offset.</p>
 <p>You can access these metadata fields using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="kafka_balanced"><code>kafka_balanced</code></h2>
@@ -644,10 +652,14 @@ client_certs:
 - kafka_topic
 - kafka_partition
 - kafka_offset
+- kafka_lag
 - kafka_timestamp_unix
 - All existing message headers (version 0.11+)
 </code></pre>
 
+<p>The field <code>kafka_lag</code> is the calculated difference between the high
+water mark offset of the partition at the time of ingestion and the current
+message offset.</p>
 <p>You can access these metadata fields using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="kinesis"><code>kinesis</code></h2>

@@ -101,6 +101,10 @@
 <li >
     <a href="../../tracers/">Tracers</a>
 </li>
+                                    
+<li >
+    <a href="../../logger/">Logger</a>
+</li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -204,8 +208,14 @@ path and returns it as a string. This function is always available even when the
 <code>json</code> codec is not used.</p>
 <h3 id="json_setpath-value"><code>json_set(path, value)</code></h3>
 <p>Attempts to set a JSON value in the input message payload identified by a dot
-separated path. This function is always available even when the <code>json</code> codec is
-not used.</p>
+separated path, the value argument will be interpreted as a string. This
+function is always available even when the <code>json</code> codec is not used.</p>
+<p>In order to set non-string values use one of the following typed varieties:</p>
+<ul>
+<li><code>json_set_int(path, value)</code></li>
+<li><code>json_set_float(path, value)</code></li>
+<li><code>json_set_bool(path, value)</code></li>
+</ul>
 <h3 id="create_json_objectkey1-val1-key2-val2"><code>create_json_object(key1, val1, key2, val2, ...)</code></h3>
 <p>Generates a valid JSON object of key value pair arguments. The arguments are
 variadic, meaning any number of pairs can be listed. The value will always
