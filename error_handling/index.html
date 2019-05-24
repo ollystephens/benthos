@@ -248,6 +248,7 @@ successful with a <a href="../processors/#while"><code>while</code></a> processo
         condition:
           type: processor_failed
         processors:
+        - type: catch # Wipe any previous error
         - type: foo # Attempt this processor until success
 </code></pre>
 
