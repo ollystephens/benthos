@@ -419,14 +419,17 @@ each file found will become a message.</p>
 <h2 id="gcp_pubsub"><code>gcp_pubsub</code></h2>
 <pre><code class="yaml">type: gcp_pubsub
 gcp_pubsub:
+  max_batch_count: 1
   max_outstanding_bytes: 1e+09
   max_outstanding_messages: 1000
   project: &quot;&quot;
   subscription: &quot;&quot;
 </code></pre>
 
-<p>Consumes messages from a GCP Cloud Pub/Sub subscription. Attributes from each
-message are added as metadata, which can be accessed using
+<p>Consumes messages from a GCP Cloud Pub/Sub subscription.</p>
+<p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
+messages to be batched together.</p>
+<p>Attributes from each message are added as metadata, which can be accessed using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="hdfs"><code>hdfs</code></h2>
 <pre><code class="yaml">type: hdfs
@@ -543,6 +546,7 @@ kafka:
   client_id: benthos_kafka_input
   commit_period: 1s
   consumer_group: benthos_consumer_group
+  fetch_buffer_cap: 256
   max_batch_count: 1
   max_processing_period: 100ms
   partition: 0
@@ -607,6 +611,7 @@ kafka_balanced:
   client_id: benthos_kafka_input
   commit_period: 1s
   consumer_group: benthos_consumer_group
+  fetch_buffer_cap: 256
   group:
     heartbeat_interval: 3s
     rebalance_timeout: 60s
