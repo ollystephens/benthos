@@ -908,6 +908,8 @@ counting backwards starting from -1. E.g. if index = -1 then the new message
 will become the last of the batch, if index = -2 then the new message will be
 inserted before the last message, and so on. If the negative index is greater
 than the length of the existing batch it will be inserted at the beginning.</p>
+<p>The new message will have metadata copied from the first pre-existing message of
+the batch.</p>
 <p>This processor will interpolate functions within the 'content' field, you can
 find a list of functions <a href="../config_interpolation/#functions">here</a>.</p>
 <h2 id="jmespath"><code>jmespath</code></h2>

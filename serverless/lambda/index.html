@@ -184,6 +184,7 @@
         <li class="main active"><a href="#benthos-lambda">Benthos Lambda</a></li>
             <li><a href="#running-with-an-output">Running with an output</a></li>
             <li><a href="#running-without-an-output">Running without an output</a></li>
+            <li><a href="#running-a-combination">Running a combination</a></li>
             <li><a href="#upload-to-aws">Upload to AWS</a></li>
             <li><a href="#invoke">Invoke</a></li>
             <li><a href="#build">Build</a></li>
@@ -215,7 +216,9 @@ invoke     |                              |        |
 </code></pre>
 
 <p>Where the call will block until the output target has confirmed receipt of the
-resulting payload. An error is returned if the send has failed.</p>
+resulting payload. When the message is successfully propagated a JSON payload is
+returned of the form <code>{"message":"request successful"}</code>, otherwise an error is
+returned containing the reason for the failure.</p>
 <h3 id="running-without-an-output">Running without an output</h3>
 <p>The flow when an output is not configured looks like this:</p>
 <pre><code class="text">               benthos-lambda
@@ -229,7 +232,35 @@ invoke     |                 |  |
            +--------------------+
 </code></pre>
 
-<p>Where the function returns the result of processing directly back to the caller.</p>
+<p>Where the function returns the result of processing directly back to the caller.
+The format of the result differs depending on the number of batches and messages
+of a batch that resulted from the invocation:</p>
+<ul>
+<li>Single message of a single batch: <code>{}</code> (JSON object)</li>
+<li>Multiple messages of a single batch: <code>[{},{}]</code> (Array of JSON objects)</li>
+<li>Multiple batches: <code>[[{},{}],[{}]]</code> (Array of arrays of JSON objects, batches
+  of size one are a single object array in this case)</li>
+</ul>
+<h3 id="running-a-combination">Running a combination</h3>
+<p>It's possible to configure pipelines that send messages to third party
+destinations and also return a result back to the caller. This is done by
+configuring an output block and including an output of the type
+<code>serverless_response</code>.</p>
+<p>For example, if we wished for our lambda function to send a payload to Kafka
+and also return the same payload back to the caller we could use a
+<a href="../../outputs/#broker">broker</a>:</p>
+<pre><code class="yaml">output:
+  broker:
+    pattern: fan_out
+    outputs:
+    - kafka:
+        addresses:
+        - todo:9092
+        client_id: benthos_serverless
+        topic: example_topic
+    - type: serverless_response
+</code></pre>
+
 <h2 id="upload-to-aws">Upload to AWS</h2>
 <p>Grab an archive labelled <code>benthos-lambda</code> from the <a href="https://github.com/Jeffail/benthos/releases">releases page</a>
 page and then create your function:</p>
