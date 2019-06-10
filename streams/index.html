@@ -192,6 +192,7 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#streams-mode">Streams Mode</a></li>
+            <li><a href="#metrics">Metrics</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -215,7 +216,39 @@ streams in this mode can be done in two ways:</p>
 </li>
 </ol>
 <p>These two methods can be used in combination, i.e. it's possible to update and
-delete streams that were created with static files.</p></div>
+delete streams that were created with static files.</p>
+<h2 id="metrics">Metrics</h2>
+<p>Metrics from all streams are aggregated and exposed via the method specified in
+<a href="../metrics/">the config</a> of the Benthos instance running in <code>--streams</code> mode, with
+their metrics prefixed by their respective stream name.</p>
+<p>For example, a Benthos instance running in streams mode with the configured
+prefix <code>benthos</code> running a stream named <code>foo</code> would have metrics from <code>foo</code>
+registered with the prefix <code>benthos.foo</code>.</p>
+<p>This can cause problems if your streams are short lived and uniquely named as
+the number of metrics registered will continue to climb indefinitely. In order
+to avoid this you should either limit the streams that register their metrics
+with <a href="../metrics/#whitelist"><code>whitelist</code></a> or <a href="../metrics/#blacklist"><code>blacklist</code></a> rules:</p>
+<pre><code class="yaml"># Only register metrics for the stream `foo`. Others will be ignored.
+metrics:
+  whitelist:
+    paths:
+    - foo
+    child:
+      type: prometheus
+      prefix: benthos
+</code></pre>
+
+<p>Or, use <a href="../metrics/#rename"><code>rename</code></a> rules to set the same prefix for groups of streams:</p>
+<pre><code class="yaml"># Rename all stream metric prefixes of the form `foo_&lt;uuid_v4&gt;` to just `foo`.
+metrics:
+  rename:
+    by_regexp:
+    - pattern: &quot;foo_[0-9\\-a-zA-Z]+\\.(.*)&quot;
+      value: &quot;foo.$1&quot;
+    child:
+      type: prometheus
+      prefix: benthos
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
