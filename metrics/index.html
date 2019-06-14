@@ -245,6 +245,9 @@ an output broker with the path <code>output.broker</code>.</p>
 expression and tested against each metric path. This can be used, for example,
 to allow none of the latency based metrics with the pattern
 <code>.*\.latency</code>.</p>
+<h3 id="debugging">Debugging</h3>
+<p>In order to see logs breaking down which metrics are registered and whether they
+are blocked by your blacklists enable logging at the TRACE level.</p>
 <h2 id="http_server"><code>http_server</code></h2>
 <pre><code class="yaml">type: http_server
 http_server: {}
@@ -315,6 +318,9 @@ expansions, e.g. $1 represents the first submatch.</p>
     value: &quot;zip.$1&quot;
 </code></pre>
 
+<h3 id="debugging_1">Debugging</h3>
+<p>In order to see logs breaking down which metrics are registered and whether they
+are renamed enable logging at the TRACE level.</p>
 <h2 id="statsd"><code>statsd</code></h2>
 <pre><code class="yaml">type: statsd
 prefix: benthos
@@ -351,7 +357,10 @@ output broker with the path <code>output.broker</code>.</p>
 <h3 id="patterns_1">Patterns</h3>
 <p>An entry in the <code>patterns</code> field will be parsed as an RE2 regular
 expression and tested against each metric path. This can be used, for example,
-to allow all latency based metrics with the pattern <code>.*\.latency</code>.</p></div>
+to allow all latency based metrics with the pattern <code>.*\.latency</code>.</p>
+<h3 id="debugging_2">Debugging</h3>
+<p>In order to see logs breaking down which metrics are registered and whether they
+pass your whitelists enable logging at the TRACE level.</p></div>
         </div>
 
         <footer class="col-md-12">
