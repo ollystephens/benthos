@@ -7,11 +7,11 @@
         
         <meta name="author" content="Ashley Jeffs">
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Kafka delayed retry - Benthos</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Synchronous Responses - Benthos</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
@@ -60,107 +60,107 @@
                                 <a href="/">Home</a>
                             </li>
                             <li >
-                                <a href="../../cookbooks/">Cookbooks</a>
+                                <a href="../cookbooks/">Cookbooks</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../inputs/">Inputs</a>
+    <a href="../inputs/">Inputs</a>
 </li>
                                     
 <li >
-    <a href="../../buffers/">Buffers</a>
+    <a href="../buffers/">Buffers</a>
 </li>
                                     
 <li >
-    <a href="../../processors/">Processors</a>
+    <a href="../processors/">Processors</a>
 </li>
                                     
 <li >
-    <a href="../../conditions/">Conditions</a>
+    <a href="../conditions/">Conditions</a>
 </li>
                                     
 <li >
-    <a href="../../outputs/">Outputs</a>
+    <a href="../outputs/">Outputs</a>
 </li>
                                     
 <li >
-    <a href="../../caches/">Caches</a>
+    <a href="../caches/">Caches</a>
 </li>
                                     
 <li >
-    <a href="../../rate_limits/">Rate Limits</a>
+    <a href="../rate_limits/">Rate Limits</a>
 </li>
                                     
 <li >
-    <a href="../../metrics/">Metrics</a>
+    <a href="../metrics/">Metrics</a>
 </li>
                                     
 <li >
-    <a href="../../tracers/">Tracers</a>
+    <a href="../tracers/">Tracers</a>
 </li>
                                     
 <li >
-    <a href="../../logger/">Logger</a>
+    <a href="../logger/">Logger</a>
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../getting_started/">Getting Started</a>
+    <a href="../getting_started/">Getting Started</a>
 </li>
                                     
 <li >
-    <a href="../../serverless/">Serverless</a>
+    <a href="../serverless/">Serverless</a>
 </li>
                                     
 <li >
-    <a href="../../configuration/">Configuration</a>
+    <a href="../configuration/">Configuration</a>
 </li>
                                     
 <li >
-    <a href="../../config_interpolation/">Config Interpolation</a>
+    <a href="../config_interpolation/">Config Interpolation</a>
 </li>
                                     
 <li >
-    <a href="../../pipeline/">Processing Pipelines</a>
+    <a href="../pipeline/">Processing Pipelines</a>
 </li>
                                     
 <li >
-    <a href="../../batching/">Message Batching</a>
+    <a href="../batching/">Message Batching</a>
 </li>
                                     
 <li >
-    <a href="../../error_handling/">Error Handling</a>
+    <a href="../error_handling/">Error Handling</a>
 </li>
                                     
 <li >
-    <a href="../../performance_tuning/">Performance Tuning</a>
+    <a href="../performance_tuning/">Performance Tuning</a>
 </li>
                                     
 <li >
-    <a href="../../monitoring/">Monitoring</a>
+    <a href="../monitoring/">Monitoring</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">Synchronous Responses</a>
 </li>
                                     
 <li >
-    <a href="../../sync_responses/">Synchronous Responses</a>
+    <a href="../workflows/">Workflows</a>
 </li>
                                     
 <li >
-    <a href="../../workflows/">Workflows</a>
+    <a href="../streams/">Streams Mode</a>
 </li>
                                     
 <li >
-    <a href="../../streams/">Streams Mode</a>
-</li>
-                                    
-<li >
-    <a href="../">Applied Examples</a>
+    <a href="../examples/">Applied Examples</a>
 </li>
                                 </ul>
                             </li>
@@ -172,6 +172,16 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
+    <li class="nav-item">
+      <a rel="prev" href="../monitoring/" class="nav-link">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a rel="next" href="../workflows/" class="nav-link">
+        <i class="fa fa-arrow-right"></i>
+      </a>
+    </li>
     <li class="nav-item">
       <a href="https://github.com/Jeffail/benthos/" class="nav-link">
         <i class="fa fa-github"></i> Code
@@ -185,129 +195,116 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#kafka-delayed-retry">Kafka Delayed Retry</a></li>
-            <li><a href="#the-enrichment-stream">The Enrichment Stream</a></li>
-            <li><a href="#the-retry-stream">The Retry Stream</a></li>
+        <li class="main active"><a href="#synchronous-responses">Synchronous Responses</a></li>
+            <li><a href="#routing-processed-messages-back">Routing Processed Messages Back</a></li>
+            <li><a href="#routing-output-responses-back">Routing Output Responses Back</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="kafka-delayed-retry">Kafka Delayed Retry</h1>
-<h2 id="the-enrichment-stream">The Enrichment Stream</h2>
-<p>We are consuming a Kafka stream of documents and wish to apply an enrichment to
-each item of the stream via an HTTP service. If the enrichment fails for a
-document then we wish to send the data to a different destination than
-successful documents such that the enrichment can be retried on a delay by a
-component down stream.</p>
-<p>In order to do this we are going to use the <a href="../../processors/#catch"><code>catch</code></a> processor as
-our <a href="../../error_handling/#recover-failed-messages">error recovery handling</a> mechanism. In order to
-dynamically route documents we will use <a href="../../config_interpolation/#functions">function interpolation</a> to
-base the output topic on metadata, which we can set dynamically via our recovery
-mechanism.</p>
-<pre><code class="yaml">input:
-  kafka_balanced:
-    addresses:
-    - TODO
-    topics:
-    - source-queue
-    consumer_group: enrichment-consumer
-    max_batch_count: 20
+<h1 id="synchronous-responses">Synchronous Responses</h1>
+<p>EXPERIMENTAL: The features outlined in this document are considered experimental
+and are therefore subject to change outside of major version releases.</p>
+<p>In a regular Benthos stream pipeline messages flow in one direction and
+acknowledgements flow in the other:</p>
+<pre><code class="text">    ----------- Message -------------&gt;
 
+Input (AMQP) -&gt; Processors -&gt; Output (AMQP)
+
+    &lt;------- Acknowledgement ---------
+</code></pre>
+
+<p>For most Benthos input and output targets this is the only workflow available.
+However, Benthos has support for a number of protocols where this limitation is
+not the case.</p>
+<p>For example, HTTP is a request/response protocol, and so our <code>http_server</code> input
+is capable of returning a response payload after consuming a message from a
+request.</p>
+<p>When using these protocols it's possible to configure Benthos stream pipelines
+that allow messages to pass in the opposite direction, resulting in response
+messages at the input level:</p>
+<pre><code class="text">           --------- Request Body --------&gt;
+
+Input (HTTP Server) -&gt; Processors -&gt; Output (Sync Response)
+
+           &lt;------- Response Body ---------
+</code></pre>
+
+<h2 id="routing-processed-messages-back">Routing Processed Messages Back</h2>
+<p>It's possible to route the result of any Benthos processing pipeline directly
+back to an input with a <a href="../outputs/#sync_response"><code>sync_response</code></a> output:</p>
+<pre><code class="yaml">input:
+  http_server:
+    path: /post
 pipeline:
   processors:
-  - metadata:
-      operator: set
-      set: output_topic
-      value: enriched-queue
+  - text:
+      operator: to_upper
+output:
+  type: sync_response
+</code></pre>
 
-  - http:
-      parallel: true
-      request:
-        url: TODO
+<p>Using the above example, sending a request 'foo bar' to the path <code>/post</code> returns
+the response 'FOO BAR'.</p>
+<p>It's also possible to combine a <code>sync_response</code> output with other outputs using
+a <a href="../outputs/#broker"><code>broker</code></a>:</p>
+<pre><code class="yaml">input:
+  http_server:
+    path: /post
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+    - kafka:
+        addresses: [ TODO:9092 ]
+        topic: foo_topic
+    - type: sync_response
+      processors:
+      - text:
+          operator: to_upper
+</code></pre>
+
+<p>Using the above example, sending a request 'foo bar' to the path <code>/post</code> passes
+the message unchanged to the Kafka topic <code>foo_topic</code> and also returns the
+response 'FOO BAR'.</p>
+<p>NOTE: It's safe to use these mechanisms even when combining multiple inputs with
+a broker, a response payload will always be routed back to the original source
+of the message.</p>
+<h2 id="routing-output-responses-back">Routing Output Responses Back</h2>
+<p>Some outputs, such as <a href="../outputs/#http_client"><code>http_client</code></a>, have the potential to
+propagate payloads received from their destination after sending a message back
+to the input:</p>
+<pre><code class="yaml">input:
+  http_server:
+    path: /post
+output:
+  http_client:
+    url: http://localhost:4196/post
+    verb: POST
+    propagate_result: true
+</code></pre>
+
+<p>With the above example a message received from the endpoint <code>/post</code> would be
+sent unchanged to the address <code>http://localhost:4196/post</code>, and then the
+response from that request would get returned back. This basically turns Benthos
+into a proxy server with the potential to mutate payloads between requests.</p>
+<p>The following config turns Benthos into an HTTP proxy server that also sends all
+request payloads to a Kafka topic:</p>
+<pre><code class="yaml">input:
+  http_server:
+    path: /post
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+    - kafka:
+        addresses: [ TODO:9092 ]
+        topic: foo_topic
+    - http_client:
+        url: http://localhost:4196/post
         verb: POST
-        retries: 3
-
-  - catch:
-    - metadata:
-        operator: set
-        set: output_topic
-        value: retry-queue
-
-output:
-  kafka:
-    addresses:
-    - TODO
-    topic: &quot;${!metadata:output_topic}&quot;
-</code></pre>
-
-<p>We start our processing steps by setting all documents to have a metadata key
-<code>output_topic</code> set to <code>enriched-queue</code>, which is where successfully enriched
-documents should go.</p>
-<p>We then do an HTTP request with the <a href="../../processors/#http"><code>http</code></a> processor which performs
-our enrichment. In reality it would likely be more useful to wrap this step in a
-<a href="../../processors/#process_map"><code>process_map</code></a> processor but the error handling mechanism would be
-the same.</p>
-<p>After our enrichment the documents will either be enriched or will be flagged as
-having <a href="../../error_handling/#processor-errors">failed a processing step</a>, which means we can
-perform processors specifically only on failed documents with the
-<a href="../../processors/#catch"><code>catch</code></a> processor. We use this to set the metadata field
-<code>output_topic</code> to <code>retry-queue</code> only for failed documents.</p>
-<p>Finally, our output topic is a <a href="../../config_interpolation/#functions">function interpolation</a> string
-<code>${!metadata:output_topic}</code> which resolves dynamically to the contents of the
-metadata key <code>output_topic</code> for each document. Most output types have a similar
-way of dynamically routing documents, otherwise you could use the
-<a href="../../outputs/#switch"><code>switch</code></a> or <a href="../../outputs/#broker"><code>broker</code></a> outputs to multiplex the documents.</p>
-<h2 id="the-retry-stream">The Retry Stream</h2>
-<p>We now wish to reconsume and reprocess the failed documents from the above
-pipeline, but only after 3600 seconds since the data was first consumed. This
-time period can be calculated by referring to a timestamp within the JSON
-document at the path <code>meta.created_at</code>.</p>
-<p>We can do this by combining the <a href="../../processors/#awk"><code>awk</code></a> processor with the
-<a href="../../processors/#sleep"><code>sleep</code></a> processor, using <code>awk</code> to calculate our target sleep
-period:</p>
-<pre><code class="yaml">input:
-  kafka_balanced:
-    addresses:
-    - TODO
-    topics:
-    - retry-queue
-    consumer_group: retry-consumer
-    max_batch_count: 20
-
-pipeline:
-  processors:
-  - awk:
-      codec: json
-      program: |
-        {
-          delay_for = 3600 - (timestamp_unix() - timestamp_unix(meta_created_at))
-          if ( delay_for &lt; 0 )
-            delay_for = 0
-
-          metadata_set(&quot;delay_for_s&quot;, delay_for)
-        }
-
-  - type: sleep
-    sleep:
-      duration: &quot;${!metadata:delay_for_s}s&quot;
-
-  # TODO: Reprocess
-
-output:
-  type: TODO
-</code></pre>
-
-<p>This works because the <code>awk</code> processor codec is set to <code>json</code>, meaning the
-document is parsed as a JSON object, walked, and all fields found are set as
-variables, allowing them to be referred to within the AWK program.</p>
-<p>The <code>awk</code> processor also <a href="../../processors/awk_functions/#metadata-functions">has functions</a> for setting metadata,
-which is used for writing our calculated sleep period. We do not print anything
-with our AWK program as we do not wish to modify the contents of the document.</p>
-<p>The <code>sleep</code> processor then simply halts the pipeline for a duration determined
-through function interpolation, allowing us to specify it via the metadata key
-we set.</p>
-<p>After reprocessing we can multiplex the documents that still failed the retry
-stage to a dead-letter queue similar to the first pipeline.</p></div>
+        propagate_result: true
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
@@ -315,11 +312,11 @@ stage to a dead-letter queue similar to the first pipeline.</p></div>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "../..",
+            var base_url = "..",
                 shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">

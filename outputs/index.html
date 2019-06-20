@@ -148,6 +148,10 @@
 </li>
                                     
 <li >
+    <a href="../sync_responses/">Synchronous Responses</a>
+</li>
+                                    
+<li >
     <a href="../workflows/">Workflows</a>
 </li>
                                     
@@ -227,6 +231,7 @@
             <li><a href="#sqs">sqs</a></li>
             <li><a href="#stdout">stdout</a></li>
             <li><a href="#switch">switch</a></li>
+            <li><a href="#sync_response">sync_response</a></li>
             <li><a href="#websocket">websocket</a></li>
     </ul>
 </div></div>
@@ -305,6 +310,7 @@ a <a href="#broker"><code>broker</code></a> output with the 'try' pattern.</p>
 <li><a href="#sqs"><code>sqs</code></a></li>
 <li><a href="#stdout"><code>stdout</code></a></li>
 <li><a href="#switch"><code>switch</code></a></li>
+<li><a href="#sync_response"><code>sync_response</code></a></li>
 <li><a href="#websocket"><code>websocket</code></a></li>
 </ol>
 <h2 id="amqp"><code>amqp</code></h2>
@@ -650,6 +656,7 @@ http_client:
     consumer_secret: &quot;&quot;
     enabled: false
     request_url: &quot;&quot;
+  propagate_response: false
   rate_limit: &quot;&quot;
   retries: 3
   retry_period: 1s
@@ -678,6 +685,13 @@ interpolations described <a href="../config_interpolation/#functions">here</a>.<
 <p>The body of the HTTP request is the raw contents of the message payload. If the
 message has multiple parts the request will be sent according to
 <a href="https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html">RFC1341</a></p>
+<h3 id="propagating-responses">Propagating Responses</h3>
+<p>EXPERIMENTAL: It's possible to propagate the response from each HTTP request
+back to the input source by setting <code>propagate_response</code> to <code>true</code>.
+Only inputs that support <a href="../sync_responses/">synchronous responses</a> are able
+to make use of these propagated responses.</p>
+<p>This feature is considered experimental and is therefore subject to change
+outside of major version releases.</p>
 <h2 id="http_server"><code>http_server</code></h2>
 <pre><code class="yaml">type: http_server
 http_server:
@@ -722,6 +736,10 @@ kafka:
   key: &quot;&quot;
   max_msg_bytes: 1e+06
   round_robin_partitions: false
+  sasl:
+    enabled: false
+    password: &quot;&quot;
+    user: &quot;&quot;
   target_version: 1.0.0
   timeout: 5s
   tls:
@@ -1028,6 +1046,42 @@ output returns an error the switch output also returns an error by setting
 <code>retry_until_success</code> to <code>false</code>. This allows you to
 wrap the switch with a <code>try</code> broker, but care must be taken to ensure
 duplicate messages aren't introduced during error conditions.</p>
+<h2 id="sync_response"><code>sync_response</code></h2>
+<pre><code class="yaml">type: sync_response
+sync_response: {}
+</code></pre>
+
+<p>EXPERIMENTAL: This component is considered experimental and is therefore subject
+to change outside of major version releases.</p>
+<p>Returns the final message payload back to the input origin of the message, where
+it is dealt with according to that specific input type.</p>
+<p>For most inputs this mechanism is ignored entirely, in which case the sync
+response is dropped without penalty. It is therefore safe to use this output
+even when combining input types that might not have support for sync responses.
+An example of an input able to utilise this is the <code>http_server</code>.</p>
+<p>It is safe to combine this output with others using broker types. For example,
+with the <code>http_server</code> input we could send the payload to a Kafka
+topic and also send a modified payload back with:</p>
+<pre><code class="yaml">input:
+  http_server:
+    path: /post
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+    - kafka:
+        addresses: [ TODO:9092 ]
+        topic: foo_topic
+    - type: sync_response
+      processors:
+      - text:
+          operator: to_upper
+</code></pre>
+
+<p>Using the above example and posting the message 'hello world' to the endpoint
+<code>/post</code> Benthos would send it unchanged to the topic
+<code>foo_topic</code> and also respond with 'HELLO WORLD'.</p>
+<p>For more information please read <a href="../sync_responses/">Synchronous Responses</a>.</p>
 <h2 id="websocket"><code>websocket</code></h2>
 <pre><code class="yaml">type: websocket
 websocket:
