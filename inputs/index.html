@@ -520,6 +520,10 @@ http_server:
 which is enabled when key and cert files are specified.</p>
 <p>You can leave the 'address' config field blank in order to use the instance wide
 HTTP server.</p>
+<h3 id="responses">Responses</h3>
+<p>EXPERIMENTAL: It's possible to return a response for each message received using
+<a href="../sync_responses/">synchronous responses</a>. This feature is considered
+experimental and therefore subject to change outside of major version releases.</p>
 <h3 id="endpoints">Endpoints</h3>
 <p>The following fields specify endpoints that are registered for sending messages:</p>
 <h4 id="path-defaults-to-post"><code>path</code> (defaults to <code>/post</code>)</h4>
@@ -529,15 +533,9 @@ a single message.</p>
 <a href="https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html">rfc1341</a> then the
 multiple parts are consumed as a batch of messages, where each body part is a
 message of the batch.</p>
-<p>EXPERIMENTAL: It's possible to return a message body from this endpoint using
-<a href="../sync_responses/">synchronous responses</a>. This feature is considered
-experimental and therefore subject to change outside of major version releases.</p>
 <h4 id="ws_path-defaults-to-postws"><code>ws_path</code> (defaults to <code>/post/ws</code>)</h4>
 <p>Creates a websocket connection, where payloads received on the socket are passed
 through the pipeline as a batch of one message.</p>
-<p>EXPERIMENTAL: It's possible to return a message body from this websocket using
-<a href="../sync_responses/">synchronous responses</a>. This feature is considered
-experimental and therefore subject to change outside of major version releases.</p>
 <h3 id="metadata_3">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- http_server_user_agent

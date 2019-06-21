@@ -204,7 +204,7 @@
             <li><a href="#any">any</a></li>
             <li><a href="#bounds_check">bounds_check</a></li>
             <li><a href="#check_field">check_field</a></li>
-            <li><a href="#count">count</a></li>
+            <li><a href="#check_interpolation">check_interpolation</a></li>
             <li><a href="#jmespath">jmespath</a></li>
             <li><a href="#metadata">metadata</a></li>
             <li><a href="#not">not</a></li>
@@ -277,6 +277,7 @@ duplicate condition configs by using the <a href="#resource">resource condition<
 <li><a href="#any"><code>any</code></a></li>
 <li><a href="#bounds_check"><code>bounds_check</code></a></li>
 <li><a href="#check_field"><code>check_field</code></a></li>
+<li><a href="#check_interpolation"><code>check_interpolation</code></a></li>
 <li><a href="#count"><code>count</code></a></li>
 <li><a href="#jmespath"><code>jmespath</code></a></li>
 <li><a href="#metadata"><code>metadata</code></a></li>
@@ -348,8 +349,29 @@ check_field:
 
 <p>Extracts the value of a field within messages (currently only JSON format is
 supported) and then tests the extracted value against a child condition.</p>
-<h2 id="count"><code>count</code></h2>
-<pre><code class="yaml">type: count
+<h2 id="check_interpolation"><code>check_interpolation</code></h2>
+<pre><code class="yaml">type: check_interpolation
+check_interpolation:
+  condition: {}
+  value: &quot;&quot;
+</code></pre>
+
+<p>Resolves a string containing
+<a href="../config_interpolation/#functions">function interpolations</a> and then tests
+the result against a child condition.</p>
+<p>For example, you could use this to test against the size of a message batch:</p>
+<p>``` yaml,
+check_interpolation:
+  value: "${!batch_size}"
+  condition:
+    text:
+      operator: equals
+      arg: "1"</p>
+<pre><code>
+## `count`
+
+``` yaml
+type: count
 count:
   arg: 100
 </code></pre>
