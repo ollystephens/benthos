@@ -209,6 +209,7 @@
             <li><a href="#jmespath">jmespath</a></li>
             <li><a href="#metadata">metadata</a></li>
             <li><a href="#not">not</a></li>
+            <li><a href="#number">number</a></li>
             <li><a href="#or">or</a></li>
             <li><a href="#processor_failed">processor_failed</a></li>
             <li><a href="#resource">resource</a></li>
@@ -283,6 +284,7 @@ duplicate condition configs by using the <a href="#resource">resource condition<
 <li><a href="#jmespath"><code>jmespath</code></a></li>
 <li><a href="#metadata"><code>metadata</code></a></li>
 <li><a href="#not"><code>not</code></a></li>
+<li><a href="#number"><code>number</code></a></li>
 <li><a href="#or"><code>or</code></a></li>
 <li><a href="#processor_failed"><code>processor_failed</code></a></li>
 <li><a href="#resource"><code>resource</code></a></li>
@@ -362,11 +364,11 @@ check_interpolation:
 the result against a child condition.</p>
 <p>For example, you could use this to test against the size of a message batch:</p>
 <pre><code class="yaml">check_interpolation:
-  value: &quot;${!batch_size}&quot;
+  value: ${!batch_size}
   condition:
-    text:
-      operator: equals
-      arg: &quot;1&quot;
+    number:
+      operator: greater_than
+      arg: 1
 </code></pre>
 
 <h2 id="count"><code>count</code></h2>
@@ -551,6 +553,37 @@ not:
 }
 </code></pre>
 
+<h2 id="number"><code>number</code></h2>
+<pre><code class="yaml">type: number
+number:
+  arg: 0
+  operator: equals
+  part: 0
+</code></pre>
+
+<p>Number is a condition that checks the contents of a message parsed as a 64-bit
+floating point number against a logical operator and an argument.</p>
+<p>It's possible to use the <a href="#check_field"><code>check_field</code></a> and
+<a href="#check_interpolation"><code>check_interpolation</code></a> conditions to check a
+number condition against arbitrary metadata or fields of messages. For example,
+you can test a number condition against the size of a message batch with:</p>
+<pre><code class="yaml">check_interpolation:
+  value: ${!batch_size}
+  condition:
+    number:
+      operator: greater_than
+      arg: 1
+</code></pre>
+
+<p>Available logical operators are:</p>
+<h3 id="equals_1"><code>equals</code></h3>
+<p>Checks whether the value equals the argument.</p>
+<h3 id="greater_than_1"><code>greater_than</code></h3>
+<p>Checks whether the value is greater than the argument. Returns false if the
+value cannot be parsed as a number.</p>
+<h3 id="less_than_1"><code>less_than</code></h3>
+<p>Checks whether the value is less than the argument. Returns false if the value
+cannot be parsed as a number.</p>
 <h2 id="or"><code>or</code></h2>
 <pre><code class="yaml">type: or
 or: []
@@ -616,35 +649,58 @@ text:
   part: 0
 </code></pre>
 
-<p>Text is a condition that checks the contents of a message part as plain text
-against a logical operator and an argument.</p>
+<p>Text is a condition that checks the contents of a message as plain text against
+a logical operator and an argument.</p>
+<p>It's possible to use the <a href="#check_field"><code>check_field</code></a> and
+<a href="#check_interpolation"><code>check_interpolation</code></a> conditions to check a
+text condition against arbitrary metadata or fields of messages. For example,
+you can test a text condition against a JSON field <code>foo.bar</code> with:</p>
+<pre><code class="yaml">check_field:
+  path: foo.bar
+  condition:
+    text:
+      operator: enum
+      arg:
+      - foo
+      - bar
+</code></pre>
+
 <p>Available logical operators are:</p>
 <h3 id="equals_cs_1"><code>equals_cs</code></h3>
-<p>Checks whether the part equals the argument (case sensitive.)</p>
-<h3 id="equals_1"><code>equals</code></h3>
-<p>Checks whether the part equals the argument under unicode case-folding (case
+<p>Checks whether the content equals the argument (case sensitive.)</p>
+<h3 id="equals_2"><code>equals</code></h3>
+<p>Checks whether the content equals the argument under unicode case-folding (case
 insensitive.)</p>
 <h3 id="contains_cs"><code>contains_cs</code></h3>
-<p>Checks whether the part contains the argument (case sensitive.)</p>
+<p>Checks whether the content contains the argument (case sensitive.)</p>
 <h3 id="contains"><code>contains</code></h3>
-<p>Checks whether the part contains the argument under unicode case-folding (case
-insensitive.)</p>
+<p>Checks whether the content contains the argument under unicode case-folding
+(case insensitive.)</p>
 <h3 id="prefix_cs"><code>prefix_cs</code></h3>
-<p>Checks whether the part begins with the argument (case sensitive.)</p>
+<p>Checks whether the content begins with the argument (case sensitive.)</p>
 <h3 id="prefix"><code>prefix</code></h3>
-<p>Checks whether the part begins with the argument under unicode case-folding
+<p>Checks whether the content begins with the argument under unicode case-folding
 (case insensitive.)</p>
 <h3 id="suffix_cs"><code>suffix_cs</code></h3>
-<p>Checks whether the part ends with the argument (case sensitive.)</p>
+<p>Checks whether the content ends with the argument (case sensitive.)</p>
 <h3 id="suffix"><code>suffix</code></h3>
-<p>Checks whether the part ends with the argument under unicode case-folding (case
-insensitive.)</p>
+<p>Checks whether the content ends with the argument under unicode case-folding
+(case insensitive.)</p>
 <h3 id="regexp_partial_1"><code>regexp_partial</code></h3>
-<p>Checks whether any section of the message part matches a regular expression (RE2
+<p>Checks whether any section of the content matches a regular expression (RE2
 syntax).</p>
 <h3 id="regexp_exact_1"><code>regexp_exact</code></h3>
-<p>Checks whether the message part exactly matches a regular expression (RE2
-syntax).</p>
+<p>Checks whether the content exactly matches a regular expression (RE2 syntax).</p>
+<h3 id="enum_1"><code>enum</code></h3>
+<p>Checks whether the content matches any entry of a list of arguments, the field
+<code>arg</code> must be an array for this operator, e.g.:</p>
+<pre><code class="yaml">text:
+  operator: enum
+  arg:
+  - foo
+  - bar
+</code></pre>
+
 <h2 id="xor"><code>xor</code></h2>
 <pre><code class="yaml">type: xor
 xor: []

@@ -200,6 +200,7 @@
             <li><a href="#batching-and-multiple-part-messages">Batching and Multiple Part Messages</a></li>
             <li><a href="#contents">Contents</a></li>
             <li><a href="#archive">archive</a></li>
+            <li><a href="#avro">avro</a></li>
             <li><a href="#awk">awk</a></li>
             <li><a href="#batch">batch</a></li>
             <li><a href="#bounds_check">bounds_check</a></li>
@@ -229,6 +230,7 @@
             <li><a href="#metadata">metadata</a></li>
             <li><a href="#metric">metric</a></li>
             <li><a href="#noop">noop</a></li>
+            <li><a href="#number">number</a></li>
             <li><a href="#parallel">parallel</a></li>
             <li><a href="#process_batch">process_batch</a></li>
             <li><a href="#process_dag">process_dag</a></li>
@@ -295,6 +297,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <h3 id="contents">Contents</h3>
 <ol>
 <li><a href="#archive"><code>archive</code></a></li>
+<li><a href="#avro"><code>avro</code></a></li>
 <li><a href="#awk"><code>awk</code></a></li>
 <li><a href="#batch"><code>batch</code></a></li>
 <li><a href="#bounds_check"><code>bounds_check</code></a></li>
@@ -324,6 +327,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <li><a href="#metadata"><code>metadata</code></a></li>
 <li><a href="#metric"><code>metric</code></a></li>
 <li><a href="#noop"><code>noop</code></a></li>
+<li><a href="#number"><code>number</code></a></li>
 <li><a href="#parallel"><code>parallel</code></a></li>
 <li><a href="#process_batch"><code>process_batch</code></a></li>
 <li><a href="#process_dag"><code>process_dag</code></a></li>
@@ -362,6 +366,27 @@ interpolations on the 'path' field as described
 the result to an array, which becomes the contents of the resulting message.</p>
 <p>The resulting archived message adopts the metadata of the <em>first</em> message part
 of the batch.</p>
+<h2 id="avro"><code>avro</code></h2>
+<pre><code class="yaml">type: avro
+avro:
+  encoding: textual
+  operator: to_json
+  parts: []
+  schema: &quot;&quot;
+</code></pre>
+
+<p>EXPERIMENTAL: This processor is considered experimental and is therefore subject
+to change outside of major version releases.</p>
+<p>Performs Avro based operations on messages based on a schema. Supported encoding
+types are textual, binary and single.</p>
+<h3 id="operators">Operators</h3>
+<h4 id="to_json"><code>to_json</code></h4>
+<p>Converts Avro documents into a JSON structure. This makes it easier to
+manipulate the contents of the document within Benthos. The encoding field
+specifies how the source documents are encoded.</p>
+<h4 id="from_json"><code>from_json</code></h4>
+<p>Attempts to convert JSON documents into Avro documents according to the
+specified encoding.</p>
 <h2 id="awk"><code>awk</code></h2>
 <pre><code class="yaml">type: awk
 awk:
@@ -481,7 +506,7 @@ fields individually for each message of the batch. This allows you to specify
 dynamic keys and values based on the contents of the message payloads and
 metadata. You can find a list of functions
 <a href="../config_interpolation/#functions">here</a>.</p>
-<h3 id="operators">Operators</h3>
+<h3 id="operators_1">Operators</h3>
 <h4 id="set"><code>set</code></h4>
 <p>Set a key in the cache to a value. If the key already exists the contents are
 overridden.</p>
@@ -964,7 +989,7 @@ overwrites the previous contents with the new value.</p>
 <p>If the path is empty or "." the root of the data will be targeted.</p>
 <p>This processor will interpolate functions within the 'value' field, you can find
 a list of functions <a href="../config_interpolation/#functions">here</a>.</p>
-<h3 id="operators_1">Operators</h3>
+<h3 id="operators_2">Operators</h3>
 <h4 id="append"><code>append</code></h4>
 <p>Appends a value to an array at a target dot path. If the path does not exist all
 objects in the path are created (unless there is a collision).</p>
@@ -1128,7 +1153,7 @@ processor:</p>
     value: ${!json_field:document.foo}
 </code></pre>
 
-<h3 id="operators_2">Operators</h3>
+<h3 id="operators_3">Operators</h3>
 <h4 id="set_2"><code>set</code></h4>
 <p>Sets the value of a metadata key.</p>
 <h4 id="delete_all"><code>delete_all</code></h4>
@@ -1203,6 +1228,40 @@ populate them with context about the message.</p>
 
 <p>Noop is a no-op processor that does nothing, the message passes through
 unchanged.</p>
+<h2 id="number"><code>number</code></h2>
+<pre><code class="yaml">type: number
+number:
+  operator: add
+  parts: []
+  value: 0
+</code></pre>
+
+<p>Parses message contents into a 64-bit floating point number and performs an
+operator on it. In order to execute this processor on a sub field of a document
+use it with the <a href="#process_field"><code>process_field</code></a> processor.</p>
+<p>The value field can either be a number or a string type. If it is a string type
+then this processor will interpolate functions within it, you can find a list of
+functions <a href="../config_interpolation/#functions">here</a>.</p>
+<p>For example, if we wanted to subtract the current unix timestamp from the field
+'foo' of a JSON document <code>{"foo":1561219142}</code> we could use the
+following config:</p>
+<pre><code class="yaml">process_field:
+  path: foo
+  result_type: float
+  processors:
+  - number:
+      operator: subtract
+      value: &quot;${!timestamp_unix}&quot;
+</code></pre>
+
+<p>Value interpolations are resolved once per message batch, in order to resolve it
+for each message of the batch place it within a
+<a href="#for_each"><code>for_each</code></a> processor.</p>
+<h3 id="operators_4">Operators</h3>
+<h4 id="add_1"><code>add</code></h4>
+<p>Adds a value.</p>
+<h4 id="subtract"><code>subtract</code></h4>
+<p>Subtracts a value.</p>
 <h2 id="parallel"><code>parallel</code></h2>
 <pre><code class="yaml">type: parallel
 parallel:
@@ -1282,12 +1341,37 @@ process_field:
   parts: []
   path: &quot;&quot;
   processors: []
+  result_type: string
 </code></pre>
 
 <p>A processor that extracts the value of a field within payloads (currently only
 JSON format is supported) then applies a list of processors to the extracted
-value, and finally sets the field within the original payloads to the processed
+value and finally sets the field within the original payloads to the processed
 result.</p>
+<p>For example, with an input document <code>{"foo":"hello world"}</code> it's
+possible to uppercase the value of the field foo with a <a href="#text"><code>text</code></a>
+child processor:</p>
+<pre><code class="yaml">process_field:
+  path: foo
+  processors:
+  - text:
+      operator: to_upper
+</code></pre>
+
+<p>The result, according to the config field <code>result_type</code>, can be
+marshalled into any of the following types:
+<code>string</code> (default), <code>int</code>, <code>float</code>, <code>bool</code>, <code>object</code> (including null),
+ <code>array</code> and <code>discard</code>. The discard type is a special case that
+discards the result of the processing steps entirely.</p>
+<p>It's therefore possible to use this processor without any child processors as a
+way of casting string values into other types. For example, with an input JSON
+document <code>{"foo":"10"}</code> it's possible to cast the value of the
+field foo to an integer type with:</p>
+<pre><code class="yaml">process_field:
+  path: foo
+  result_type: int
+</code></pre>
+
 <p>If the number of messages resulting from the processing steps does not match the
 original count then this processor fails and the messages continue unchanged.
 Therefore, you should avoid using batch and filter type processors in this list.</p>
@@ -1529,7 +1613,7 @@ for each message of the batch place it within a
     value: ${!json_field:document.content}
 </code></pre>
 
-<h3 id="operators_3">Operators</h3>
+<h3 id="operators_5">Operators</h3>
 <h4 id="append_1"><code>append</code></h4>
 <p>Appends text to the end of the payload.</p>
 <h4 id="escape_url_query"><code>escape_url_query</code></h4>
