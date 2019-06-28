@@ -272,6 +272,13 @@ on the context of where the function is called.</p>
 part by default. It is possible to specify a target part index with an integer
 argument, e.g. <code>${!content:2}</code> would print the contents of the third message
 part.</p>
+<h3 id="error"><code>error</code></h3>
+<p>If an error has occurred during the processing of a message part this function
+resolves to the reported cause of the error. For more information about error
+handling patterns read <a href="../error_handling/">here</a>.</p>
+<p>When applied to a batch of message parts this function targets the first message
+part by default. It is possible to specify a target part index with an integer
+argument, e.g. <code>${!error:2}</code> would print the error of the third message part.</p>
 <h3 id="batch_size"><code>batch_size</code></h3>
 <p>Resolves to the size of a message batch.</p>
 <h3 id="json_field"><code>json_field</code></h3>

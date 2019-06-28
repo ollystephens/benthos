@@ -242,6 +242,25 @@ processor placed within a <a href="../processors/#for_each"><code>for_each</code
         - type: foo # Recover here
 </code></pre>
 
+<h3 id="logging-errors">Logging Errors</h3>
+<p>When an error occurs there will occasionally be useful information stored within
+the error flag that can be exposed with the interpolation function
+<a href="../config_interpolation/#error"><code>error</code></a>. This allows you to expose the
+information with processors.</p>
+<p>For example, when catching failed processors you can <a href="../processors/#log"><code>log</code></a> the messages:</p>
+<pre><code class="yaml">  - catch:
+    - log:
+        message: &quot;Processing failed due to: ${!error}&quot;
+</code></pre>
+
+<p>Or perhaps augment the message payload with the error message:</p>
+<pre><code class="yaml">  - catch:
+    - json:
+        operator: set
+        path: meta.error
+        value: ${!error}
+</code></pre>
+
 <h3 id="attempt-until-success">Attempt Until Success</h3>
 <p>It's possible to reattempt a processor for a particular message until it is
 successful with a <a href="../processors/#while"><code>while</code></a> processor:</p>
@@ -264,7 +283,8 @@ unblock itself without intervention.</p>
 <p>In order to filter out any failed messages from your pipeline you can simply use
 a <a href="../processors/#filter_parts"><code>filter_parts</code></a> processor:</p>
 <pre><code class="yaml">  - filter_parts:
-      type: processor_failed
+      not:
+        type: processor_failed
 </code></pre>
 
 <p>This will remove any failed messages from a batch.</p>
@@ -302,7 +322,6 @@ are batched.</p>
     - type: bar # Everything else
       processors:
       - filter_parts:
-          type: not
           not:
             type: processor_failed
 </code></pre></div>

@@ -204,7 +204,7 @@
 
 <h1 id="processing-pipelines">Processing Pipelines</h1>
 <p>Within a Benthos configuration, in between <code>input</code> and <code>output</code>, is a <code>pipeline</code>
-section. This section describes an array of <a href="./processors">processors</a> that are to
+section. This section describes an array of <a href="../processors/">processors</a> that are to
 be applied to <em>all</em> messages, and are not bound to any particular input or
 output.</p>
 <p>If you have processors that are heavy on CPU and aren't specific to a certain
@@ -263,7 +263,7 @@ baz -/
 <h3 id="single-consumer">Single Consumer</h3>
 <p>Sometimes a source of data can only have a single consuming client. In these
 circumstances it is still possible to have the single stream of data processed
-on parallel processing threads by using a <a href="./buffers">buffer</a>.</p>
+on parallel processing threads by using a <a href="../buffers/">buffer</a>.</p>
 <p>For example, say we have an input stream <code>foo</code> with only a single connected
 client. Our goal is to read the stream as fast as possible, perform mutations on
 the JSON payload using the <a href="../processors/#jmespath">jmespath processor</a>, and write
