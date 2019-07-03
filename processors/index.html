@@ -1550,6 +1550,7 @@ can override this with the parameter <code>sslmode=disable</code> if required.</
 <pre><code class="yaml">type: subprocess
 subprocess:
   args: []
+  max_buffer: 65536
   name: cat
   parts: []
 </code></pre>
@@ -1559,8 +1560,11 @@ message, will pipe its contents to the stdin stream of the process followed by a
 newline.</p>
 <p>The subprocess must then either return a line over stdout or stderr. If a
 response is returned over stdout then its contents will replace the message. If
-a response is instead returned from stderr will be logged and the message will
-continue unchanged and will be marked as failed.</p>
+a response is instead returned from stderr it will be logged and the message
+will continue unchanged and will be <a href="../error_handling/">marked as failed</a>.</p>
+<p>The field <code>max_buffer</code> defines the maximum response size able to be
+read from the subprocess. This value should be set significantly above the real
+expected maximum response size.</p>
 <h4 id="subprocess-requirements">Subprocess requirements</h4>
 <p>It is required that subprocesses flush their stdout and stderr pipes for each
 line.</p>

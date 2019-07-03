@@ -220,6 +220,10 @@ function is always available even when the <code>json</code> codec is not used.<
 <li><code>json_set_float(path, value)</code></li>
 <li><code>json_set_bool(path, value)</code></li>
 </ul>
+<h3 id="json_deletepath"><code>json_delete(path)</code></h3>
+<p>Attempts to delete a JSON field from the input message payload identified by a
+dot separated path. This function is always available even when the <code>json</code> codec
+is not used.</p>
 <h3 id="create_json_objectkey1-val1-key2-val2"><code>create_json_object(key1, val1, key2, val2, ...)</code></h3>
 <p>Generates a valid JSON object of key value pair arguments. The arguments are
 variadic, meaning any number of pairs can be listed. The value will always
