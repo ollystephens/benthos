@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A stream processor specialising in dull tasks.">
+        <meta name="description" content="A stream processor specialising in mundane tasks.">
         <meta name="author" content="Ashley Jeffs">
         
         <link rel="shortcut icon" href="img/favicon.ico">
@@ -12,7 +12,8 @@
         <link href="css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+        <link href="style/blobfish.css" rel="stylesheet">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -185,18 +186,19 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#documentation">Documentation</a></li>
-            <li><a href="#core-components">Core Components</a></li>
-            <li><a href="#other-components">Other Components</a></li>
-            <li><a href="#guides">Guides</a></li>
-            <li><a href="#previous-versions">Previous Versions</a></li>
+        <li class="main active"><a href="#core-components">Core Components</a></li>
+        <li class="main "><a href="#other-components">Other Components</a></li>
+        <li class="main "><a href="#guides">Guides</a></li>
+        <li class="main "><a href="#previous-versions">Previous Versions</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="documentation">Documentation</h1>
-<p>Welcome to the Benthos documentation site, if you haven't used Benthos before
-check out the <a href="getting_started/">getting started guide</a>.</p>
+<p align="center">
+    <a href="https://www.benthos.dev"><img src="./images/logo_dark.svg" style="margin:0;" width="300" alt="Benthos"></a>
+</p>
+
+<p>Welcome to the Benthos documentation site, if you haven't used Benthos before check out the <a href="getting_started/">getting started guide</a>.</p>
 <h2 id="core-components">Core Components</h2>
 <ul>
 <li><a href="inputs/">Inputs</a></li>
@@ -214,30 +216,19 @@ check out the <a href="getting_started/">getting started guide</a>.</p>
 <li><a href="tracers/">Tracers</a></li>
 </ul>
 <h2 id="guides">Guides</h2>
-<p><a href="configuration/">Configuration</a> explains some config file basics, as well as
-tools provided by Benthos that make writing and managing them easier.</p>
-<p><a href="config_interpolation/">Config Interpolation</a> explains how to incorporate
-environment variables and dynamic values into your config files.</p>
-<p><a href="pipeline/">Processing Pipelines</a> explains how processing threads are
-orchestrated within Benthos and how to fully utilise them.</p>
-<p><a href="batching/">Message Batching</a> explains how multiple part messages and
-message batching works within Benthos.</p>
-<p><a href="error_handling/">Error Handling</a> explains how you can handle errors from
-processors in order to recover or reroute the data.</p>
-<p><a href="performance_tuning/">Performance Tuning</a> advises on ways of diagnosing and
-improving the performance of your Benthos pipelines.</p>
-<p><a href="monitoring/">Monitoring</a> explains how to hook Benthos up to your choice of
-monitoring and tracing tools.</p>
-<p><a href="streams/">Streams Mode</a> outlines a mode of running Benthos where
-multiple isolated stream pipelines can run in isolation within the same service
-and be managed using a REST API.</p>
-<p><a href="workflows/">Workflows</a> explains how Benthos can be configured to easily
-support complex processor flows using automatic DAG resolution.</p>
-<p><a href="migration/">Migration</a> outlines migration guides for upgrading to a
-major version release of Benthos.</p>
+<p><a href="configuration/">Configuration</a> explains some config file basics, as well as tools provided by Benthos that make writing and managing them easier.</p>
+<p><a href="configuration_testing/">Configuration Testing</a> explains how to write and execute unit tests for your configuration files.</p>
+<p><a href="config_interpolation/">Config Interpolation</a> explains how to incorporate environment variables and dynamic values into your config files.</p>
+<p><a href="pipeline/">Processing Pipelines</a> explains how processing threads are orchestrated within Benthos and how to fully utilise them.</p>
+<p><a href="batching/">Message Batching</a> explains how multiple part messages and message batching works within Benthos.</p>
+<p><a href="error_handling/">Error Handling</a> explains how you can handle errors from processors in order to recover or reroute the data.</p>
+<p><a href="performance_tuning/">Performance Tuning</a> advises on ways of diagnosing and improving the performance of your Benthos pipelines.</p>
+<p><a href="monitoring/">Monitoring</a> explains how to hook Benthos up to your choice of monitoring and tracing tools.</p>
+<p><a href="streams/">Streams Mode</a> outlines a mode of running Benthos where multiple isolated stream pipelines can run in isolation within the same service and be managed using a REST API.</p>
+<p><a href="workflows/">Workflows</a> explains how Benthos can be configured to easily support complex processor flows using automatic DAG resolution.</p>
+<p><a href="migration/">Migration</a> outlines migration guides for upgrading to a major version release of Benthos.</p>
 <h2 id="previous-versions">Previous Versions</h2>
-<p>Previous versions of this documentation can be found for each prior major
-release at:</p>
+<p>Previous versions of this documentation can be found for each prior major release at:</p>
 <ul>
 <li><a href="https://docs.benthos.dev/archive/v1/">Version 1</a></li>
 </ul></div>
@@ -323,5 +314,5 @@ release at:</p>
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-07-03 10:50:39
+Build Date UTC : 2019-07-14 21:04:57
 -->

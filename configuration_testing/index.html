@@ -7,21 +7,21 @@
         
         <meta name="author" content="Ashley Jeffs">
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Awk functions - Benthos</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Configuration testing - Benthos</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
-        <link href="../../style/blobfish.css" rel="stylesheet">
+        <link href="../style/blobfish.css" rel="stylesheet">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
@@ -61,50 +61,50 @@
                                 <a href="/">Home</a>
                             </li>
                             <li >
-                                <a href="../../cookbooks/">Cookbooks</a>
+                                <a href="../cookbooks/">Cookbooks</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../inputs/">Inputs</a>
+    <a href="../inputs/">Inputs</a>
 </li>
                                     
 <li >
-    <a href="../../buffers/">Buffers</a>
+    <a href="../buffers/">Buffers</a>
 </li>
                                     
 <li >
-    <a href="../">Processors</a>
+    <a href="../processors/">Processors</a>
 </li>
                                     
 <li >
-    <a href="../../conditions/">Conditions</a>
+    <a href="../conditions/">Conditions</a>
 </li>
                                     
 <li >
-    <a href="../../outputs/">Outputs</a>
+    <a href="../outputs/">Outputs</a>
 </li>
                                     
 <li >
-    <a href="../../caches/">Caches</a>
+    <a href="../caches/">Caches</a>
 </li>
                                     
 <li >
-    <a href="../../rate_limits/">Rate Limits</a>
+    <a href="../rate_limits/">Rate Limits</a>
 </li>
                                     
 <li >
-    <a href="../../metrics/">Metrics</a>
+    <a href="../metrics/">Metrics</a>
 </li>
                                     
 <li >
-    <a href="../../tracers/">Tracers</a>
+    <a href="../tracers/">Tracers</a>
 </li>
                                     
 <li >
-    <a href="../../logger/">Logger</a>
+    <a href="../logger/">Logger</a>
 </li>
                                 </ul>
                             </li>
@@ -113,55 +113,55 @@
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../getting_started/">Getting Started</a>
+    <a href="../getting_started/">Getting Started</a>
 </li>
                                     
 <li >
-    <a href="../../serverless/">Serverless</a>
+    <a href="../serverless/">Serverless</a>
 </li>
                                     
 <li >
-    <a href="../../configuration/">Configuration</a>
+    <a href="../configuration/">Configuration</a>
 </li>
                                     
 <li >
-    <a href="../../config_interpolation/">Config Interpolation</a>
+    <a href="../config_interpolation/">Config Interpolation</a>
 </li>
                                     
 <li >
-    <a href="../../pipeline/">Processing Pipelines</a>
+    <a href="../pipeline/">Processing Pipelines</a>
 </li>
                                     
 <li >
-    <a href="../../batching/">Message Batching</a>
+    <a href="../batching/">Message Batching</a>
 </li>
                                     
 <li >
-    <a href="../../error_handling/">Error Handling</a>
+    <a href="../error_handling/">Error Handling</a>
 </li>
                                     
 <li >
-    <a href="../../performance_tuning/">Performance Tuning</a>
+    <a href="../performance_tuning/">Performance Tuning</a>
 </li>
                                     
 <li >
-    <a href="../../monitoring/">Monitoring</a>
+    <a href="../monitoring/">Monitoring</a>
 </li>
                                     
 <li >
-    <a href="../../sync_responses/">Synchronous Responses</a>
+    <a href="../sync_responses/">Synchronous Responses</a>
 </li>
                                     
 <li >
-    <a href="../../workflows/">Workflows</a>
+    <a href="../workflows/">Workflows</a>
 </li>
                                     
 <li >
-    <a href="../../streams/">Streams Mode</a>
+    <a href="../streams/">Streams Mode</a>
 </li>
                                     
 <li >
-    <a href="../../examples/">Applied Examples</a>
+    <a href="../examples/">Applied Examples</a>
 </li>
                                 </ul>
                             </li>
@@ -186,104 +186,89 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#awk-functions">AWK Functions</a></li>
+        <li class="main active"><a href="#configuration-testing">Configuration Testing</a></li>
             <li><a href="#contents">Contents</a></li>
-            <li><a href="#json-functions">JSON Functions</a></li>
-            <li><a href="#metadata-functions">Metadata Functions</a></li>
-            <li><a href="#date-functions">Date Functions</a></li>
-            <li><a href="#logging-functions">Logging Functions</a></li>
+            <li><a href="#writing-a-test">Writing a Test</a></li>
+            <li><a href="#output-conditions">Output Conditions</a></li>
+            <li><a href="#running-tests">Running Tests</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="awk-functions">AWK Functions</h1>
-<p>The Benthos <a href="../#awk">AWK processor</a> comes with custom functions listed in
-this document. These functions can be overridden by functions in the program.</p>
+<h1 id="configuration-testing">Configuration Testing</h1>
+<p>EXPERIMENTAL: The tooling outlined on this document are experimental and therefore subject to change outside of major version releases.</p>
+<p>The Benthos service offers a command <code>benthos --test ./...</code> for running unit tests on sections of a configuration file. This makes it easy to protect your config files from regressions over time.</p>
 <h2 id="contents">Contents</h2>
 <ol>
-<li><a href="#json-functions">JSON Functions</a></li>
-<li><a href="#metadata-functions">Metadata Functions</a></li>
-<li><a href="#date-functions">Date Functions</a></li>
-<li><a href="#logging-functions">Logging Functions</a></li>
+<li><a href="#writing_a_test">Writing a Test</a></li>
+<li><a href="#output_conditions">Output Conditions</a></li>
+<li><a href="#running_tests">Running Tests</a></li>
 </ol>
-<h2 id="json-functions">JSON Functions</h2>
-<h3 id="json_getpath"><code>json_get(path)</code></h3>
-<p>Attempts to find a JSON value in the input message payload by a dot separated
-path and returns it as a string. This function is always available even when the
-<code>json</code> codec is not used.</p>
-<h3 id="json_setpath-value"><code>json_set(path, value)</code></h3>
-<p>Attempts to set a JSON value in the input message payload identified by a dot
-separated path, the value argument will be interpreted as a string. This
-function is always available even when the <code>json</code> codec is not used.</p>
-<p>In order to set non-string values use one of the following typed varieties:</p>
-<ul>
-<li><code>json_set_int(path, value)</code></li>
-<li><code>json_set_float(path, value)</code></li>
-<li><code>json_set_bool(path, value)</code></li>
-</ul>
-<h3 id="json_deletepath"><code>json_delete(path)</code></h3>
-<p>Attempts to delete a JSON field from the input message payload identified by a
-dot separated path. This function is always available even when the <code>json</code> codec
-is not used.</p>
-<h3 id="create_json_objectkey1-val1-key2-val2"><code>create_json_object(key1, val1, key2, val2, ...)</code></h3>
-<p>Generates a valid JSON object of key value pair arguments. The arguments are
-variadic, meaning any number of pairs can be listed. The value will always
-resolve to a string regardless of the value type. E.g. the following call:</p>
-<p><code>create_json_object("a", "1", "b", 2, "c", "3")</code></p>
-<p>Would result in this string:</p>
-<p><code>{"a":"1","b":"2","c":"3"}</code></p>
-<h3 id="create_json_arrayval1-val2"><code>create_json_array(val1, val2, ...)</code></h3>
-<p>Generates a valid JSON array of value arguments. The arguments are variadic,
-meaning any number of values can be listed. The value will always resolve to a
-string regardless of the value type. E.g. the following call:</p>
-<p><code>create_json_array("1", 2, "3")</code></p>
-<p>Would result in this string:</p>
-<p><code>["1","2","3"]</code></p>
-<h2 id="metadata-functions">Metadata Functions</h2>
-<h3 id="metadata_setkey-value"><code>metadata_set(key, value)</code></h3>
-<p>Set a metadata key for the message to a value. The value will always resolve to
-a string regardless of the value type.</p>
-<h3 id="metadata_getkey-string"><code>metadata_get(key) string</code></h3>
-<p>Get the value of a metadata key from the message.</p>
-<h2 id="date-functions">Date Functions</h2>
-<h3 id="timestamp_unix-int"><code>timestamp_unix() int</code></h3>
-<p>Returns the current unix timestamp (the number of seconds since 01-01-1970).</p>
-<h3 id="timestamp_unixdate-int"><code>timestamp_unix(date) int</code></h3>
-<p>Attempts to parse a date string by detecting its format and returns the
-equivalent unix timestamp (the number of seconds since 01-01-1970).</p>
-<h3 id="timestamp_unixdate-format-int"><code>timestamp_unix(date, format) int</code></h3>
-<p>Attempts to parse a date string according to a format and returns the equivalent
-unix timestamp (the number of seconds since 01-01-1970).</p>
-<p>The format is defined by showing how the reference time, defined to be
-<code>Mon Jan 2 15:04:05 -0700 MST 2006</code> would be displayed if it were the value.</p>
-<h3 id="timestamp_unix_nano-int"><code>timestamp_unix_nano() int</code></h3>
-<p>Returns the current unix timestamp in nanoseconds (the number of nanoseconds
-since 01-01-1970).</p>
-<h3 id="timestamp_unix_nanodate-int"><code>timestamp_unix_nano(date) int</code></h3>
-<p>Attempts to parse a date string by detecting its format and returns the
-equivalent unix timestamp in nanoseconds (the number of nanoseconds since
-01-01-1970).</p>
-<h3 id="timestamp_unix_nanodate-format-int"><code>timestamp_unix_nano(date, format) int</code></h3>
-<p>Attempts to parse a date string according to a format and returns the equivalent
-unix timestamp in nanoseconds (the number of nanoseconds since 01-01-1970).</p>
-<p>The format is defined by showing how the reference time, defined to be
-<code>Mon Jan 2 15:04:05 -0700 MST 2006</code> would be displayed if it were the value.</p>
-<h3 id="timestamp_formatunix-format-string"><code>timestamp_format(unix, format) string</code></h3>
-<p>Formats a unix timestamp. The format is defined by showing how the reference
-time, defined to be <code>Mon Jan 2 15:04:05 -0700 MST 2006</code> would be displayed if it
-were the value.</p>
-<p>The format is optional, and if omitted RFC3339 (<code>2006-01-02T15:04:05Z07:00</code>)
-will be used.</p>
-<h3 id="timestamp_format_nanounixnano-format-string"><code>timestamp_format_nano(unixNano, format) string</code></h3>
-<p>Formats a unix timestamp in nanoseconds. The format is defined by showing how
-the reference time, defined to be <code>Mon Jan 2 15:04:05 -0700 MST 2006</code> would be
-displayed if it were the value.</p>
-<p>The format is optional, and if omitted RFC3339 (<code>2006-01-02T15:04:05Z07:00</code>)
-will be used.</p>
-<h2 id="logging-functions">Logging Functions</h2>
-<h3 id="print_logmessage-level"><code>print_log(message, level)</code></h3>
-<p>Prints a Benthos log message at a particular log level. The log level is
-optional, and if omitted the level <code>INFO</code> will be used.</p></div>
+<h2 id="writing-a-test">Writing a Test</h2>
+<p>Let's imagine we have a configuration file <code>foo.yaml</code> containing some processors:</p>
+<pre><code class="yaml">input:
+  kafka_balanced:
+    addresses: [ TODO ]
+    topics: [ foo, bar ]
+    consumer_group: foogroup
+
+pipeline:
+  processors:
+  - text:
+      operator: to_upper
+  - text:
+      operator: append
+      value: end
+
+output:
+  s3:
+    bucket: TODO
+    path: &quot;${!metadata:kafka_topic}/${!json_field:message.id}.json&quot;
+</code></pre>
+
+<p>In order to write unit tests for this config we must accompany it with a file of the same name and extension, but suffixed with <code>_benthos_test</code>, which in this case would be <code>foo_benthos_test.yaml</code>. We can generate an example definition for this config with <code>benthos --gen-test ./foo.yaml</code>:</p>
+<pre><code class="yaml">parallel: true
+tests:
+  - name: example test
+    target_processors: '/pipeline/processors'
+    environment: {}
+    input_batch:
+      - content: 'example content'
+        metadata:
+          example_key: example metadata value
+    output_batches:
+      -
+        - content_equals: example content
+          metadata_equals:
+            key: example_key
+            value: example metadata value
+</code></pre>
+
+<p>The field <code>parallel</code> instructs as to whether the tests listed in this definition should be executed in parallel. Under <code>tests</code> we then have a list of any number of unit tests to execute for the config file. </p>
+<p>Each test is run in complete isolation, including any resources defined by the config file. Tests should be allocated a unique <code>name</code> that identifies the feature being tested.</p>
+<p>The field <code>target_processors</code> is a <a href="https://tools.ietf.org/html/rfc6901">JSON Pointer</a> that identifies the specific processors within the file which should be executed by the test. This allows you to target a specific processor (<code>/pipeline/processors/0</code>), or processors within a different section on your config (<code>/input/broker/inputs/0/processors</code>) if required.</p>
+<p>The field <code>environment</code> allows you to define an object of key/value pairs that set environment variables to be evaluated during the parsing of the target config file. These are unique to each test, allowing you to test different environment variable interpolation combinations. Note that these environment variables are not used during the execution of the tests, only during parse time.</p>
+<p>The field <code>input_batch</code> lists one or more messages to be fed into the targeted processors as a batch. Each message of the batch may have its raw content defined as well as metadata key/value pairs.</p>
+<p>The field <code>output_batches</code> lists any number of batches of messages which are expected to result from the target processors. Each batch lists any number of messages, each one defining <a href="#output-conditions"><code>conditions</code></a> to describe the expected contents of the message.</p>
+<p>If the number of batches defined does not match the resulting number of batches the test will fail. If the number of messages defined in each batch does not match the number in the resulting batches the test will fail. If any condition of a message fails then the test fails.</p>
+<h2 id="output-conditions">Output Conditions</h2>
+<h3 id="content_equals"><code>content_equals</code></h3>
+<pre><code class="yaml">content_equals: example content
+</code></pre>
+
+<p>Checks the full raw contents of a message against a value.</p>
+<h3 id="metadata_equals"><code>metadata_equals</code></h3>
+<pre><code class="yaml">metadata_equals:
+  example_key: example metadata value
+</code></pre>
+
+<p>Checks a map of metadata keys to values against the metadata stored in the message. If there is a value mismatch between a key of the condition versus the message metadata this condition will fail.</p>
+<h2 id="running-tests">Running Tests</h2>
+<p>Executing tests for a specific config can be done by pointing the command flag <code>--test</code> at either the config to be tested or its test definition, e.g. <code>benthos --test ./config.yaml</code> and <code>benthos --test ./config_benthos_test.yaml</code> are equivalent.</p>
+<p>In order to execute all tests of a directory simply point <code>--test</code> to that directory, e.g. <code>benthos --test ./foo</code> will execute all tests found in the directory <code>foo</code>. In order to walk a directory tree and execute all tests found you can use the shortcut <code>./...</code>, e.g. <code>benthos --test ./...</code> will execute all tests found in the current directory, any child directories, and so on.</p>
+<h3 id="linting">Linting</h3>
+<p>Benthos has a linter that can be executed on a config file with <code>--lint</code>, it's possible to run this linter as well as your tests on config files by including the flag, e.g. <code>benthos --lint --test ./config.yaml</code> will both lint and test the config file <code>./config.yaml</code>. If the linting stage fails then the process exits with status 1 similar to if a test had failed.</p>
+<p>Note that when combining the flags <code>--lint</code> and <code>--test</code> the linting will <em>only</em> be executed on config files accompanied with a test definition. This is in order to avoid linting files unrelated to Benthos execution during directory walking.</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -291,11 +276,11 @@ optional, and if omitted the level <code>INFO</code> will be used.</p></div>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "../..",
+            var base_url = "..",
                 shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">
