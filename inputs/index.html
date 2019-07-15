@@ -464,6 +464,7 @@ http_client:
     enabled: false
     password: &quot;&quot;
     username: &quot;&quot;
+  copy_response_headers: false
   drop_on: []
   headers:
     Content-Type: application/octet-stream
@@ -513,14 +514,23 @@ http_server:
   cert_file: &quot;&quot;
   key_file: &quot;&quot;
   path: /post
+  rate_limit: &quot;&quot;
   timeout: 5s
   ws_path: /post/ws
+  ws_rate_limit_message: &quot;&quot;
+  ws_welcome_message: &quot;&quot;
 </code></pre>
 
 <p>Receive messages POSTed over HTTP(S). HTTP 2.0 is supported when using TLS,
 which is enabled when key and cert files are specified.</p>
 <p>You can leave the 'address' config field blank in order to use the instance wide
 HTTP server.</p>
+<p>The field <code>rate_limit</code> allows you to specify an optional
+<a href="../rate_limits/"><code>rate_limit</code> resource</a>, which will be
+applied to each HTTP request made and each websocket payload received.</p>
+<p>When the rate limit is breached HTTP requests will have a 429 response returned
+with a Retry-After header. Websocket payloads will be dropped and an optional
+response payload will be sent as per <code>ws_rate_limit_message</code>.</p>
 <h3 id="responses">Responses</h3>
 <p>EXPERIMENTAL: It's possible to return a response for each message received using
 <a href="../sync_responses/">synchronous responses</a>. This feature is considered
@@ -537,6 +547,11 @@ message of the batch.</p>
 <h4 id="ws_path-defaults-to-postws"><code>ws_path</code> (defaults to <code>/post/ws</code>)</h4>
 <p>Creates a websocket connection, where payloads received on the socket are passed
 through the pipeline as a batch of one message.</p>
+<p>You may specify an optional <code>ws_welcome_message</code>, which is a static
+payload to be sent to all clients once a websocket connection is first
+established.</p>
+<p>It's also possible to specify a <code>ws_rate_limit_message</code>, which is a
+static payload to be sent to clients that have triggered the servers rate limit.</p>
 <h3 id="metadata_3">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- http_server_user_agent

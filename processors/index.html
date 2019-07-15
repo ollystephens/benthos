@@ -228,7 +228,7 @@
             <li><a href="#lambda">lambda</a></li>
             <li><a href="#log">log</a></li>
             <li><a href="#merge_json">merge_json</a></li>
-            <li><a href="#metadata">metadata</a></li>
+            <li><a href="#metadata_1">metadata</a></li>
             <li><a href="#metric">metric</a></li>
             <li><a href="#noop">noop</a></li>
             <li><a href="#number">number</a></li>
@@ -874,6 +874,7 @@ http:
       enabled: false
       password: &quot;&quot;
       username: &quot;&quot;
+    copy_response_headers: false
     drop_on: []
     headers:
       Content-Type: application/octet-stream
@@ -919,6 +920,11 @@ interpolations described <a href="../config_interpolation/#functions">here</a>.<
 response back into the original payload instead of replacing it entirely, you
 can use the <a href="#process_map"><code>process_map</code></a> or
  <a href="#process_field"><code>process_field</code></a> processors.</p>
+<h3 id="metadata">Metadata</h3>
+<p>If the request returns a response code this processor sets a metadata field
+<code>http_status_code</code> on all resulting messages.</p>
+<p>If the field <code>copy_response_headers</code> is set to <code>true</code> then any headers
+in the response will also be set in the resulting message as metadata.</p>
 <h3 id="error-handling_1">Error Handling</h3>
 <p>When all retry attempts for a message are exhausted the processor cancels the
 attempt. These failed messages will continue through the pipeline unchanged, but
@@ -1126,7 +1132,7 @@ into one single JSON document and then writes it to a new message at the end of
 the batch. Merged parts are removed unless <code>retain_parts</code> is set to
 true. The new merged message will contain the metadata of the first part to be
 merged.</p>
-<h2 id="metadata"><code>metadata</code></h2>
+<h2 id="metadata_1"><code>metadata</code></h2>
 <pre><code class="yaml">type: metadata
 metadata:
   key: example
