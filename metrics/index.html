@@ -313,7 +313,7 @@ configure a prefix at the child level.</p>
 <p>An array of objects of the form:</p>
 <pre><code class="yaml">  - pattern: &quot;foo\\.([a-z]*)\\.([a-z]*)&quot;
     value: &quot;foo.$1&quot;
-    labels:
+    to_label:
       bar: $2
 </code></pre>
 
@@ -321,7 +321,7 @@ configure a prefix at the child level.</p>
 expressions are tested against each metric path, where all occurrences will be
 replaced with the specified value. Inside the value $ signs are interpreted as
 submatch expansions, e.g. $1 represents the first submatch.</p>
-<p>The field <code>labels</code> may contain any number of key/value pairs to be
+<p>The field <code>to_label</code> may contain any number of key/value pairs to be
 added to a metric as labels, where the value may contain submatches from the
 provided pattern. This allows you to extract (left-most) matched segments of the
 renamed path into the label values.</p>
@@ -332,7 +332,7 @@ and '1' under the label key 'index' we could use this config:</p>
   by_regexp:
   - pattern: &quot;foo\\.([a-z]*)\\.([a-z]*)\\.zap&quot;
     value: &quot;zip.$1&quot;
-    labels:
+    to_label:
       index: $2
 </code></pre>
 
