@@ -883,10 +883,21 @@ redis_pubsub:
   channels:
   - benthos_chan
   url: tcp://localhost:6379
+  use_patterns: false
 </code></pre>
 
 <p>Redis supports a publish/subscribe model, it's possible to subscribe to multiple
 channels using this input.</p>
+<p>In order to subscribe to channels using the <code>PSUBSCRIBE</code> command set
+the field <code>use_patterns</code> to <code>true</code>, then you can include glob-style
+patterns in your channel names. For example:</p>
+<ul>
+<li><code>h?llo</code> subscribes to hello, hallo and hxllo</li>
+<li><code>h*llo</code> subscribes to hllo and heeeello</li>
+<li><code>h[ae]llo</code> subscribes to hello and hallo, but not hillo</li>
+</ul>
+<p>Use <code>\</code> to escape special characters if you want to match them
+verbatim.</p>
 <h2 id="redis_streams"><code>redis_streams</code></h2>
 <pre><code class="yaml">type: redis_streams
 redis_streams:

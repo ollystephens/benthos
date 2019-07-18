@@ -310,19 +310,36 @@ even when sending metrics to Prometheus.</p>
 <p>The <code>prefix</code> field in a metrics config is ignored by this type. Please
 configure a prefix at the child level.</p>
 <h3 id="by_regexp"><code>by_regexp</code></h3>
-<p>An array of objects of the form <code>{"pattern":"foo","value":"bar"}</code>
-where each pattern will be parsed as RE2 regular expressions, these expressions
-are tested against each metric path, where all occurrences will be replaced with
-the specified value. Inside the value $ signs are interpreted as submatch
-expansions, e.g. $1 represents the first submatch.</p>
-<p>To replace the paths 'foo.bar.zap' and 'foo.baz.zap' with 'zip.bar' and
-'zip.baz' respectively we could use this config:</p>
-<pre><code class="yaml">rename:
-  by_regexp:
-  - pattern: &quot;foo\\.([a-z]*)\\.zap&quot;
-    value: &quot;zip.$1&quot;
+<p>An array of objects of the form:</p>
+<pre><code class="yaml">  - pattern: &quot;foo\\.([a-z]*)\\.([a-z]*)&quot;
+    value: &quot;foo.$1&quot;
+    labels:
+      bar: $2
 </code></pre>
 
+<p>Where each pattern will be parsed as an RE2 regular expression, these
+expressions are tested against each metric path, where all occurrences will be
+replaced with the specified value. Inside the value $ signs are interpreted as
+submatch expansions, e.g. $1 represents the first submatch.</p>
+<p>The field <code>labels</code> may contain any number of key/value pairs to be
+added to a metric as labels, where the value may contain submatches from the
+provided pattern. This allows you to extract (left-most) matched segments of the
+renamed path into the label values.</p>
+<p>For example, in order to replace the paths 'foo.bar.0.zap' and 'foo.baz.1.zap'
+with 'zip.bar' and 'zip.baz' respectively, and store the respective values '0'
+and '1' under the label key 'index' we could use this config:</p>
+<pre><code class="yaml">rename:
+  by_regexp:
+  - pattern: &quot;foo\\.([a-z]*)\\.([a-z]*)\\.zap&quot;
+    value: &quot;zip.$1&quot;
+    labels:
+      index: $2
+</code></pre>
+
+<p>These labels will only be injected into metrics registered without pre-existing
+labels. Therefore it's currently not possible to combine labels registered from
+the <a href="processors/README.md#metric"><code>metric</code> processor</a> with labels
+set via renaming.</p>
 <h3 id="debugging_1">Debugging</h3>
 <p>In order to see logs breaking down which metrics are registered and whether they
 are renamed enable logging at the TRACE level.</p>
