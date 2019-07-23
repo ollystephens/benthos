@@ -1303,7 +1303,8 @@ calculates a Directed Acyclic Graph (DAG) of their dependencies by referring to
 their postmap targets for provided fields and their premap targets for required
 fields.</p>
 <p>The DAG is then used to execute the children in the necessary order with the
-maximum parallelism possible.</p>
+maximum parallelism possible. You can read more about workflows in Benthos
+<a href="../workflows/">in this document</a>.</p>
 <p>The field <code>dependencies</code> is an optional array of fields that a child
 depends on. This is useful for when fields are required but don't appear within
 a premap such as those used in conditions.</p>

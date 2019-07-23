@@ -203,6 +203,7 @@
         <li class="main active"><a href="#workflows-in-benthos">Workflows in Benthos</a></li>
             <li><a href="#the-problem">The Problem</a></li>
             <li><a href="#automatic-dag-resolution">Automatic DAG Resolution</a></li>
+            <li><a href="#error-handling">Error Handling</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -477,7 +478,13 @@ pipeline:
 
 output:
   type: stdout # TODO
-</code></pre></div>
+</code></pre>
+
+<h2 id="error-handling">Error Handling</h2>
+<p>Workflow stages can fail if any mandatory post mappings are unresolvable with
+result payloads, or if a processor within the stage fails. When these failures
+occur there are many mechanisms within Benthos that allow you to capture and/or
+recover from them outlined <a href="../error_handling/">in this document</a>.</p></div>
         </div>
 
         <footer class="col-md-12">
