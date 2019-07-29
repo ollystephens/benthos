@@ -228,11 +228,13 @@
             <li><a href="#nats">nats</a></li>
             <li><a href="#nats_stream">nats_stream</a></li>
             <li><a href="#nsq">nsq</a></li>
+            <li><a href="#redis_hash">redis_hash</a></li>
             <li><a href="#redis_list">redis_list</a></li>
             <li><a href="#redis_pubsub">redis_pubsub</a></li>
             <li><a href="#redis_streams">redis_streams</a></li>
             <li><a href="#retry">retry</a></li>
             <li><a href="#s3">s3</a></li>
+            <li><a href="#sns">sns</a></li>
             <li><a href="#sqs">sqs</a></li>
             <li><a href="#stdout">stdout</a></li>
             <li><a href="#switch">switch</a></li>
@@ -307,11 +309,13 @@ a <a href="#broker"><code>broker</code></a> output with the 'try' pattern.</p>
 <li><a href="#nats"><code>nats</code></a></li>
 <li><a href="#nats_stream"><code>nats_stream</code></a></li>
 <li><a href="#nsq"><code>nsq</code></a></li>
+<li><a href="#redis_hash"><code>redis_hash</code></a></li>
 <li><a href="#redis_list"><code>redis_list</code></a></li>
 <li><a href="#redis_pubsub"><code>redis_pubsub</code></a></li>
 <li><a href="#redis_streams"><code>redis_streams</code></a></li>
 <li><a href="#retry"><code>retry</code></a></li>
 <li><a href="#s3"><code>s3</code></a></li>
+<li><a href="#sns"><code>sns</code></a></li>
 <li><a href="#sqs"><code>sqs</code></a></li>
 <li><a href="#stdout"><code>stdout</code></a></li>
 <li><a href="#switch"><code>switch</code></a></li>
@@ -871,6 +875,44 @@ nsq:
 using function interpolations described
 <a href="../config_interpolation/#functions">here</a>. When sending batched messages
 these interpolations are performed per message part.</p>
+<h2 id="redis_hash"><code>redis_hash</code></h2>
+<pre><code class="yaml">type: redis_hash
+redis_hash:
+  fields: {}
+  key: &quot;&quot;
+  url: tcp://localhost:6379
+  walk_json_object: false
+  walk_metadata: false
+</code></pre>
+
+<p>Sets Redis hash objects using the HMSET command.</p>
+<p>The field <code>key</code> supports
+<a href="../config_interpolation/#functions">interpolation functions</a> evaluated per
+message of a batch, allowing you to create a unique key for each message.</p>
+<p>The field <code>fields</code> allows you to specify an explicit map of field
+names to interpolated values, also evaluated per message of a batch:</p>
+<pre><code class="yaml">redis_hash:
+  url: tcp://localhost:6379
+  key: ${!json_field:id}
+  fields:
+    topic: ${!metadata:kafka_topic}
+    partition: ${!metadata:kafka_partition}
+    content: ${!json_field:document.text}
+</code></pre>
+
+<p>If the field <code>walk_metadata</code> is set to <code>true</code> then Benthos
+will walk all metadata fields of messages and add them to the list of hash
+fields to set. </p>
+<p>If the field <code>walk_json_object</code> is set to <code>true</code> then
+Benthos will walk each message as a JSON object, extracting keys and the string
+representation of their value and adds them to the list of hash fields to set.</p>
+<p>The order of hash field extraction is as follows:</p>
+<ol>
+<li>Metadata (if enabled)</li>
+<li>JSON object (if enabled)</li>
+<li>Explicit fields</li>
+</ol>
+<p>Where latter stages will overwrite matching field names of a former stage.</p>
 <h2 id="redis_list"><code>redis_list</code></h2>
 <pre><code class="yaml">type: redis_list
 redis_list:
@@ -958,6 +1000,22 @@ interpolations described <a href="../config_interpolation/#functions">here</a>, 
 calculated per message of a batch.</p>
 <p>The fields <code>content_type</code> and <code>content_encoding</code> can also be set
 dynamically using function interpolation.</p>
+<h2 id="sns"><code>sns</code></h2>
+<pre><code class="yaml">type: sns
+sns:
+  credentials:
+    id: &quot;&quot;
+    role: &quot;&quot;
+    role_external_id: &quot;&quot;
+    secret: &quot;&quot;
+    token: &quot;&quot;
+  endpoint: &quot;&quot;
+  region: eu-west-1
+  timeout: 5s
+  topic_arn: &quot;&quot;
+</code></pre>
+
+<p>Sends messages to an AWS SNS topic.</p>
 <h2 id="sqs"><code>sqs</code></h2>
 <pre><code class="yaml">type: sqs
 sqs:
