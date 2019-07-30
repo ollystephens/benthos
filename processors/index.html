@@ -1085,6 +1085,11 @@ can use the <a href="#process_map"><code>process_map</code></a> or
 attempt. These failed messages will continue through the pipeline unchanged, but
 can be dropped or placed in a dead letter queue according to your config, you
 can read about these patterns <a href="../error_handling/">here</a>.</p>
+<h3 id="credentials">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="log"><code>log</code></h2>
 <pre><code class="yaml">type: log
 log:

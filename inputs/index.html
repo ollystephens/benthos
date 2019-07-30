@@ -741,6 +741,11 @@ kinesis:
 table name. Offsets will then be tracked per <code>client_id</code> per
 <code>shard_id</code>. When using this mode you should create a table with
 <code>namespace</code> as the primary key and <code>shard_id</code> as a sort key.</p>
+<h3 id="credentials">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="mqtt"><code>mqtt</code></h2>
 <pre><code class="yaml">type: mqtt
 mqtt:
@@ -979,6 +984,11 @@ message is not deleted until the S3 item has been sent onwards. This ensures
 at-least-once crash resiliency, but also means that if the S3 item takes longer
 to process than the visibility timeout of your queue then the same items might
 be processed multiple times.</p>
+<h3 id="credentials_1">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h3 id="metadata_10">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- s3_key
@@ -1012,6 +1022,11 @@ sqs:
 
 <p>Receive messages from an Amazon SQS URL, only the body is extracted into
 messages.</p>
+<h3 id="credentials_2">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="stdin"><code>stdin</code></h2>
 <pre><code class="yaml">type: stdin
 stdin:

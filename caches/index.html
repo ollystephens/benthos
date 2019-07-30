@@ -291,6 +291,11 @@ DynamoDB table. An optional TTL duration (<code>ttl</code>) and field
 (<code>ttl_key</code>) can be specified if the backing table has TTL enabled.</p>
 <p>Strong read consistency can be enabled using the <code>consistent_read</code>
 configuration field.</p>
+<h3 id="credentials">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="file"><code>file</code></h2>
 <pre><code class="yaml">type: file
 file:
@@ -361,7 +366,12 @@ s3:
 <p>The s3 cache stores each item in an S3 bucket as a file, where an item ID is
 the path of the item within the bucket.</p>
 <p>It is not possible to atomically upload S3 objects exclusively when the target
-does not already exist, therefore this cache is not suitable for deduplication.</p></div>
+does not already exist, therefore this cache is not suitable for deduplication.</p>
+<h3 id="credentials_1">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p></div>
         </div>
 
         <footer class="col-md-12">

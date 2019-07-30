@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A stream processor specialising in mundane tasks.">
+        
         <meta name="author" content="Ashley Jeffs">
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Benthos</title>
+        <title>Aws - Benthos</title>
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -36,7 +36,7 @@
         </script> 
     </head>
 
-    <body class="homepage">
+    <body>
 
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -60,8 +60,8 @@
                             <li >
                                 <a href="/">Home</a>
                             </li>
-                            <li class="active">
-                                <a href="./">Cookbooks</a>
+                            <li >
+                                <a href="../cookbooks/">Cookbooks</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
@@ -178,16 +178,6 @@
                             </a>
                         </li>
     <li class="nav-item">
-      <a rel="prev" class="nav-link disabled">
-        <i class="fa fa-arrow-left"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a rel="next" href="../inputs/" class="nav-link">
-        <i class="fa fa-arrow-right"></i>
-      </a>
-    </li>
-    <li class="nav-item">
       <a href="https://github.com/Jeffail/benthos/" class="nav-link">
         <i class="fa fa-github"></i> Code
       </a>
@@ -200,30 +190,54 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#cookbooks">Cookbooks</a></li>
-            <li><a href="#joining-streams-of-json-events">Joining Streams of JSON Events</a></li>
-            <li><a href="#enrichment-workflows">Enrichment Workflows</a></li>
-            <li><a href="#duplicate-monitoring">Duplicate Monitoring</a></li>
+        <li class="main active"><a href="#amazon-web-services">Amazon Web Services</a></li>
+            <li><a href="#none-of-these-fields-are-compulsory">None of these fields are compulsory</a></li>
+            <li><a href="#explicit-credentials">Explicit Credentials</a></li>
+            <li><a href="#assuming-a-role">Assuming a Role</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="cookbooks">Cookbooks</h1>
-<p>This is a collection of Benthos snippets demonstrating common but more advanced
-patterns in stream processing.</p>
-<h3 id="joining-streams-of-json-events"><a href="joining-streams/">Joining Streams of JSON Events</a></h3>
-<p>This cookbook demonstrates how to merge JSON events from parallel streams using
-content based rules and a cache of your choice.</p>
-<h3 id="enrichment-workflows"><a href="enrichments/">Enrichment Workflows</a></h3>
-<p>This cookbook demonstrates how to enrich a stream of JSON documents with
-HTTP services following a dynamic workflow. This method also works with AWS
-Lambda functions, subprocesses, etc.</p>
-<h3 id="duplicate-monitoring"><a href="duplicate-monitoring/">Duplicate Monitoring</a></h3>
-<p>Benthos has a <a href="../processors/#dedupe">deduplication processor</a> which
-makes removing duplicates from a stream easy. However, sometimes we might only
-be interested in detecting duplicates without mutating the stream. This cookbook
-demonstrates how to passively count duplicates and expose them via metrics
-aggregators.</p></div>
+<h1 id="amazon-web-services">Amazon Web Services</h1>
+<p>There are many components within Benthos which utilise AWS services. You will find that each of these components contains a configuration section under the field <code>credentials</code>, of the format:</p>
+<pre><code class="yaml">credentials:
+  id: &quot;&quot;
+  secret: &quot;&quot;
+  token: &quot;&quot;
+  role: &quot;&quot;
+  role_external_id: &quot;&quot;
+</code></pre>
+
+<p>This section contains many fields and it isn't immediately clear which of them are compulsory and which aren't. This document aims to make it clear what each field is responsible for and how it might be used.</p>
+<h3 id="none-of-these-fields-are-compulsory">None of these fields are compulsory</h3>
+<p>The first thing to make clear is that <em>all</em> of these fields are optional. When all fields are left blank Benthos will attempt to load credentials from a shared credentials file (<code>~/.aws/credentials</code>). The profile loaded will be <code>default</code> unless the <code>AWS_PROFILE</code> environment variable is set.</p>
+<h2 id="explicit-credentials">Explicit Credentials</h2>
+<p>By explicitly setting the credentials you are using at the component level it's possible to connect to components using different accounts within the same Benthos process.</p>
+<p>If you are using long term credentials for your account you only need to set the fields <code>id</code> and <code>secret</code>:</p>
+<pre><code class="yaml">credentials:
+  id: foo     # aws_access_key_id
+  secret: bar # aws_secret_access_key
+</code></pre>
+
+<p>If you are using short term credentials then you will also need to set the field <code>token</code>:</p>
+<pre><code class="yaml">credentials:
+  id: foo     # aws_access_key_id
+  secret: bar # aws_secret_access_key
+  token: baz  # aws_session_token
+</code></pre>
+
+<h2 id="assuming-a-role">Assuming a Role</h2>
+<p>It's also possible to configure Benthos to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html">assume a role</a> using your credentials by setting the field <code>role</code> to your target role ARN.</p>
+<pre><code class="yaml">credentials:
+  role: fooarn # Role ARN
+</code></pre>
+
+<p>This does NOT require explicit credentials, but it's possible to use both.</p>
+<p>If you need to assume a role owned by another organisation they might require you to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html">provide an external ID</a>, in which case place it in the field <code>role_external_id</code>:</p>
+<pre><code class="yaml">credentials:
+  role: fooarn # Role ARN
+  role_external_id: bar_id
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
@@ -303,8 +317,3 @@ aggregators.</p></div>
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.0.4
-Build Date UTC : 2019-07-30 20:05:43
--->

@@ -557,6 +557,11 @@ document. This allows you to populate map columns of an item like follows:</p>
 <p>In which case the top level document fields will be written at the root of the
 item, potentially overwriting previously defined column values. If a path is not
 found within a document the column will not be populated.</p>
+<h3 id="credentials">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="elasticsearch"><code>elasticsearch</code></h2>
 <pre><code class="yaml">type: elasticsearch
 elasticsearch:
@@ -594,6 +599,11 @@ support creating the target index.</p>
 <p>Both the <code>id</code> and <code>index</code> fields can be dynamically set using function
 interpolations described <a href="../config_interpolation/#functions">here</a>. When
 sending batched messages these interpolations are performed per message part.</p>
+<h3 id="aws-credentials">AWS Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="file"><code>file</code></h2>
 <pre><code class="yaml">type: file
 file:
@@ -816,6 +826,11 @@ kinesis:
 fields can be dynamically set using function interpolations described
 <a href="../config_interpolation/#functions">here</a>. When sending batched messages the
 interpolations are performed per message part.</p>
+<h3 id="credentials_1">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="mqtt"><code>mqtt</code></h2>
 <pre><code class="yaml">type: mqtt
 mqtt:
@@ -1000,6 +1015,11 @@ interpolations described <a href="../config_interpolation/#functions">here</a>, 
 calculated per message of a batch.</p>
 <p>The fields <code>content_type</code> and <code>content_encoding</code> can also be set
 dynamically using function interpolation.</p>
+<h3 id="credentials_2">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="sns"><code>sns</code></h2>
 <pre><code class="yaml">type: sns
 sns:
@@ -1016,6 +1036,11 @@ sns:
 </code></pre>
 
 <p>Sends messages to an AWS SNS topic.</p>
+<h3 id="credentials_3">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="sqs"><code>sqs</code></h2>
 <pre><code class="yaml">type: sqs
 sqs:
@@ -1036,6 +1061,11 @@ sqs:
 </code></pre>
 
 <p>Sends messages to an SQS queue.</p>
+<h3 id="credentials_4">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="stdout"><code>stdout</code></h2>
 <pre><code class="yaml">type: stdout
 stdout:
