@@ -201,6 +201,7 @@
 <h1 id="amazon-web-services">Amazon Web Services</h1>
 <p>There are many components within Benthos which utilise AWS services. You will find that each of these components contains a configuration section under the field <code>credentials</code>, of the format:</p>
 <pre><code class="yaml">credentials:
+  profile: &quot;&quot;
   id: &quot;&quot;
   secret: &quot;&quot;
   token: &quot;&quot;
@@ -213,6 +214,13 @@
 <p>The first thing to make clear is that <em>all</em> of these fields are optional. When all fields are left blank Benthos will attempt to load credentials from a shared credentials file (<code>~/.aws/credentials</code>). The profile loaded will be <code>default</code> unless the <code>AWS_PROFILE</code> environment variable is set.</p>
 <h2 id="explicit-credentials">Explicit Credentials</h2>
 <p>By explicitly setting the credentials you are using at the component level it's possible to connect to components using different accounts within the same Benthos process.</p>
+<h3 id="selecting-a-profile">Selecting a Profile</h3>
+<p>If you are using your shared credentials file but wish to explicitly select a profile set the <code>profile</code> field:</p>
+<pre><code class="yaml">credentials:
+  profile: foo
+</code></pre>
+
+<h3 id="manual">Manual</h3>
 <p>If you are using long term credentials for your account you only need to set the fields <code>id</code> and <code>secret</code>:</p>
 <pre><code class="yaml">credentials:
   id: foo     # aws_access_key_id

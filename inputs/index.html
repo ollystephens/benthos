@@ -215,6 +215,7 @@
             <li><a href="#kafka">kafka</a></li>
             <li><a href="#kafka_balanced">kafka_balanced</a></li>
             <li><a href="#kinesis">kinesis</a></li>
+            <li><a href="#kinesis_balanced">kinesis_balanced</a></li>
             <li><a href="#mqtt">mqtt</a></li>
             <li><a href="#nanomsg">nanomsg</a></li>
             <li><a href="#nats">nats</a></li>
@@ -262,6 +263,7 @@ combines multiple inputs.</p>
 <li><a href="#kafka"><code>kafka</code></a></li>
 <li><a href="#kafka_balanced"><code>kafka_balanced</code></a></li>
 <li><a href="#kinesis"><code>kinesis</code></a></li>
+<li><a href="#kinesis_balanced"><code>kinesis_balanced</code></a></li>
 <li><a href="#mqtt"><code>mqtt</code></a></li>
 <li><a href="#nanomsg"><code>nanomsg</code></a></li>
 <li><a href="#nats"><code>nats</code></a></li>
@@ -722,6 +724,7 @@ kinesis:
   commit_period: 1s
   credentials:
     id: &quot;&quot;
+    profile: &quot;&quot;
     role: &quot;&quot;
     role_external_id: &quot;&quot;
     secret: &quot;&quot;
@@ -746,6 +749,45 @@ table name. Offsets will then be tracked per <code>client_id</code> per
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
+<h2 id="kinesis_balanced"><code>kinesis_balanced</code></h2>
+<pre><code class="yaml">type: kinesis_balanced
+kinesis_balanced:
+  credentials:
+    id: &quot;&quot;
+    profile: &quot;&quot;
+    role: &quot;&quot;
+    role_external_id: &quot;&quot;
+    secret: &quot;&quot;
+    token: &quot;&quot;
+  dynamodb_billing_mode: &quot;&quot;
+  dynamodb_read_provision: 0
+  dynamodb_table: &quot;&quot;
+  dynamodb_write_provision: 0
+  endpoint: &quot;&quot;
+  max_batch_count: 1
+  region: eu-west-1
+  start_from_oldest: true
+  stream: &quot;&quot;
+</code></pre>
+
+<p>BETA: This input is a beta component and is subject to change outside of major
+version releases.</p>
+<p>Receives messages from a Kinesis stream and automatically balances shards across
+consumers.</p>
+<h3 id="credentials_1">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
+<h3 id="metadata_6">Metadata</h3>
+<p>This input adds the following metadata fields to each message:</p>
+<pre><code class="text">- kinesis_shard
+- kinesis_partition_key
+- kinesis_sequence_number
+</code></pre>
+
+<p>You can access these metadata fields using
+<a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="mqtt"><code>mqtt</code></h2>
 <pre><code class="yaml">type: mqtt
 mqtt:
@@ -758,7 +800,7 @@ mqtt:
 </code></pre>
 
 <p>Subscribe to topics on MQTT brokers.</p>
-<h3 id="metadata_6">Metadata</h3>
+<h3 id="metadata_7">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- mqtt_duplicate
 - mqtt_qos
@@ -798,7 +840,7 @@ nats:
 behaviour then look at NATS Stream.</p>
 <p>The urls can contain username/password semantics. e.g.
 nats://derek:pass@localhost:4222</p>
-<h3 id="metadata_7">Metadata</h3>
+<h3 id="metadata_8">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_subject
 </code></pre>
@@ -830,7 +872,7 @@ are consumed from the most recently published message.</p>
 durable queue do this the offsets are deleted. In order to avoid this you can
 stop the consumers from unsubscribing by setting the field
 <code>unsubscribe_on_close</code> to <code>false</code>.</p>
-<h3 id="metadata_8">Metadata</h3>
+<h3 id="metadata_9">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_stream_subject
 - nats_stream_sequence
@@ -874,7 +916,7 @@ message appears.</p>
 type reaches the end of a file it will shut down. By default this type will also
 shut down. If you wish for the input type to be restarted every time it shuts
 down until the condition is met then set <code>restart_input</code> to <code>true</code>.</p>
-<h3 id="metadata_9">Metadata</h3>
+<h3 id="metadata_10">Metadata</h3>
 <p>A metadata key <code>benthos_read_until</code> containing the value <code>final</code> is
 added to the first part of the message that triggers to input to stop.</p>
 <h2 id="redis_list"><code>redis_list</code></h2>
@@ -936,6 +978,7 @@ s3:
   bucket: &quot;&quot;
   credentials:
     id: &quot;&quot;
+    profile: &quot;&quot;
     role: &quot;&quot;
     role_external_id: &quot;&quot;
     secret: &quot;&quot;
@@ -984,12 +1027,12 @@ message is not deleted until the S3 item has been sent onwards. This ensures
 at-least-once crash resiliency, but also means that if the S3 item takes longer
 to process than the visibility timeout of your queue then the same items might
 be processed multiple times.</p>
-<h3 id="credentials_1">Credentials</h3>
+<h3 id="credentials_2">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_10">Metadata</h3>
+<h3 id="metadata_11">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- s3_key
 - s3_bucket
@@ -1009,6 +1052,7 @@ allowing you to transfer data across accounts. You can find out more
 sqs:
   credentials:
     id: &quot;&quot;
+    profile: &quot;&quot;
     role: &quot;&quot;
     role_external_id: &quot;&quot;
     secret: &quot;&quot;
@@ -1022,7 +1066,7 @@ sqs:
 
 <p>Receive messages from an Amazon SQS URL, only the body is extracted into
 messages.</p>
-<h3 id="credentials_2">Credentials</h3>
+<h3 id="credentials_3">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
