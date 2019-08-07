@@ -562,6 +562,7 @@ static payload to be sent to clients that have triggered the servers rate limit.
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- http_server_user_agent
 - All headers (only first values are taken)
+- All query parameters
 - All cookies
 </code></pre>
 
@@ -791,6 +792,7 @@ allowing you to transfer data across accounts. You can find out more
 <h2 id="mqtt"><code>mqtt</code></h2>
 <pre><code class="yaml">type: mqtt
 mqtt:
+  clean_session: true
   client_id: benthos_input
   qos: 1
   topics:
