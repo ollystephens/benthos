@@ -538,9 +538,8 @@ applied to each HTTP request made and each websocket payload received.</p>
 with a Retry-After header. Websocket payloads will be dropped and an optional
 response payload will be sent as per <code>ws_rate_limit_message</code>.</p>
 <h3 id="responses">Responses</h3>
-<p>EXPERIMENTAL: It's possible to return a response for each message received using
-<a href="../sync_responses/">synchronous responses</a>. This feature is considered
-experimental and therefore subject to change outside of major version releases.</p>
+<p>It's possible to return a response for each message received using
+<a href="../sync_responses/">synchronous responses</a>.</p>
 <h3 id="endpoints">Endpoints</h3>
 <p>The following fields specify endpoints that are registered for sending messages:</p>
 <h4 id="path-defaults-to-post"><code>path</code> (defaults to <code>/post</code>)</h4>

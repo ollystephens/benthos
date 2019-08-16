@@ -731,6 +731,7 @@ grok:
   named_captures_only: true
   output_format: json
   parts: []
+  pattern_definitions: {}
   patterns: []
   remove_empty_values: true
   use_default_patterns: true
@@ -1356,38 +1357,48 @@ executed in parallel, and once they are both finished we may proceed onto baz.</
 <h2 id="process_field"><code>process_field</code></h2>
 <pre><code class="yaml">type: process_field
 process_field:
+  codec: json
   parts: []
   path: &quot;&quot;
   processors: []
   result_type: string
 </code></pre>
 
-<p>A processor that extracts the value of a field within payloads (currently only
-JSON format is supported) then applies a list of processors to the extracted
-value and finally sets the field within the original payloads to the processed
-result.</p>
-<p>For example, with an input document <code>{"foo":"hello world"}</code> it's
-possible to uppercase the value of the field foo with a <a href="#text"><code>text</code></a>
-child processor:</p>
-<pre><code class="yaml">process_field:
-  path: foo
-  processors:
-  - text:
-      operator: to_upper
-</code></pre>
-
+<p>A processor that extracts the value of a field within payloads according to a
+specified codec, applies a list of processors to the extracted value and finally
+sets the field within the original payloads to the processed result.</p>
+<h3 id="codecs_1">Codecs</h3>
+<h4 id="json-default"><code>json</code> (default)</h4>
+<p>Parses the payload as a JSON document, extracts and sets the field using a dot
+notation path.</p>
 <p>The result, according to the config field <code>result_type</code>, can be
 marshalled into any of the following types:
 <code>string</code> (default), <code>int</code>, <code>float</code>, <code>bool</code>, <code>object</code> (including null),
  <code>array</code> and <code>discard</code>. The discard type is a special case that
 discards the result of the processing steps entirely.</p>
-<p>It's therefore possible to use this processor without any child processors as a
-way of casting string values into other types. For example, with an input JSON
+<p>It's therefore possible to use this codec without any child processors as a way
+of casting string values into other types. For example, with an input JSON
 document <code>{"foo":"10"}</code> it's possible to cast the value of the
 field foo to an integer type with:</p>
 <pre><code class="yaml">process_field:
   path: foo
   result_type: int
+</code></pre>
+
+<h4 id="metadata_2"><code>metadata</code></h4>
+<p>Extracts and sets a metadata value identified by the path field. If the field
+<code>result_type</code> is set to <code>discard</code> then the result of the processing stages
+is discarded and the original metadata value is left unchanged.</p>
+<h3 id="usage">Usage</h3>
+<p>For example, with an input JSON document <code>{"foo":"hello world"}</code>
+it's possible to uppercase the value of the field 'foo' by using the JSON codec
+and a <a href="#text"><code>text</code></a> child processor:</p>
+<pre><code class="yaml">process_field:
+  codec: json
+  path: foo
+  processors:
+  - text:
+      operator: to_upper
 </code></pre>
 
 <p>If the number of messages resulting from the processing steps does not match the

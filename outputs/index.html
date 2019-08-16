@@ -708,12 +708,10 @@ interpolations described <a href="../config_interpolation/#functions">here</a>.<
 message has multiple parts the request will be sent according to
 <a href="https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html">RFC1341</a></p>
 <h3 id="propagating-responses">Propagating Responses</h3>
-<p>EXPERIMENTAL: It's possible to propagate the response from each HTTP request
-back to the input source by setting <code>propagate_response</code> to <code>true</code>.
-Only inputs that support <a href="../sync_responses/">synchronous responses</a> are able
-to make use of these propagated responses.</p>
-<p>This feature is considered experimental and is therefore subject to change
-outside of major version releases.</p>
+<p>It's possible to propagate the response from each HTTP request back to the input
+source by setting <code>propagate_response</code> to <code>true</code>. Only inputs that
+support <a href="../sync_responses/">synchronous responses</a> are able to make use of
+these propagated responses.</p>
 <h2 id="http_server"><code>http_server</code></h2>
 <pre><code class="yaml">type: http_server
 http_server:
@@ -1151,8 +1149,6 @@ duplicate messages aren't introduced during error conditions.</p>
 sync_response: {}
 </code></pre>
 
-<p>EXPERIMENTAL: This component is considered experimental and is therefore subject
-to change outside of major version releases.</p>
 <p>Returns the final message payload back to the input origin of the message, where
 it is dealt with according to that specific input type.</p>
 <p>For most inputs this mechanism is ignored entirely, in which case the sync
