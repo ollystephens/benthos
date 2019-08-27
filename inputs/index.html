@@ -1058,6 +1058,7 @@ sqs:
     role_external_id: &quot;&quot;
     secret: &quot;&quot;
     token: &quot;&quot;
+  delete_message: true
   endpoint: &quot;&quot;
   max_number_of_messages: 1
   region: eu-west-1
@@ -1072,6 +1073,16 @@ messages.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
+<h3 id="metadata_12">Metadata</h3>
+<p>This input adds the following metadata fields to each message:</p>
+<pre><code>- sqs_message_id
+- sqs_receipt_handle
+- sqs_approximate_receive_count
+- All message attributes
+</code></pre>
+
+<p>You can access these metadata fields using
+<a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="stdin"><code>stdin</code></h2>
 <pre><code class="yaml">type: stdin
 stdin:

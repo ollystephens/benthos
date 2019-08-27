@@ -253,6 +253,7 @@
             <li><a href="#try">try</a></li>
             <li><a href="#unarchive">unarchive</a></li>
             <li><a href="#while">while</a></li>
+            <li><a href="#xml">xml</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -350,6 +351,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <li><a href="#try"><code>try</code></a></li>
 <li><a href="#unarchive"><code>unarchive</code></a></li>
 <li><a href="#while"><code>while</code></a></li>
+<li><a href="#xml"><code>xml</code></a></li>
 </ol>
 <h2 id="archive"><code>archive</code></h2>
 <pre><code class="yaml">type: archive
@@ -452,25 +454,26 @@ batch:
 </code></pre>
 
 <p>Reads a number of discrete messages, buffering (but not acknowledging) the
-message parts until either:</p>
+message parts until the next batch is complete.</p>
+<p>Batches are considered complete and will be flushed downstream when either of
+the following conditions are met:</p>
 <ul>
 <li>The <code>byte_size</code> field is non-zero and the total size of the batch in
-  bytes matches or exceeds it.</li>
+  bytes matches or exceeds it (disregarding metadata.)</li>
 <li>The <code>count</code> field is non-zero and the total number of messages in
   the batch matches or exceeds it.</li>
 <li>A message added to the batch causes the condition to resolve <code>true</code>.</li>
 <li>The <code>period</code> field is non-empty and the time since the last batch
   exceeds its value.</li>
 </ul>
-<p>Once one of these events trigger the parts are combined into a single batch of
-messages and sent through the pipeline. After reaching a destination the
-acknowledgment is sent out for all messages inside the batch at the same time,
-preserving at-least-once delivery guarantees.</p>
-<p>The <code>period</code> field - when non-empty - defines a period of time whereby
-a batch is sent even if the <code>byte_size</code> has not yet been reached.
-Batch parameters are only triggered when a message is added, meaning a pending
-batch can last beyond this period if no messages are added since the period was
-reached.</p>
+<p>Once a batch is complete it is sent through the pipeline. After reaching a
+destination the acknowledgment is sent out for all messages inside the batch at
+the same time, preserving at-least-once delivery guarantees.</p>
+<p>This processor only checks batch conditions when a new message is added, meaning
+a pending batch can last beyond the specified period if no messages are added
+since the period was reached. If your input stream is non-continuous and you
+need to guarantee the period is respected you should instead use a
+<a href="../buffers/#memory"><code>memory</code></a> buffer with a batch policy.</p>
 <p>When a batch is sent to an output the behaviour will differ depending on the
 protocol. If the output type supports multipart messages then the batch is sent
 as a single message with multiple parts. If the output only supports single part
@@ -478,9 +481,11 @@ messages then the parts will be sent as a batch of single part messages. If the
 output supports neither multipart or batches of messages then Benthos falls back
 to sending them individually.</p>
 <h3 id="warning">WARNING</h3>
-<p>The batch processor should <em>always</em> be positioned within the <code>input</code>
-section - ideally before any other processor - in order to avoid unexpected
-acknowledgment behaviour and message ordering.</p>
+<p>In order to preserve transaction-based delivery guarantees the batch processor
+should <em>always</em> be positioned within the <code>input</code> section, ideally
+before any other processor. Alternatively, if you do not need strict delivery
+guarantees it is best to use a <a href="../buffers/#memory">memory buffer</a> with
+a batch policy.</p>
 <p>For more information about batching in Benthos please check out
 <a href="../batching/">this document</a>.</p>
 <h2 id="bounds_check"><code>bounds_check</code></h2>
@@ -1760,7 +1765,56 @@ for a message batch to this value.</p>
 zero the loop is exited regardless of the condition result. If following a loop
 execution there are more than 1 message batches the condition is checked against
 the first batch only.</p>
-<p>You can find a <a href="../conditions">full list of conditions here</a>.</p></div>
+<p>You can find a <a href="../conditions">full list of conditions here</a>.</p>
+<h2 id="xml"><code>xml</code></h2>
+<pre><code class="yaml">type: xml
+xml:
+  operator: to_json
+  parts: []
+</code></pre>
+
+<p>EXPERIMENTAL: This processor is considered experimental and is therefore subject
+to change outside of major version releases.</p>
+<p>Parses messages as an XML document, performs a mutation on the data, and then
+overwrites the previous contents with the new value.</p>
+<h3 id="operators_6">Operators</h3>
+<h4 id="to_json_1"><code>to_json</code></h4>
+<p>Converts an XML document into a JSON structure, where elements appear as keys of
+an object according to the following rules:</p>
+<ul>
+<li>If an element contains attributes they are parsed by prefixing a hyphen,
+  <code>-</code>, to the attribute label.</li>
+<li>If the element is a simple element and has attributes, the element value
+  is given the key <code>#text</code>.</li>
+<li>XML comments, directives, and process instructions are ignored.</li>
+<li>When elements are repeated the resulting JSON value is an array.</li>
+</ul>
+<p>For example, given the following XML:</p>
+<pre><code class="xml">&lt;root&gt;
+  &lt;title&gt;This is a title&lt;/title&gt;
+  &lt;description tone=&quot;boring&quot;&gt;This is a description&lt;/description&gt;
+  &lt;elements id=&quot;1&quot;&gt;foo1&lt;/elements&gt;
+  &lt;elements id=&quot;2&quot;&gt;foo2&lt;/elements&gt;
+  &lt;elements&gt;foo3&lt;/elements&gt;
+&lt;/root&gt;
+</code></pre>
+
+<p>The resulting JSON structure would look like this:</p>
+<pre><code class="json">{
+  &quot;root&quot;:{
+    &quot;title&quot;:&quot;This is a title&quot;,
+    &quot;description&quot;:{
+      &quot;#text&quot;:&quot;This is a description&quot;,
+      &quot;-tone&quot;:&quot;boring&quot;
+    },
+    &quot;elements&quot;:[
+      {&quot;#text&quot;:&quot;foo1&quot;,&quot;-id&quot;:&quot;1&quot;},
+      {&quot;#text&quot;:&quot;foo2&quot;,&quot;-id&quot;:&quot;2&quot;},
+      &quot;foo3&quot;
+    ]
+  }
+}
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
