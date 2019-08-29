@@ -239,6 +239,8 @@
             <li><a href="#stdout">stdout</a></li>
             <li><a href="#switch">switch</a></li>
             <li><a href="#sync_response">sync_response</a></li>
+            <li><a href="#tcp">tcp</a></li>
+            <li><a href="#udp">udp</a></li>
             <li><a href="#websocket">websocket</a></li>
     </ul>
 </div></div>
@@ -320,6 +322,8 @@ a <a href="#broker"><code>broker</code></a> output with the 'try' pattern.</p>
 <li><a href="#stdout"><code>stdout</code></a></li>
 <li><a href="#switch"><code>switch</code></a></li>
 <li><a href="#sync_response"><code>sync_response</code></a></li>
+<li><a href="#tcp"><code>tcp</code></a></li>
+<li><a href="#udp"><code>udp</code></a></li>
 <li><a href="#websocket"><code>websocket</code></a></li>
 </ol>
 <h2 id="amqp"><code>amqp</code></h2>
@@ -1181,6 +1185,26 @@ output:
 <code>/post</code> Benthos would send it unchanged to the topic
 <code>foo_topic</code> and also respond with 'HELLO WORLD'.</p>
 <p>For more information please read <a href="../sync_responses/">Synchronous Responses</a>.</p>
+<h2 id="tcp"><code>tcp</code></h2>
+<pre><code class="yaml">type: tcp
+tcp:
+  address: localhost:4194
+</code></pre>
+
+<p>Sends messages as a continuous stream of line delimited data over TCP by
+connecting to a server.</p>
+<p>If batched messages are sent the final message of the batch will be followed by
+two line breaks in order to indicate the end of the batch.</p>
+<h2 id="udp"><code>udp</code></h2>
+<pre><code class="yaml">type: udp
+udp:
+  address: localhost:4194
+</code></pre>
+
+<p>Sends messages as a continuous stream of line delimited data over UDP by
+connecting to a server.</p>
+<p>If batched messages are sent the final message of the batch will be followed by
+two line breaks in order to indicate the end of the batch.</p>
 <h2 id="websocket"><code>websocket</code></h2>
 <pre><code class="yaml">type: websocket
 websocket:

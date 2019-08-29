@@ -228,6 +228,9 @@
             <li><a href="#s3">s3</a></li>
             <li><a href="#sqs">sqs</a></li>
             <li><a href="#stdin">stdin</a></li>
+            <li><a href="#tcp">tcp</a></li>
+            <li><a href="#tcp_server">tcp_server</a></li>
+            <li><a href="#udp_server">udp_server</a></li>
             <li><a href="#websocket">websocket</a></li>
     </ul>
 </div></div>
@@ -276,6 +279,9 @@ combines multiple inputs.</p>
 <li><a href="#s3"><code>s3</code></a></li>
 <li><a href="#sqs"><code>sqs</code></a></li>
 <li><a href="#stdin"><code>stdin</code></a></li>
+<li><a href="#tcp"><code>tcp</code></a></li>
+<li><a href="#tcp_server"><code>tcp_server</code></a></li>
+<li><a href="#udp_server"><code>udp_server</code></a></li>
 <li><a href="#websocket"><code>websocket</code></a></li>
 </ol>
 <h2 id="amqp"><code>amqp</code></h2>
@@ -440,7 +446,13 @@ gcp_pubsub:
 <p>Consumes messages from a GCP Cloud Pub/Sub subscription.</p>
 <p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
 messages to be batched together.</p>
-<p>Attributes from each message are added as metadata, which can be accessed using
+<h3 id="metadata_2">Metadata</h3>
+<p>This input adds the following metadata fields to each message:</p>
+<pre><code class="text">- gcp_pubsub_publish_time_unix
+- All message attributes
+</code></pre>
+
+<p>You can access these metadata fields using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="hdfs"><code>hdfs</code></h2>
 <pre><code class="yaml">type: hdfs
@@ -453,7 +465,7 @@ hdfs:
 
 <p>Reads files from a HDFS directory, where each discrete file will be consumed as a single
 message payload.</p>
-<h3 id="metadata_2">Metadata</h3>
+<h3 id="metadata_3">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- hdfs_name
 - hdfs_path
@@ -557,7 +569,7 @@ payload to be sent to all clients once a websocket connection is first
 established.</p>
 <p>It's also possible to specify a <code>ws_rate_limit_message</code>, which is a
 static payload to be sent to clients that have triggered the servers rate limit.</p>
-<h3 id="metadata_3">Metadata</h3>
+<h3 id="metadata_4">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- http_server_user_agent
 - All headers (only first values are taken)
@@ -633,7 +645,7 @@ client_certs:
     key: bar
 </code></pre>
 
-<h3 id="metadata_4">Metadata</h3>
+<h3 id="metadata_5">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- kafka_key
 - kafka_topic
@@ -701,7 +713,7 @@ client_certs:
     key: bar
 </code></pre>
 
-<h3 id="metadata_5">Metadata</h3>
+<h3 id="metadata_6">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- kafka_key
 - kafka_topic
@@ -779,7 +791,7 @@ consumers.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_6">Metadata</h3>
+<h3 id="metadata_7">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- kinesis_shard
 - kinesis_partition_key
@@ -801,7 +813,7 @@ mqtt:
 </code></pre>
 
 <p>Subscribe to topics on MQTT brokers.</p>
-<h3 id="metadata_7">Metadata</h3>
+<h3 id="metadata_8">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- mqtt_duplicate
 - mqtt_qos
@@ -841,7 +853,7 @@ nats:
 behaviour then look at NATS Stream.</p>
 <p>The urls can contain username/password semantics. e.g.
 nats://derek:pass@localhost:4222</p>
-<h3 id="metadata_8">Metadata</h3>
+<h3 id="metadata_9">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_subject
 </code></pre>
@@ -873,7 +885,7 @@ are consumed from the most recently published message.</p>
 durable queue do this the offsets are deleted. In order to avoid this you can
 stop the consumers from unsubscribing by setting the field
 <code>unsubscribe_on_close</code> to <code>false</code>.</p>
-<h3 id="metadata_9">Metadata</h3>
+<h3 id="metadata_10">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_stream_subject
 - nats_stream_sequence
@@ -917,7 +929,7 @@ message appears.</p>
 type reaches the end of a file it will shut down. By default this type will also
 shut down. If you wish for the input type to be restarted every time it shuts
 down until the condition is met then set <code>restart_input</code> to <code>true</code>.</p>
-<h3 id="metadata_10">Metadata</h3>
+<h3 id="metadata_11">Metadata</h3>
 <p>A metadata key <code>benthos_read_until</code> containing the value <code>final</code> is
 added to the first part of the message that triggers to input to stop.</p>
 <h2 id="redis_list"><code>redis_list</code></h2>
@@ -1033,7 +1045,7 @@ be processed multiple times.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_11">Metadata</h3>
+<h3 id="metadata_12">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- s3_key
 - s3_bucket
@@ -1073,7 +1085,7 @@ messages.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_12">Metadata</h3>
+<h3 id="metadata_13">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- sqs_message_id
 - sqs_receipt_handle
@@ -1096,6 +1108,52 @@ messages are assumed single part and are line delimited. If the multipart option
 is set to true then lines are interpretted as message parts, and an empty line
 indicates the end of the message.</p>
 <p>If the delimiter field is left empty then line feed (\n) is used.</p>
+<h2 id="tcp"><code>tcp</code></h2>
+<pre><code class="yaml">type: tcp
+tcp:
+  address: localhost:4194
+  delimiter: &quot;&quot;
+  max_buffer: 1e+06
+  multipart: false
+</code></pre>
+
+<p>Connects to a TCP server and consumes a continuous stream of messages.</p>
+<p>If multipart is set to false each line of data is read as a separate message. If
+multipart is set to true each line is read as a message part, and an empty line
+indicates the end of a message.</p>
+<p>If the delimiter field is left empty then line feed (\n) is used.</p>
+<h2 id="tcp_server"><code>tcp_server</code></h2>
+<pre><code class="yaml">type: tcp_server
+tcp_server:
+  address: 127.0.0.1:0
+  delimiter: &quot;&quot;
+  max_buffer: 1e+06
+  multipart: false
+</code></pre>
+
+<p>Creates a server that receives messages over TCP. Each connection is parsed as a
+continuous stream of line delimited messages.</p>
+<p>If multipart is set to false each line of data is read as a separate message. If
+multipart is set to true each line is read as a message part, and an empty line
+indicates the end of a message.</p>
+<p>If the delimiter field is left empty then line feed (\n) is used.</p>
+<p>The field <code>max_buffer</code> specifies the maximum amount of memory to
+allocate <em>per connection</em> for buffering lines of data. If a line of data from a
+connection exceeds this value then the connection will be closed.</p>
+<h2 id="udp_server"><code>udp_server</code></h2>
+<pre><code class="yaml">type: udp_server
+udp_server:
+  address: 127.0.0.1:0
+  delimiter: &quot;&quot;
+  max_buffer: 1e+06
+</code></pre>
+
+<p>Creates a server that receives messages over UDP as a continuous stream of data.
+Each line is interpretted as an individual message, if the delimiter field is
+left empty then line feed (\n) is used.</p>
+<p>The field <code>max_buffer</code> specifies the maximum amount of memory to
+allocate for buffering lines of data, this must exceed the largest expected
+message size.</p>
 <h2 id="websocket"><code>websocket</code></h2>
 <pre><code class="yaml">type: websocket
 websocket:

@@ -241,6 +241,7 @@
             <li><a href="#process_dag">process_dag</a></li>
             <li><a href="#process_field">process_field</a></li>
             <li><a href="#process_map">process_map</a></li>
+            <li><a href="#rate_limit">rate_limit</a></li>
             <li><a href="#sample">sample</a></li>
             <li><a href="#select_parts">select_parts</a></li>
             <li><a href="#sleep">sleep</a></li>
@@ -339,6 +340,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <li><a href="#process_dag"><code>process_dag</code></a></li>
 <li><a href="#process_field"><code>process_field</code></a></li>
 <li><a href="#process_map"><code>process_map</code></a></li>
+<li><a href="#rate_limit"><code>rate_limit</code></a></li>
 <li><a href="#sample"><code>sample</code></a></li>
 <li><a href="#select_parts"><code>select_parts</code></a></li>
 <li><a href="#sleep"><code>sleep</code></a></li>
@@ -1474,6 +1476,16 @@ this list.</p>
 processing they will be correctly aligned with the original batch. However, the
 ordering of premapped message parts as they are sent through processors are not
 guaranteed to match the ordering of the original batch.</p>
+<h2 id="rate_limit"><code>rate_limit</code></h2>
+<pre><code class="yaml">type: rate_limit
+rate_limit:
+  resource: &quot;&quot;
+</code></pre>
+
+<p>Throttles the throughput of a pipeline according to a specified
+<a href="../rate_limits/"><code>rate_limit</code></a> resource. Rate limits are
+shared across components and therefore apply globally to all processing
+pipelines.</p>
 <h2 id="sample"><code>sample</code></h2>
 <pre><code class="yaml">type: sample
 sample:
