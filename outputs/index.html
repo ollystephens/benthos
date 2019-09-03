@@ -1064,6 +1064,8 @@ sqs:
     token: &quot;&quot;
   endpoint: &quot;&quot;
   max_retries: 0
+  message_deduplication_id: &quot;&quot;
+  message_group_id: &quot;&quot;
   region: eu-west-1
   url: &quot;&quot;
 </code></pre>
@@ -1072,6 +1074,10 @@ sqs:
 as attributes with the data type String. If the number of metadata values in a
 message exceeds the message attribute limit (10) then the top ten keys ordered
 alphabetically will be selected.</p>
+<p>The fields <code>message_group_id</code> and <code>message_deduplication_id</code> can be
+set dynamically using
+<a href="../config_interpolation/#functions">function interpolations</a>, which are
+resolved individually for each message of a batch.</p>
 <h3 id="credentials_4">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
