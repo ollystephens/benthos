@@ -205,7 +205,6 @@
             <li><a href="#delivery-guarantees">Delivery Guarantees</a></li>
             <li><a href="#contents">Contents</a></li>
             <li><a href="#memory">memory</a></li>
-            <li><a href="#mmap_file">mmap_file</a></li>
             <li><a href="#none">none</a></li>
     </ul>
 </div></div>
@@ -252,12 +251,6 @@ different options and their qualities:</p>
 <td>Parallel</td>
 <td>RAM</td>
 </tr>
-<tr>
-<td>Mmap File</td>
-<td>High</td>
-<td>Single</td>
-<td>Disk</td>
-</tr>
 </tbody>
 </table>
 <h4 id="delivery-guarantees">Delivery Guarantees</h4>
@@ -277,12 +270,6 @@ different options and their qualities:</p>
 <td>Lost</td>
 <td>Lost</td>
 </tr>
-<tr>
-<td>Mmap File</td>
-<td>Persisted</td>
-<td>Lost</td>
-<td>Lost</td>
-</tr>
 </tbody>
 </table>
 <p>* Makes a best attempt at flushing the remaining messages before closing
@@ -290,7 +277,6 @@ different options and their qualities:</p>
 <h3 id="contents">Contents</h3>
 <ol>
 <li><a href="#memory"><code>memory</code></a></li>
-<li><a href="#mmap_file"><code>mmap_file</code></a></li>
 <li><a href="#none"><code>none</code></a></li>
 </ol>
 <h2 id="memory"><code>memory</code></h2>
@@ -330,28 +316,6 @@ the following conditions are met:</p>
 <p>This is a more powerful way of batching messages than the
 <a href="../processors/#batch"><code>batch</code></a> processor, as it does not
 rely on new messages entering the pipeline in order to trigger the conditions.</p>
-<h2 id="mmap_file"><code>mmap_file</code></h2>
-<pre><code class="yaml">type: mmap_file
-mmap_file:
-  clean_up: true
-  directory: &quot;&quot;
-  file_size: 2.62144e+08
-  reserved_disk_space: 1.048576e+08
-  retry_period: 1s
-</code></pre>
-
-<p>DEPRECATED: This buffer type is due to be removed in V3.</p>
-<p>The mmap file buffer type uses memory mapped files to perform low-latency,
-file-persisted buffering of messages.</p>
-<p>To configure the mmap file buffer you need to designate a writeable directory
-for storing the mapped files. Benthos will create multiple files in this
-directory as it fills them.</p>
-<p>When files are fully read from they will be deleted. You can disable this
-feature if you wish to preserve the data indefinitely, but the directory will
-fill up as fast as data passes through.</p>
-<p>WARNING: This buffer currently wipes all metadata from message payloads. If you
-are using metadata in your pipeline you should avoid using this buffer, or
-preferably all buffers altogether.</p>
 <h2 id="none"><code>none</code></h2>
 <pre><code class="yaml">type: none
 none: {}

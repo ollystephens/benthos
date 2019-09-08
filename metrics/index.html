@@ -218,10 +218,12 @@ such as Statsd, Prometheus, or for debugging purposes an HTTP endpoint that
 exposes a JSON object of metrics.</p>
 <p>A metrics config section looks like this:</p>
 <pre><code class="yaml">metrics:
-  type: foo
-  prefix: benthos
-  foo:
-    bar: baz
+  type: statsd
+  statsd:
+    prefix: foo
+    address: localhost:8125
+    flush_period: 100ms
+    network: udp
 </code></pre>
 
 <p>Benthos exposes lots of metrics and their paths will depend on your pipeline
@@ -233,7 +235,6 @@ blacklist:
   child: {}
   paths: []
   patterns: []
-prefix: benthos
 </code></pre>
 
 <p>Blacklist metric paths within Benthos so that they are not aggregated by a child
@@ -243,8 +244,6 @@ a path prefix or regular expression matches a metric path it will be excluded.</
 <p>Metrics must be matched using dot notation even if the chosen output uses a
 different form. For example, the path would be 'foo.bar' rather than 'foo_bar'
 even when sending metrics to Prometheus.</p>
-<p>The <code>prefix</code> field in a metrics config is ignored by this type. Please
-configure a prefix at the child level.</p>
 <h3 id="paths">Paths</h3>
 <p>An entry in the <code>paths</code> field will check using prefix matching. This
 can be used, for example, to allow none of the child specific metrics paths from
@@ -259,8 +258,8 @@ to allow none of the latency based metrics with the pattern
 are blocked by your blacklists enable logging at the TRACE level.</p>
 <h2 id="http_server"><code>http_server</code></h2>
 <pre><code class="yaml">type: http_server
-http_server: {}
-prefix: benthos
+http_server:
+  prefix: benthos
 </code></pre>
 
 <p>It is possible to expose metrics without an aggregator service by having Benthos
@@ -282,8 +281,8 @@ this:</p>
 
 <h2 id="prometheus"><code>prometheus</code></h2>
 <pre><code class="yaml">type: prometheus
-prefix: benthos
 prometheus:
+  prefix: benthos
   push_interval: &quot;&quot;
   push_job_name: benthos_push
   push_url: &quot;&quot;
@@ -301,7 +300,6 @@ once Benthos shuts down. It is also possible to specify a
 not include the "/metrics/jobs/..." path in the push URL.</p>
 <h2 id="rename"><code>rename</code></h2>
 <pre><code class="yaml">type: rename
-prefix: benthos
 rename:
   by_regexp: []
   child: {}
@@ -311,8 +309,6 @@ rename:
 <p>Metrics must be matched using dot notation even if the chosen output uses a
 different form. For example, the path would be 'foo.bar' rather than 'foo_bar'
 even when sending metrics to Prometheus.</p>
-<p>The <code>prefix</code> field in a metrics config is ignored by this type. Please
-configure a prefix at the child level.</p>
 <h3 id="by_regexp"><code>by_regexp</code></h3>
 <p>An array of objects of the form:</p>
 <pre><code class="yaml">  - pattern: &quot;foo\\.([a-z]*)\\.([a-z]*)&quot;
@@ -349,18 +345,17 @@ set via renaming.</p>
 are renamed enable logging at the TRACE level.</p>
 <h2 id="statsd"><code>statsd</code></h2>
 <pre><code class="yaml">type: statsd
-prefix: benthos
 statsd:
   address: localhost:4040
   flush_period: 100ms
   network: udp
+  prefix: benthos
 </code></pre>
 
 <p>Push metrics over a TCP or UDP connection using the
 <a href="https://github.com/statsd/statsd">StatsD protocol</a>.</p>
 <h2 id="whitelist"><code>whitelist</code></h2>
 <pre><code class="yaml">type: whitelist
-prefix: benthos
 whitelist:
   child: {}
   paths: []
@@ -374,8 +369,6 @@ a path prefix or regular expression matches a metric path it will be included.</
 <p>Metrics must be matched using dot notation even if the chosen output uses a
 different form. For example, the path would be 'foo.bar' rather than 'foo_bar'
 even when sending metrics to Prometheus.</p>
-<p>The <code>prefix</code> field in a metrics config is ignored by this type. Please
-configure a prefix at the child level.</p>
 <h3 id="paths_1">Paths</h3>
 <p>An entry in the <code>paths</code> field will check using prefix matching. This
 can be used, for example, to allow the child specific metrics paths from an

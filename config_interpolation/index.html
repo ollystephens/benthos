@@ -288,10 +288,10 @@ argument, e.g. <code>${!error:2}</code> would print the error of the third messa
 <p>Resolves to the size of a message batch.</p>
 <h3 id="json_field"><code>json_field</code></h3>
 <p>Resolves to the value of a JSON field within the message payload located by a
-dot-path specified as an argument. The message referred to will depend on the
-context of where the function is called. With a message containing
-<code>{"foo":{"bar":"hello world"}}</code> the function <code>${!json_field:foo.bar}</code> would
-resolve to <code>hello world</code>.</p>
+<a href="../field_paths/">dot path</a> specified as an argument. The message referred to
+will depend on the context of where the function is called. With a message
+containing <code>{"foo":{"bar":"hello world"}}</code> the function <code>${!json_field:foo.bar}</code>
+would resolve to <code>hello world</code>.</p>
 <p>When applied to a batch of message parts this function targets the first message
 part by default. It is possible to specify a target part by following the path
 with a comma and part number, e.g. <code>${!json_field:foo.bar,2}</code> would target the

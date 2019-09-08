@@ -197,7 +197,6 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="field-paths">Field Paths</h1>
-<p>STOP RIGHT THERE! This document is a work in progress and does NOT reflect the behaviour of Benthos v2, this functionality is expected to be implemented in v3.</p>
 <p>Many components within Benthos allow you to target certain fields using a JSON dot path. The syntax of a path within Benthos is similar to <a href="https://tools.ietf.org/html/rfc6901">JSON Pointers</a>, except with dot separators instead of slashes (and no leading dot.) When a path is used to set a value any path segment that does not yet exist in the structure is created as an object.</p>
 <p>For example, if we had the following JSON structure:</p>
 <pre><code class="json">{

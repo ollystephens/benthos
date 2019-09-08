@@ -269,7 +269,7 @@ until the issue is resolved.</p>
 <p>When a Benthos output fails to send a message the error is propagated back up to
 the input, where depending on the protocol it will either be pushed back to the
 source as a Noack (AMQP) or will be reattempted indefinitely with the commit
-witheld until success (Kafka).</p>
+withheld until success (Kafka).</p>
 <p>It's possible to instead have Benthos indefinitely retry an output until success
 with a <a href="#retry"><code>retry</code></a> output. Some other outputs, such as the
 <a href="#broker"><code>broker</code></a>, might also retry indefinitely depending on their
@@ -546,9 +546,10 @@ fields within the document payload or metadata like follows:</p>
 </code></pre>
 
 <p>The field <code>json_map_columns</code> is a map of column names to json paths,
-where the path is extracted from each document and converted into a map value.
-Both an empty path and the path <code>.</code> are interpreted as the root of the
-document. This allows you to populate map columns of an item like follows:</p>
+where the <a href="../field_paths/">dot path</a> is extracted from each document and
+converted into a map value. Both an empty path and the path <code>.</code> are
+interpreted as the root of the document. This allows you to populate map columns
+of an item like follows:</p>
 <pre><code class="yaml">json_map_columns:
   user: path.to.user
   whole_document: .

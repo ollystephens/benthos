@@ -1005,7 +1005,9 @@ json:
 
 <p>Parses messages as a JSON document, performs a mutation on the data, and then
 overwrites the previous contents with the new value.</p>
-<p>If the path is empty or "." the root of the data will be targeted.</p>
+<p>The field <code>path</code> is a <a href="../field_paths/">dot separated path</a> which,
+for most operators, determines the field within the payload to be targeted. If
+the path is empty or "." the root of the data will be targeted.</p>
 <p>This processor will interpolate functions within the 'value' field, you can find
 a list of functions <a href="../config_interpolation/#functions">here</a>.</p>
 <h3 id="operators_2">Operators</h3>
@@ -1371,9 +1373,10 @@ process_field:
   result_type: string
 </code></pre>
 
-<p>A processor that extracts the value of a field within payloads according to a
-specified codec, applies a list of processors to the extracted value and finally
-sets the field within the original payloads to the processed result.</p>
+<p>A processor that extracts the value of a field <a href="../field_paths/">dot path</a>
+within payloads according to a specified codec, applies a list of processors to
+the extracted value and finally sets the field within the original payloads to
+the processed result.</p>
 <h3 id="codecs_1">Codecs</h3>
 <h4 id="json-default"><code>json</code> (default)</h4>
 <p>Parses the payload as a JSON document, extracts and sets the field using a dot
@@ -1423,9 +1426,10 @@ process_map:
   processors: []
 </code></pre>
 
-<p>A processor that extracts and maps fields from the original payload into new
-objects, applies a list of processors to the newly constructed objects, and
-finally maps the result back into the original payload.</p>
+<p>A processor that extracts and maps fields identified via
+<a href="../field_paths/">dot path</a> from the original payload into new objects,
+applies a list of processors to the newly constructed objects, and finally maps
+the result back into the original payload.</p>
 <p>This processor is useful for performing processors on subsections of a payload.
 For example, you could extract sections of a JSON object in order to construct
 a request object for an <code>http</code> processor, then map the result back
@@ -1767,7 +1771,7 @@ while:
 </code></pre>
 
 <p>While is a processor that has a condition and a list of child processors. The
-child processors are executed continously on a message batch for as long as the
+child processors are executed continuously on a message batch for as long as the
 child condition resolves to true.</p>
 <p>The field <code>at_least_once</code>, if true, ensures that the child processors
 are always executed at least one time (like a do .. while loop.)</p>

@@ -217,7 +217,7 @@ config which is explained in the input section.</p>
     bucket: TODO
     delete_objects: false
     sqs_url: TODO
-    sqs_body_path: Records.s3.object.key
+    sqs_body_path: Records.*.s3.object.key
     sqs_envelope_path: &quot;&quot;
     sqs_max_messages: 10
     credentials:
@@ -230,7 +230,7 @@ config which is explained in the input section.</p>
 <p>This input section contains lots of fields to be completed which are self
 explanatory, such as <code>bucket</code>, <code>sqs_url</code> and the <code>credentials</code> section.</p>
 <p>The <code>sqs_body_path</code> field is the JSON path within an SQS message that contains
-the name of new S3 files, which should be left as <code>Records.s3.object.key</code> unless
+the name of new S3 files, which should be left as <code>Records.*.s3.object.key</code> unless
 you have built a custom solution.</p>
 <p>If SNS is being used to broadcast S3 events instead of connecting SQS directly
 you will need to fill in the <code>sqs_envelope_path</code>, which is the JSON path inside
