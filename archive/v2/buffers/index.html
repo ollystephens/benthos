@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Ashley Jeffs">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Buffers - Benthos</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+        <link href="../style/blobfish.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-135959729-3', 'docs.benthos.dev');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+  <a class="navbar-brand" href="https://www.benthos.dev">Benthos</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="/">Home</a>
+                            </li>
+                            <li >
+                                <a href="../cookbooks/">Cookbooks</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../inputs/">Inputs</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">Buffers</a>
+</li>
+                                    
+<li >
+    <a href="../processors/">Processors</a>
+</li>
+                                    
+<li >
+    <a href="../conditions/">Conditions</a>
+</li>
+                                    
+<li >
+    <a href="../outputs/">Outputs</a>
+</li>
+                                    
+<li >
+    <a href="../caches/">Caches</a>
+</li>
+                                    
+<li >
+    <a href="../rate_limits/">Rate Limits</a>
+</li>
+                                    
+<li >
+    <a href="../metrics/">Metrics</a>
+</li>
+                                    
+<li >
+    <a href="../tracers/">Tracers</a>
+</li>
+                                    
+<li >
+    <a href="../logger/">Logger</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../getting_started/">Getting Started</a>
+</li>
+                                    
+<li >
+    <a href="../serverless/">Serverless</a>
+</li>
+                                    
+<li >
+    <a href="../configuration/">Configuration</a>
+</li>
+                                    
+<li >
+    <a href="../configuration_testing/">Configuration Testing</a>
+</li>
+                                    
+<li >
+    <a href="../config_interpolation/">Config Interpolation</a>
+</li>
+                                    
+<li >
+    <a href="../pipeline/">Processing Pipelines</a>
+</li>
+                                    
+<li >
+    <a href="../batching/">Message Batching</a>
+</li>
+                                    
+<li >
+    <a href="../error_handling/">Error Handling</a>
+</li>
+                                    
+<li >
+    <a href="../performance_tuning/">Performance Tuning</a>
+</li>
+                                    
+<li >
+    <a href="../monitoring/">Monitoring</a>
+</li>
+                                    
+<li >
+    <a href="../sync_responses/">Synchronous Responses</a>
+</li>
+                                    
+<li >
+    <a href="../workflows/">Workflows</a>
+</li>
+                                    
+<li >
+    <a href="../streams/">Streams Mode</a>
+</li>
+                                    
+<li >
+    <a href="../examples/">Applied Examples</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+    <li class="nav-item">
+      <a rel="prev" href="../inputs/" class="nav-link">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a rel="next" href="../processors/" class="nav-link">
+        <i class="fa fa-arrow-right"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="https://github.com/Jeffail/benthos/" class="nav-link">
+        <i class="fa fa-github"></i> Code
+      </a>
+    </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#buffers">Buffers</a></li>
+            <li><a href="#performance">Performance</a></li>
+            <li><a href="#delivery-guarantees">Delivery Guarantees</a></li>
+            <li><a href="#contents">Contents</a></li>
+            <li><a href="#memory">memory</a></li>
+            <li><a href="#mmap_file">mmap_file</a></li>
+            <li><a href="#none">none</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="buffers">Buffers</h1>
+<p>This document was generated with <code>benthos --list-buffers</code></p>
+<p>Benthos uses a transaction based model for guaranteeing delivery of messages
+without the need for a buffer. This ensures that messages are never acknowledged
+from a source until the message has left the target sink.</p>
+<p>However, sometimes the transaction model is undesired, in which case there are a
+range of buffer options available which decouple input sources from the rest of
+the Benthos pipeline.</p>
+<p>Buffers can therefore solve a number of typical streaming problems but come at
+the cost of weakening the delivery guarantees of your pipeline. Common problems
+that might warrant use of a buffer are:</p>
+<ul>
+<li>Input sources can periodically spike beyond the capacity of your output sinks.</li>
+<li>You want to use parallel <a href="../pipeline/">processing pipelines</a>.</li>
+<li>You have more outputs than inputs and wish to distribute messages across them
+  in order to maximize overall throughput.</li>
+<li>Your input source needs occasional protection against back pressure from your
+  sink, e.g. during restarts. Please keep in mind that all buffers have an
+  eventual limit.</li>
+</ul>
+<p>If you believe that a problem you have would be solved by a buffer the next step
+is to choose an implementation based on the throughput and delivery guarantees
+you need. In order to help here are some simplified tables outlining the
+different options and their qualities:</p>
+<h4 id="performance">Performance</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Throughput</th>
+<th>Consumers</th>
+<th>Capacity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Memory</td>
+<td>Highest</td>
+<td>Parallel</td>
+<td>RAM</td>
+</tr>
+<tr>
+<td>Mmap File</td>
+<td>High</td>
+<td>Single</td>
+<td>Disk</td>
+</tr>
+</tbody>
+</table>
+<h4 id="delivery-guarantees">Delivery Guarantees</h4>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Shutdown</th>
+<th>Crash</th>
+<th>Disk Corruption</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Memory</td>
+<td>Flushed*</td>
+<td>Lost</td>
+<td>Lost</td>
+</tr>
+<tr>
+<td>Mmap File</td>
+<td>Persisted</td>
+<td>Lost</td>
+<td>Lost</td>
+</tr>
+</tbody>
+</table>
+<p>* Makes a best attempt at flushing the remaining messages before closing
+  gracefully.</p>
+<h3 id="contents">Contents</h3>
+<ol>
+<li><a href="#memory"><code>memory</code></a></li>
+<li><a href="#mmap_file"><code>mmap_file</code></a></li>
+<li><a href="#none"><code>none</code></a></li>
+</ol>
+<h2 id="memory"><code>memory</code></h2>
+<pre><code class="yaml">type: memory
+memory:
+  batch_policy:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 0
+    enabled: false
+    period: &quot;&quot;
+  limit: 524288000
+</code></pre>
+
+<p>The memory buffer stores messages in RAM. During shutdown Benthos will make a
+best attempt at flushing all remaining messages before exiting cleanly.</p>
+<p>This buffer has a configurable limit, where consumption will be stopped with
+back pressure upstream if the total size of messages in the buffer reaches this
+amount. Since this calculation is only an estimate, and the real size of
+messages in RAM is always higher, it is recommended to set the limit
+significantly below the amount of RAM available.</p>
+<h3 id="batching">Batching</h3>
+<p>It is possible to batch up messages sent from this buffer using a batch policy.
+Batches are considered complete and will be flushed downstream when either of
+the following conditions are met:</p>
+<ul>
+<li>The <code>byte_size</code> field is non-zero and the total size of the batch in
+  bytes matches or exceeds it (disregarding metadata.)</li>
+<li>The <code>count</code> field is non-zero and the total number of messages in
+  the batch matches or exceeds it.</li>
+<li>A message added to the batch causes the condition to resolve <code>true</code>.</li>
+<li>The <code>period</code> field is non-empty and the time since the last batch
+  exceeds its value.</li>
+</ul>
+<p>This is a more powerful way of batching messages than the
+<a href="../processors/#batch"><code>batch</code></a> processor, as it does not
+rely on new messages entering the pipeline in order to trigger the conditions.</p>
+<h2 id="mmap_file"><code>mmap_file</code></h2>
+<pre><code class="yaml">type: mmap_file
+mmap_file:
+  clean_up: true
+  directory: &quot;&quot;
+  file_size: 2.62144e+08
+  reserved_disk_space: 1.048576e+08
+  retry_period: 1s
+</code></pre>
+
+<p>DEPRECATED: This buffer type is due to be removed in V3.</p>
+<p>The mmap file buffer type uses memory mapped files to perform low-latency,
+file-persisted buffering of messages.</p>
+<p>To configure the mmap file buffer you need to designate a writeable directory
+for storing the mapped files. Benthos will create multiple files in this
+directory as it fills them.</p>
+<p>When files are fully read from they will be deleted. You can disable this
+feature if you wish to preserve the data indefinitely, but the directory will
+fill up as fast as data passes through.</p>
+<p>WARNING: This buffer currently wipes all metadata from message payloads. If you
+are using metadata in your pipeline you should avoid using this buffer, or
+preferably all buffers altogether.</p>
+<h2 id="none"><code>none</code></h2>
+<pre><code class="yaml">type: none
+none: {}
+</code></pre>
+
+<p>Selecting no buffer (default) means the output layer is directly coupled with
+the input layer. This is the safest and lowest latency option since
+acknowledgements from at-least-once protocols can be propagated all the way from
+the output protocol to the input protocol.</p>
+<p>If the output layer is hit with back pressure it will propagate all the way to
+the input layer, and further up the data stream. If you need to relieve your
+pipeline of this back pressure consider using a more robust buffering solution
+such as Kafka before resorting to alternatives.</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Ashley Jeffs">
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>V3 - Benthos</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+        <link href="../../style/blobfish.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-135959729-3', 'docs.benthos.dev');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+  <a class="navbar-brand" href="https://www.benthos.dev">Benthos</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="/">Home</a>
+                            </li>
+                            <li >
+                                <a href="../../cookbooks/">Cookbooks</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../inputs/">Inputs</a>
+</li>
+                                    
+<li >
+    <a href="../../buffers/">Buffers</a>
+</li>
+                                    
+<li >
+    <a href="../../processors/">Processors</a>
+</li>
+                                    
+<li >
+    <a href="../../conditions/">Conditions</a>
+</li>
+                                    
+<li >
+    <a href="../../outputs/">Outputs</a>
+</li>
+                                    
+<li >
+    <a href="../../caches/">Caches</a>
+</li>
+                                    
+<li >
+    <a href="../../rate_limits/">Rate Limits</a>
+</li>
+                                    
+<li >
+    <a href="../../metrics/">Metrics</a>
+</li>
+                                    
+<li >
+    <a href="../../tracers/">Tracers</a>
+</li>
+                                    
+<li >
+    <a href="../../logger/">Logger</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../getting_started/">Getting Started</a>
+</li>
+                                    
+<li >
+    <a href="../../serverless/">Serverless</a>
+</li>
+                                    
+<li >
+    <a href="../../configuration/">Configuration</a>
+</li>
+                                    
+<li >
+    <a href="../../configuration_testing/">Configuration Testing</a>
+</li>
+                                    
+<li >
+    <a href="../../config_interpolation/">Config Interpolation</a>
+</li>
+                                    
+<li >
+    <a href="../../pipeline/">Processing Pipelines</a>
+</li>
+                                    
+<li >
+    <a href="../../batching/">Message Batching</a>
+</li>
+                                    
+<li >
+    <a href="../../error_handling/">Error Handling</a>
+</li>
+                                    
+<li >
+    <a href="../../performance_tuning/">Performance Tuning</a>
+</li>
+                                    
+<li >
+    <a href="../../monitoring/">Monitoring</a>
+</li>
+                                    
+<li >
+    <a href="../../sync_responses/">Synchronous Responses</a>
+</li>
+                                    
+<li >
+    <a href="../../workflows/">Workflows</a>
+</li>
+                                    
+<li >
+    <a href="../../streams/">Streams Mode</a>
+</li>
+                                    
+<li >
+    <a href="../../examples/">Applied Examples</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+    <li class="nav-item">
+      <a href="https://github.com/Jeffail/benthos/" class="nav-link">
+        <i class="fa fa-github"></i> Code
+      </a>
+    </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#migrating-to-version-3">Migrating to Version 3</a></li>
+            <li><a href="#service">Service</a></li>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#go-api">Go API</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="migrating-to-version-3">Migrating to Version 3</h1>
+<p>Benthos version 3 comes with some breaking <a href="#service">service</a> and <a href="#configuration">configuration</a> changes as well as a few breaking <a href="#go-api">API changes</a>.</p>
+<h2 id="service">Service</h2>
+<h3 id="memory-map-file-buffer-removed">Memory Map File Buffer Removed</h3>
+<p>The long deprecated <code>mmap_file</code> buffer has been removed. If you were still relying on this buffer implementation then it is recommended you try out the <code>badger</code> buffer.</p>
+<h3 id="old-metrics-paths-removed">Old Metrics Paths Removed</h3>
+<p>The following undocumented metrics paths have been removed:</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>All of these paths have <a href="../../metrics/paths/">remaining equivalents</a>.</p>
+<h3 id="metric-path-changes">Metric Path Changes</h3>
+<p>The <code>http_client</code> output client metrics have been renamed from <code>output.*.output.http_client</code> to <code>output.*.client</code>.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="json-paths">JSON Paths</h3>
+<p>Many components within Benthos use an unspecified "JSON dot path" syntax for querying and setting fields within JSON documents. The format of these paths has been formalised to make them clearer and more generally useful, but this potentially breaks your paths when they query against hierarchies that contain arrays.</p>
+<p>The formal specification for v3 can be found <a href="../../field_paths/">in this document</a>.</p>
+<p>The following components are affected:</p>
+<ul>
+<li><code>awk</code> processor (all of the <code>json_*</code> functions)</li>
+<li><code>json</code> processor (<code>path</code> field)</li>
+<li><code>process_field</code> processor (<code>path</code> field)</li>
+<li><code>process_map</code> processor (<code>premap</code>, <code>premap_optional</code>, <code>postmap</code> and <code>postmap_optional</code> fields)</li>
+<li><code>check_field</code> condition (<code>path</code> field)</li>
+<li><code>json_field</code> function interpolation</li>
+<li><code>s3</code> input (<code>sqs_body_path</code>, <code>sqs_bucket_path</code> and <code>sqs_envelope_path</code> fields)</li>
+<li><code>dynamodb</code> output (<code>json_map_columns</code> field values)</li>
+</ul>
+<h4 id="migration-guide">Migration Guide</h4>
+<p>In order to replicate the exact same behaviour as currently exists your paths should be updated to include the character <code>*</code> whereever an array exists. For example, the default value of <code>sqs_body_path</code> for the <code>s3</code> input has been updated from <code>Records.s3.object.key</code> to <code>Records.*.s3.object.key</code>.</p>
+<h2 id="go-api">Go API</h2>
+<h3 id="modules">Modules</h3>
+<p>Benthos now fully adheres to <a href="https://github.com/golang/go/wiki/Modules">Go Modules</a>, import paths must therefore now contain the major version (v3) like so:</p>
+<pre><code class="go">import &quot;github.com/Jeffail/benthos/v3/lib/processor&quot;
+</code></pre>
+
+<p>It should be pretty quick to update your imports, either using a tool or just:</p>
+<pre><code class="sh">grep &quot;Jeffail/benthos&quot; . -Rl | grep -e &quot;\.go$&quot; | xargs -I{} sed -i 's/Jeffail\/benthos/Jeffail\/benthos\/v3/g' {}
+</code></pre>
+
+<h3 id="interface-changes">Interface Changes</h3>
+<p>The following interface changes have occurred to core Benthos components:</p>
+<ul>
+<li><code>types.Part</code> has new methods <code>GetContext</code> and <code>SetContext</code>.</li>
+</ul>
+<h3 id="other">Other</h3>
+<ul>
+<li>Constructors for buffer components now require a <code>types.Manager</code>, giving them parity with other components: <code>buffer.New(conf Config, mgr types.Manager, log log.Modular, stats metrics.Type) (Type, error)</code></li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
