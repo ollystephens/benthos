@@ -756,10 +756,15 @@ kafka:
   ack_replicas: false
   addresses:
   - localhost:9092
+  backoff:
+    initial_interval: 0s
+    max_elapsed_time: 5s
+    max_interval: 1s
   client_id: benthos_kafka_output
   compression: none
   key: &quot;&quot;
   max_msg_bytes: 1e+06
+  max_retries: 0
   round_robin_partitions: false
   sasl:
     enabled: false
@@ -866,7 +871,7 @@ be compatible with any implementation, but specifically targets Nanomsg.</p>
 nats:
   subject: benthos_messages
   urls:
-  - nats://localhost:4222
+  - nats://127.0.0.1:4222
 </code></pre>
 
 <p>Publish to an NATS subject. NATS is at-most-once, so delivery is not guaranteed.

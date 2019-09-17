@@ -243,6 +243,8 @@ of the config object to individual types. E.g. when using <code>statsd</code> th
 </ul>
 <h4 id="migration-guide">Migration Guide</h4>
 <p>In order to replicate the exact same behaviour as currently exists your paths should be updated to include the character <code>*</code> wherever an array exists. For example, the default value of <code>sqs_body_path</code> for the <code>s3</code> input has been updated from <code>Records.s3.object.key</code> to <code>Records.*.s3.object.key</code>.</p>
+<h3 id="process-dag-stage-names">Process DAG Stage Names</h3>
+<p>The <code>process_dag</code> processor now only permits workflow stage names matching the following regular expression: <code>[a-zA-Z0-9_-]+</code>. The reasoning for this restriction is to potentially expand the features of <code>process_dag</code> in the future with custom root fields (e.g. <code>$on_error</code>).</p>
 <h2 id="go-api">Go API</h2>
 <h3 id="modules">Modules</h3>
 <p>Benthos now fully adheres to <a href="https://github.com/golang/go/wiki/Modules">Go Modules</a>, import paths must therefore now contain the major version (v3) like so:</p>

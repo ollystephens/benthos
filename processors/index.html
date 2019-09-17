@@ -1166,10 +1166,10 @@ that are associated with message parts of a batch. Metadata values can be
 referred to using configuration
 <a href="../config_interpolation/#metadata">interpolation functions</a>,
 which allow you to set fields in certain outputs using these dynamic values.</p>
-<p>This processor will interpolate functions within the <code>value</code> field,
-you can find a list of functions <a href="../config_interpolation/#functions">here</a>.
-This allows you to set the contents of a metadata field using values taken from
-the message payload.</p>
+<p>This processor will interpolate functions within both the
+<code>key</code> and <code>value</code> fields, you can find a list of functions
+<a href="../config_interpolation/#functions">here</a>. This allows you to set the
+contents of a metadata field using values taken from the message payload.</p>
 <p>Value interpolations are resolved once per batch. In order to resolve them per
 message of a batch place it within a <a href="#for_each"><code>for_each</code></a>
 processor:</p>
@@ -1318,6 +1318,8 @@ process_dag: {}
 calculates a Directed Acyclic Graph (DAG) of their dependencies by referring to
 their postmap targets for provided fields and their premap targets for required
 fields.</p>
+<p>The names of workflow stages may only contain alphanumeric, underscore and dash
+characters (they must match the regular expression <code>[a-zA-Z0-9_-]+</code>).</p>
 <p>The DAG is then used to execute the children in the necessary order with the
 maximum parallelism possible. You can read more about workflows in Benthos
 <a href="../workflows/">in this document</a>.</p>
