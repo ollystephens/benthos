@@ -214,6 +214,7 @@
             <li><a href="#inproc">inproc</a></li>
             <li><a href="#kafka">kafka</a></li>
             <li><a href="#kafka_balanced">kafka_balanced</a></li>
+            <li><a href="#kafka_cg">kafka_cg</a></li>
             <li><a href="#kinesis">kinesis</a></li>
             <li><a href="#kinesis_balanced">kinesis_balanced</a></li>
             <li><a href="#mqtt">mqtt</a></li>
@@ -265,6 +266,7 @@ combines multiple inputs.</p>
 <li><a href="#inproc"><code>inproc</code></a></li>
 <li><a href="#kafka"><code>kafka</code></a></li>
 <li><a href="#kafka_balanced"><code>kafka_balanced</code></a></li>
+<li><a href="#kafka_cg"><code>kafka_cg</code></a></li>
 <li><a href="#kinesis"><code>kinesis</code></a></li>
 <li><a href="#kinesis_balanced"><code>kinesis_balanced</code></a></li>
 <li><a href="#mqtt"><code>mqtt</code></a></li>
@@ -729,6 +731,85 @@ water mark offset of the partition at the time of ingestion and the current
 message offset.</p>
 <p>You can access these metadata fields using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
+<h2 id="kafka_cg"><code>kafka_cg</code></h2>
+<pre><code class="yaml">type: kafka_cg
+kafka_cg:
+  addresses:
+  - localhost:9092
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
+  client_id: benthos_kafka_input
+  commit_period: 1s
+  consumer_group: benthos_consumer_group
+  fetch_buffer_cap: 256
+  group:
+    heartbeat_interval: 3s
+    rebalance_timeout: 60s
+    session_timeout: 10s
+  max_processing_period: 100ms
+  sasl:
+    enabled: false
+    password: &quot;&quot;
+    user: &quot;&quot;
+  start_from_oldest: true
+  target_version: 2.1.0
+  tls:
+    client_certs: []
+    enabled: false
+    root_cas_file: &quot;&quot;
+    skip_cert_verify: false
+  topics:
+  - benthos_stream
+</code></pre>
+
+<p>EXPERIMENTAL: This input is considered experimental and is therefore subject to
+change outside of major version releases.</p>
+<p>Connects to a Kafka (0.9+) server. Offsets are managed within kafka as per the
+consumer group (set via config), and partitions are automatically balanced
+across any members of the consumer group.</p>
+<p>Partitions consumed by this client can be processed in parallel, meaning a
+single instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>WARNING: It is NOT safe to use a <code>batch</code> processor with this input,
+and it will shut down if that is the case. Instead, configure an appropriate
+<a href="../batching/#batch-policy">batch policy</a>.</p>
+<p>The field <code>max_processing_period</code> should be set above the maximum
+estimated time taken to process a message.</p>
+<h3 id="tls_2">TLS</h3>
+<p>Custom TLS settings can be used to override system defaults. This includes
+providing a collection of root certificate authorities, providing a list of
+client certificates to use for client verification and skipping certificate
+verification.</p>
+<p>Client certificates can either be added by file or by raw contents:</p>
+<pre><code class="yaml">enabled: true
+client_certs:
+  - cert_file: ./example.pem
+    key_file: ./example.key
+  - cert: foo
+    key: bar
+</code></pre>
+
+<h3 id="metadata_7">Metadata</h3>
+<p>This input adds the following metadata fields to each message:</p>
+<pre><code class="text">- kafka_key
+- kafka_topic
+- kafka_partition
+- kafka_offset
+- kafka_lag
+- kafka_timestamp_unix
+- All existing message headers (version 0.11+)
+</code></pre>
+
+<p>The field <code>kafka_lag</code> is the calculated difference between the high
+water mark offset of the partition at the time of ingestion and the current
+message offset.</p>
+<p>You can access these metadata fields using
+<a href="../config_interpolation/#metadata">function interpolation</a>.</p>
 <h2 id="kinesis"><code>kinesis</code></h2>
 <pre><code class="yaml">type: kinesis
 kinesis:
@@ -791,7 +872,7 @@ consumers.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_7">Metadata</h3>
+<h3 id="metadata_8">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- kinesis_shard
 - kinesis_partition_key
@@ -813,7 +894,7 @@ mqtt:
 </code></pre>
 
 <p>Subscribe to topics on MQTT brokers.</p>
-<h3 id="metadata_8">Metadata</h3>
+<h3 id="metadata_9">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- mqtt_duplicate
 - mqtt_qos
@@ -853,7 +934,7 @@ nats:
 behaviour then look at NATS Stream.</p>
 <p>The urls can contain username/password semantics. e.g.
 nats://derek:pass@localhost:4222</p>
-<h3 id="metadata_9">Metadata</h3>
+<h3 id="metadata_10">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_subject
 </code></pre>
@@ -885,7 +966,7 @@ are consumed from the most recently published message.</p>
 durable queue do this the offsets are deleted. In order to avoid this you can
 stop the consumers from unsubscribing by setting the field
 <code>unsubscribe_on_close</code> to <code>false</code>.</p>
-<h3 id="metadata_10">Metadata</h3>
+<h3 id="metadata_11">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_stream_subject
 - nats_stream_sequence
@@ -929,7 +1010,7 @@ message appears.</p>
 type reaches the end of a file it will shut down. By default this type will also
 shut down. If you wish for the input type to be restarted every time it shuts
 down until the condition is met then set <code>restart_input</code> to <code>true</code>.</p>
-<h3 id="metadata_11">Metadata</h3>
+<h3 id="metadata_12">Metadata</h3>
 <p>A metadata key <code>benthos_read_until</code> containing the value <code>final</code> is
 added to the first part of the message that triggers to input to stop.</p>
 <h2 id="redis_list"><code>redis_list</code></h2>
@@ -1046,7 +1127,7 @@ be processed multiple times.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_12">Metadata</h3>
+<h3 id="metadata_13">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- s3_key
 - s3_bucket
@@ -1086,7 +1167,7 @@ messages.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_13">Metadata</h3>
+<h3 id="metadata_14">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- sqs_message_id
 - sqs_receipt_handle

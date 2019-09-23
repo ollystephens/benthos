@@ -223,6 +223,7 @@
             <li><a href="#inproc">inproc</a></li>
             <li><a href="#kafka">kafka</a></li>
             <li><a href="#kinesis">kinesis</a></li>
+            <li><a href="#kinesis_firehose">kinesis_firehose</a></li>
             <li><a href="#mqtt">mqtt</a></li>
             <li><a href="#nanomsg">nanomsg</a></li>
             <li><a href="#nats">nats</a></li>
@@ -306,6 +307,7 @@ a <a href="#broker"><code>broker</code></a> output with the 'try' pattern.</p>
 <li><a href="#inproc"><code>inproc</code></a></li>
 <li><a href="#kafka"><code>kafka</code></a></li>
 <li><a href="#kinesis"><code>kinesis</code></a></li>
+<li><a href="#kinesis_firehose"><code>kinesis_firehose</code></a></li>
 <li><a href="#mqtt"><code>mqtt</code></a></li>
 <li><a href="#nanomsg"><code>nanomsg</code></a></li>
 <li><a href="#nats"><code>nats</code></a></li>
@@ -601,8 +603,8 @@ elasticsearch:
   - http://localhost:9200
 </code></pre>
 
-<p>Publishes messages into an Elasticsearch index. This output currently does not
-support creating the target index.</p>
+<p>Publishes messages into an Elasticsearch index. If the index does not exist then
+it is created with a dynamic mapping.</p>
 <p>Both the <code>id</code> and <code>index</code> fields can be dynamically set using function
 interpolations described <a href="../config_interpolation/#functions">here</a>. When
 sending batched messages these interpolations are performed per message part.</p>
@@ -842,6 +844,32 @@ interpolations are performed per message part.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
+<h2 id="kinesis_firehose"><code>kinesis_firehose</code></h2>
+<pre><code class="yaml">type: kinesis_firehose
+kinesis_firehose:
+  backoff:
+    initial_interval: 1s
+    max_elapsed_time: 30s
+    max_interval: 5s
+  credentials:
+    id: &quot;&quot;
+    profile: &quot;&quot;
+    role: &quot;&quot;
+    role_external_id: &quot;&quot;
+    secret: &quot;&quot;
+    token: &quot;&quot;
+  endpoint: &quot;&quot;
+  max_retries: 0
+  region: eu-west-1
+  stream: &quot;&quot;
+</code></pre>
+
+<p>Sends messages to a Kinesis Firehose delivery stream.</p>
+<h3 id="credentials_2">Credentials</h3>
+<p>By default Benthos will use a shared credentials file when connecting to AWS
+services. It's also possible to set them explicitly at the component level,
+allowing you to transfer data across accounts. You can find out more
+<a href="../aws/">in this document</a>.</p>
 <h2 id="mqtt"><code>mqtt</code></h2>
 <pre><code class="yaml">type: mqtt
 mqtt:
@@ -1027,7 +1055,7 @@ interpolations described <a href="../config_interpolation/#functions">here</a>, 
 calculated per message of a batch.</p>
 <p>The fields <code>content_type</code> and <code>content_encoding</code> can also be set
 dynamically using function interpolation.</p>
-<h3 id="credentials_2">Credentials</h3>
+<h3 id="credentials_3">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
@@ -1049,7 +1077,7 @@ sns:
 </code></pre>
 
 <p>Sends messages to an AWS SNS topic.</p>
-<h3 id="credentials_3">Credentials</h3>
+<h3 id="credentials_4">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
@@ -1084,7 +1112,7 @@ alphabetically will be selected.</p>
 set dynamically using
 <a href="../config_interpolation/#functions">function interpolations</a>, which are
 resolved individually for each message of a batch.</p>
-<h3 id="credentials_4">Credentials</h3>
+<h3 id="credentials_5">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more

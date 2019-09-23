@@ -242,7 +242,7 @@
             <li><a href="#process_field">process_field</a></li>
             <li><a href="#process_map">process_map</a></li>
             <li><a href="#rate_limit">rate_limit</a></li>
-            <li><a href="#sample">sample</a></li>
+            <li><a href="#redis">redis</a></li>
             <li><a href="#select_parts">select_parts</a></li>
             <li><a href="#sleep">sleep</a></li>
             <li><a href="#split">split</a></li>
@@ -341,6 +341,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <li><a href="#process_field"><code>process_field</code></a></li>
 <li><a href="#process_map"><code>process_map</code></a></li>
 <li><a href="#rate_limit"><code>rate_limit</code></a></li>
+<li><a href="#redis"><code>redis</code></a></li>
 <li><a href="#sample"><code>sample</code></a></li>
 <li><a href="#select_parts"><code>select_parts</code></a></li>
 <li><a href="#sleep"><code>sleep</code></a></li>
@@ -457,31 +458,17 @@ batch:
 
 <p>Reads a number of discrete messages, buffering (but not acknowledging) the
 message parts until the next batch is complete.</p>
-<p>Batches are considered complete and will be flushed downstream when either of
-the following conditions are met:</p>
-<ul>
-<li>The <code>byte_size</code> field is non-zero and the total size of the batch in
-  bytes matches or exceeds it (disregarding metadata.)</li>
-<li>The <code>count</code> field is non-zero and the total number of messages in
-  the batch matches or exceeds it.</li>
-<li>A message added to the batch causes the condition to resolve <code>true</code>.</li>
-<li>The <code>period</code> field is non-empty and the time since the last batch
-  exceeds its value.</li>
-</ul>
 <p>Once a batch is complete it is sent through the pipeline. After reaching a
 destination the acknowledgment is sent out for all messages inside the batch at
 the same time, preserving at-least-once delivery guarantees.</p>
-<p>This processor only checks batch conditions when a new message is added, meaning
-a pending batch can last beyond the specified period if no messages are added
-since the period was reached. If your input stream is non-continuous and you
-need to guarantee the period is respected you should instead use a
+<p>The batching logic of this processor follows the same rules as any other
+<a href="../batching/#batch-policy">batch policy</a>. However, this processor only checks
+batch conditions when a new message is added, meaning a pending batch can last
+beyond the specified period if no messages are added since the period was
+reached.</p>
+<p>If your input does not support batch policies, its feed is non-continuous and
+you need to guarantee the batch period is respected you should instead use a
 <a href="../buffers/#memory"><code>memory</code></a> buffer with a batch policy.</p>
-<p>When a batch is sent to an output the behaviour will differ depending on the
-protocol. If the output type supports multipart messages then the batch is sent
-as a single message with multiple parts. If the output only supports single part
-messages then the parts will be sent as a batch of single part messages. If the
-output supports neither multipart or batches of messages then Benthos falls back
-to sending them individually.</p>
 <h3 id="warning">WARNING</h3>
 <p>In order to preserve transaction-based delivery guarantees the batch processor
 should <em>always</em> be positioned within the <code>input</code> section, ideally
@@ -748,9 +735,15 @@ grok:
 pattern returns at least one value a resulting structured object is created
 according to the chosen output format and will replace the payload. Currently
 only json is a valid output format.</p>
-<p>This processor respects type hints in the grok patterns, therefore with the
-pattern <code>%{WORD:first},%{INT:second:int}</code> and a payload of <code>foo,1</code>
+<p>Type hints within patterns are respected, therefore with the pattern
+<code>%{WORD:first},%{INT:second:int}</code> and a payload of <code>foo,1</code>
 the resulting payload would be <code>{"first":"foo","second":1}</code>.</p>
+<h3 id="performance">Performance</h3>
+<p>This processor currently uses the <a href="https://golang.org/s/re2syntax">Go RE2</a>
+regular expression engine, which is guaranteed to run in time linear to the size
+of the input. However, this property often makes it less performant than pcre
+based implementations of grok. For more information see
+<a href="https://swtch.com/~rsc/regexp/regexp1.html">https://swtch.com/~rsc/regexp/regexp1.html</a>.</p>
 <h2 id="group_by"><code>group_by</code></h2>
 <pre><code class="yaml">type: group_by
 group_by: []
@@ -1492,8 +1485,50 @@ rate_limit:
 <a href="../rate_limits/"><code>rate_limit</code></a> resource. Rate limits are
 shared across components and therefore apply globally to all processing
 pipelines.</p>
-<h2 id="sample"><code>sample</code></h2>
-<pre><code class="yaml">type: sample
+<h2 id="redis"><code>redis</code></h2>
+<pre><code class="yaml">type: redis
+redis:
+  key: &quot;&quot;
+  operator: scard
+  parts: []
+  retries: 3
+  retry_period: 500ms
+  url: tcp://localhost:6379
+</code></pre>
+
+<p>Performs actions against Redis that aren't possible using a
+<a href="#cache"><code>cache</code></a> processor. Actions are performed for each message of
+a batch, where the contents are replaced with the result.</p>
+<p>The field <code>key</code> supports
+<a href="../config_interpolation/#functions">interpolation functions</a> resolved
+individually for each message of the batch.</p>
+<p>For example, given payloads with a metadata field <code>set_key</code>, you could
+add a JSON field to your payload with the cardinality of their target sets with:</p>
+<pre><code class="yaml">- process_field:
+    path: meta.cardinality
+    result_type: int
+    processors:
+      - redis:
+          url: TODO
+          operator: scard
+          key: ${!metadata:set_key}
+ ```
+
+
+### Operators
+
+#### `scard`
+
+Returns the cardinality of a set, or 0 if the key does not exist.
+
+#### `sadd`
+
+Adds a new member to a set. Returns `1` if the member was added.
+
+## `sample`
+
+``` yaml
+type: sample
 sample:
   retain: 10
   seed: 0

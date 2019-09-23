@@ -301,18 +301,8 @@ amount. Since this calculation is only an estimate, and the real size of
 messages in RAM is always higher, it is recommended to set the limit
 significantly below the amount of RAM available.</p>
 <h3 id="batching">Batching</h3>
-<p>It is possible to batch up messages sent from this buffer using a batch policy.
-Batches are considered complete and will be flushed downstream when either of
-the following conditions are met:</p>
-<ul>
-<li>The <code>byte_size</code> field is non-zero and the total size of the batch in
-  bytes matches or exceeds it (disregarding metadata.)</li>
-<li>The <code>count</code> field is non-zero and the total number of messages in
-  the batch matches or exceeds it.</li>
-<li>A message added to the batch causes the condition to resolve <code>true</code>.</li>
-<li>The <code>period</code> field is non-empty and the time since the last batch
-  exceeds its value.</li>
-</ul>
+<p>It is possible to batch up messages sent from this buffer using a
+<a href="../batching/#batch-policy">batch policy</a>.</p>
 <p>This is a more powerful way of batching messages than the
 <a href="../processors/#batch"><code>batch</code></a> processor, as it does not
 rely on new messages entering the pipeline in order to trigger the conditions.</p>
