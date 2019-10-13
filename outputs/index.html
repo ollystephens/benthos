@@ -592,6 +592,7 @@ elasticsearch:
     enabled: false
     password: &quot;&quot;
     username: &quot;&quot;
+  healthcheck: true
   id: ${!count:elastic_ids}-${!timestamp_unix}
   index: benthos_index
   max_retries: 0
@@ -613,6 +614,8 @@ sending batched messages these interpolations are performed per message part.</p
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
+<p>If the configured target is a managed AWS Elasticsearch cluster, you may need
+to set <code>sniff</code> and <code>healthcheck</code> to false for connections to succeed.</p>
 <h2 id="file"><code>file</code></h2>
 <pre><code class="yaml">type: file
 file:
@@ -874,10 +877,12 @@ allowing you to transfer data across accounts. You can find out more
 <pre><code class="yaml">type: mqtt
 mqtt:
   client_id: benthos_output
+  password: &quot;&quot;
   qos: 1
   topic: benthos_topic
   urls:
   - tcp://localhost:1883
+  user: &quot;&quot;
 </code></pre>
 
 <p>Pushes messages to an MQTT broker.</p>

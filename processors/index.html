@@ -245,7 +245,7 @@
             <li><a href="#redis">redis</a></li>
             <li><a href="#select_parts">select_parts</a></li>
             <li><a href="#sleep">sleep</a></li>
-            <li><a href="#split">split</a></li>
+            <li><a href="#split_1">split</a></li>
             <li><a href="#sql">sql</a></li>
             <li><a href="#subprocess">subprocess</a></li>
             <li><a href="#switch">switch</a></li>
@@ -456,27 +456,10 @@ batch:
   period: &quot;&quot;
 </code></pre>
 
-<p>Reads a number of discrete messages, buffering (but not acknowledging) the
-message parts until the next batch is complete.</p>
-<p>Once a batch is complete it is sent through the pipeline. After reaching a
-destination the acknowledgment is sent out for all messages inside the batch at
-the same time, preserving at-least-once delivery guarantees.</p>
-<p>The batching logic of this processor follows the same rules as any other
-<a href="../batching/#batch-policy">batch policy</a>. However, this processor only checks
-batch conditions when a new message is added, meaning a pending batch can last
-beyond the specified period if no messages are added since the period was
-reached.</p>
-<p>If your input does not support batch policies, its feed is non-continuous and
-you need to guarantee the batch period is respected you should instead use a
-<a href="../buffers/#memory"><code>memory</code></a> buffer with a batch policy.</p>
-<h3 id="warning">WARNING</h3>
-<p>In order to preserve transaction-based delivery guarantees the batch processor
-should <em>always</em> be positioned within the <code>input</code> section, ideally
-before any other processor. Alternatively, if you do not need strict delivery
-guarantees it is best to use a <a href="../buffers/#memory">memory buffer</a> with
-a batch policy.</p>
-<p>For more information about batching in Benthos please check out
-<a href="../batching/">this document</a>.</p>
+<p>DEPRECATED: This processor is no longer supported and has been replaced with
+improved batching mechanisms. For more information about batching in Benthos
+please check out <a href="../batching/">this document</a>.</p>
+<p>This processor is scheduled to be removed in Benthos V4</p>
 <h2 id="bounds_check"><code>bounds_check</code></h2>
 <pre><code class="yaml">type: bounds_check
 bounds_check:
@@ -537,7 +520,7 @@ condition:</p>
 
 <h4 id="hydration">Hydration</h4>
 <p>It's possible to enrich payloads with content previously stored in a cache by
-using the <a href="#process_dag"><code>process_dag</code></a> processor:</p>
+using the <a href="#process_map"><code>process_map</code></a> processor:</p>
 <pre><code class="yaml">- process_map:
     processors:
     - cache:
@@ -1054,6 +1037,10 @@ with the config:</p>
 
 <p>The value will be converted into '{"foo":{"bar":5}}'. If the YAML object
 contains keys that aren't strings those fields will be ignored.</p>
+<h4 id="split"><code>split</code></h4>
+<p>Splits a string field by a value and replaces the original string with an array
+containing the results of the split. This operator requires both the path value
+and the contents of the <code>value</code> field to be strings.</p>
 <h2 id="lambda"><code>lambda</code></h2>
 <pre><code class="yaml">type: lambda
 lambda:
@@ -1176,11 +1163,15 @@ processor:</p>
 <h3 id="operators_3">Operators</h3>
 <h4 id="set_2"><code>set</code></h4>
 <p>Sets the value of a metadata key.</p>
+<h4 id="delete_1"><code>delete</code></h4>
+<p>Removes all metadata values from the message where the key matches the value
+provided. If the value field is left empty the key value will instead be used.</p>
 <h4 id="delete_all"><code>delete_all</code></h4>
 <p>Removes all metadata values from the message.</p>
 <h4 id="delete_prefix"><code>delete_prefix</code></h4>
 <p>Removes all metadata values from the message where the key is prefixed with the
-value provided.</p>
+value provided. If the value field is left empty the key value will instead be
+used as the prefix.</p>
 <h2 id="metric"><code>metric</code></h2>
 <pre><code class="yaml">type: metric
 metric:
@@ -1572,7 +1563,7 @@ each message of a batch place it within a
     duration: ${!metadata:sleep_for}
 </code></pre>
 
-<h2 id="split"><code>split</code></h2>
+<h2 id="split_1"><code>split</code></h2>
 <pre><code class="yaml">type: split
 split:
   byte_size: 0

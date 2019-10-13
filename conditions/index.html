@@ -212,6 +212,7 @@
             <li><a href="#check_interpolation">check_interpolation</a></li>
             <li><a href="#count">count</a></li>
             <li><a href="#jmespath">jmespath</a></li>
+            <li><a href="#json_schema">json_schema</a></li>
             <li><a href="#metadata">metadata</a></li>
             <li><a href="#not">not</a></li>
             <li><a href="#number">number</a></li>
@@ -287,6 +288,7 @@ duplicate condition configs by using the <a href="#resource">resource condition<
 <li><a href="#check_interpolation"><code>check_interpolation</code></a></li>
 <li><a href="#count"><code>count</code></a></li>
 <li><a href="#jmespath"><code>jmespath</code></a></li>
+<li><a href="#json_schema"><code>json_schema</code></a></li>
 <li><a href="#metadata"><code>metadata</code></a></li>
 <li><a href="#not"><code>not</code></a></li>
 <li><a href="#number"><code>number</code></a></li>
@@ -420,6 +422,54 @@ the syntax of expressions.</p>
 <p>JMESPath is traditionally used for mutating JSON, in order to do this please
 instead use the <a href="../processors/#jmespath"><code>jmespath</code></a>
 processor.</p>
+<h2 id="json_schema"><code>json_schema</code></h2>
+<pre><code class="yaml">type: json_schema
+json_schema:
+  part: 0
+  schema: &quot;&quot;
+  schema_path: &quot;&quot;
+</code></pre>
+
+<p>Validates a message against the provided JSONSchema definition to retrieve a
+boolean response indicating whether the message matches the schema or not.
+If the response is true the condition passes, otherwise it does not. Please
+refer to the <a href="https://json-schema.org/">JSON Schema website</a> for information and
+tutorials regarding the syntax of the schema.</p>
+<p>For example, with the following JSONSchema document:</p>
+<pre><code class="json">{
+    &quot;$id&quot;: &quot;https://example.com/person.schema.json&quot;,
+    &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema#&quot;,
+    &quot;title&quot;: &quot;Person&quot;,
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;firstName&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;The person's first name.&quot;
+      },
+      &quot;lastName&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;The person's last name.&quot;
+      },
+      &quot;age&quot;: {
+        &quot;description&quot;: &quot;Age in years which must be equal to or greater than zero.&quot;,
+        &quot;type&quot;: &quot;integer&quot;,
+        &quot;minimum&quot;: 0
+      }
+    }
+}
+</code></pre>
+
+<p>And the following Benthos configuration:</p>
+<pre><code class="yaml">json_schema:
+  part: 0
+  schema_path: &quot;file://path_to_schema.json&quot;
+</code></pre>
+
+<p>If the message being processed looked like:</p>
+<pre><code class="json">{&quot;firstName&quot;:&quot;John&quot;,&quot;lastName&quot;:&quot;Doe&quot;,&quot;age&quot;:21}
+</code></pre>
+
+<p>Then the condition would pass.</p>
 <h2 id="metadata"><code>metadata</code></h2>
 <pre><code class="yaml">type: metadata
 metadata:
@@ -682,6 +732,9 @@ insensitive.)</p>
 <h3 id="contains"><code>contains</code></h3>
 <p>Checks whether the content contains the argument under unicode case-folding
 (case insensitive.)</p>
+<h3 id="is"><code>is</code></h3>
+<p>Checks whether the content meets the characteristic of a type specified in 
+the argument field. Supported types are <code>ip</code>, <code>ipv4</code>, <code>ipv6</code>.</p>
 <h3 id="prefix_cs"><code>prefix_cs</code></h3>
 <p>Checks whether the content begins with the argument (case sensitive.)</p>
 <h3 id="prefix"><code>prefix</code></h3>

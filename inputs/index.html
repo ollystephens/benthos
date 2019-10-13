@@ -203,6 +203,7 @@
         <li class="main active"><a href="#inputs">Inputs</a></li>
             <li><a href="#contents">Contents</a></li>
             <li><a href="#amqp">amqp</a></li>
+            <li><a href="#amqp_0_9">amqp_0_9</a></li>
             <li><a href="#broker">broker</a></li>
             <li><a href="#dynamic">dynamic</a></li>
             <li><a href="#file">file</a></li>
@@ -214,7 +215,6 @@
             <li><a href="#inproc">inproc</a></li>
             <li><a href="#kafka">kafka</a></li>
             <li><a href="#kafka_balanced">kafka_balanced</a></li>
-            <li><a href="#kafka_cg">kafka_cg</a></li>
             <li><a href="#kinesis">kinesis</a></li>
             <li><a href="#kinesis_balanced">kinesis_balanced</a></li>
             <li><a href="#mqtt">mqtt</a></li>
@@ -255,6 +255,7 @@ combines multiple inputs.</p>
 <h3 id="contents">Contents</h3>
 <ol>
 <li><a href="#amqp"><code>amqp</code></a></li>
+<li><a href="#amqp_0_9"><code>amqp_0_9</code></a></li>
 <li><a href="#broker"><code>broker</code></a></li>
 <li><a href="#dynamic"><code>dynamic</code></a></li>
 <li><a href="#file"><code>file</code></a></li>
@@ -266,7 +267,6 @@ combines multiple inputs.</p>
 <li><a href="#inproc"><code>inproc</code></a></li>
 <li><a href="#kafka"><code>kafka</code></a></li>
 <li><a href="#kafka_balanced"><code>kafka_balanced</code></a></li>
-<li><a href="#kafka_cg"><code>kafka_cg</code></a></li>
 <li><a href="#kinesis"><code>kinesis</code></a></li>
 <li><a href="#kinesis_balanced"><code>kinesis_balanced</code></a></li>
 <li><a href="#mqtt"><code>mqtt</code></a></li>
@@ -306,11 +306,41 @@ amqp:
   url: amqp://guest:guest@localhost:5672/
 </code></pre>
 
+<p>DEPRECATED: This input is deprecated and scheduled for removal in Benthos V4.
+Please use <a href="#amqp_0_9"><code>amqp_0_9</code></a> instead.</p>
+<h2 id="amqp_0_9"><code>amqp_0_9</code></h2>
+<pre><code class="yaml">type: amqp_0_9
+amqp_0_9:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
+  bindings_declare: []
+  consumer_tag: benthos-consumer
+  prefetch_count: 10
+  prefetch_size: 0
+  queue: benthos-queue
+  queue_declare:
+    durable: true
+    enabled: false
+  tls:
+    client_certs: []
+    enabled: false
+    root_cas_file: &quot;&quot;
+    skip_cert_verify: false
+  url: amqp://guest:guest@localhost:5672/
+</code></pre>
+
 <p>Connects to an AMQP (0.91) queue. AMQP is a messaging protocol used by various
 message brokers, including RabbitMQ.</p>
-<p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
-messages to be batched together. When more than one message is batched they can
-be split into individual messages with the <code>split</code> processor.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
 <p>It's possible for this input type to declare the target queue by setting
 <code>queue_declare.enabled</code> to <code>true</code>, if the queue already exists then
 the declaration passively verifies that they match the target fields.</p>
@@ -352,6 +382,13 @@ settings can be enabled in the <code>tls</code> section.</p>
 <h2 id="broker"><code>broker</code></h2>
 <pre><code class="yaml">type: broker
 broker:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   copies: 1
   inputs: []
 </code></pre>
@@ -382,6 +419,11 @@ one. For example, reading from both RabbitMQ and Kafka:</p>
 <p>If the number of copies is greater than zero the list will be copied that number
 of times. For example, if your inputs were of type foo and bar, with 'copies'
 set to '2', you would end up with two 'foo' inputs and two 'bar' inputs.</p>
+<h3 id="batching">Batching</h3>
+<p>It's possible to configure a <a href="../batching/#batch-policy">batch policy</a> with a
+broker using the <code>batching</code> fields. When doing this the feeds from all
+child inputs are combined. Some inputs do not support broker based batching and
+specify this in their documentation.</p>
 <h3 id="processors">Processors</h3>
 <p>It is possible to configure <a href="../processors/">processors</a> at the broker
 level, where they will be applied to <em>all</em> child inputs, as well as on the
@@ -428,6 +470,9 @@ files:
 message payload. The path can either point to a single file (resulting in only a
 single message) or a directory, in which case the directory will be walked and
 each file found will become a message.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <h3 id="metadata_1">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- path
@@ -438,16 +483,26 @@ each file found will become a message.</p>
 <h2 id="gcp_pubsub"><code>gcp_pubsub</code></h2>
 <pre><code class="yaml">type: gcp_pubsub
 gcp_pubsub:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   max_batch_count: 1
-  max_outstanding_bytes: 1e+09
+  max_outstanding_bytes: 1000000000
   max_outstanding_messages: 1000
   project: &quot;&quot;
   subscription: &quot;&quot;
 </code></pre>
 
 <p>Consumes messages from a GCP Cloud Pub/Sub subscription.</p>
-<p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
-messages to be batched together.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
 <h3 id="metadata_2">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- gcp_pubsub_publish_time_unix
@@ -465,8 +520,11 @@ hdfs:
   user: benthos_hdfs
 </code></pre>
 
-<p>Reads files from a HDFS directory, where each discrete file will be consumed as a single
-message payload.</p>
+<p>Reads files from a HDFS directory, where each discrete file will be consumed as
+a single message payload.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <h3 id="metadata_3">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- hdfs_name
@@ -599,6 +657,13 @@ collision occurs.</p>
 kafka:
   addresses:
   - localhost:9092
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   client_id: benthos_kafka_input
   commit_period: 1s
   consumer_group: benthos_consumer_group
@@ -624,9 +689,15 @@ kafka:
 consumer group (set via config). Only one partition per input is supported, if
 you wish to balance partitions across a consumer group look at the
 <code>kafka_balanced</code> input type instead.</p>
-<p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
-messages to be batched together. When more than one message is batched they can
-be split into individual messages with the <code>split</code> processor.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>. It is not currently possible to
+use <a href="../batching/#combined-batching">broker based batching</a> with this input
+type.</p>
+<p>This input currently provides a single continuous feed of data, and therefore
+by default will only utilise a single processing thread and parallel output.
+Take a look at the
+<a href="../pipeline/#single-consumer-without-buffer">pipelines documentation</a> for
+guides on how to work around this.</p>
 <p>The field <code>max_processing_period</code> should be set above the maximum
 estimated time taken to process a message.</p>
 <p>The target version by default will be the oldest supported, as it is expected
@@ -668,6 +739,13 @@ message offset.</p>
 kafka_balanced:
   addresses:
   - localhost:9092
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   client_id: benthos_kafka_input
   commit_period: 1s
   consumer_group: benthos_consumer_group
@@ -696,9 +774,13 @@ kafka_balanced:
 <p>Connects to a kafka (0.9+) server. Offsets are managed within kafka as per the
 consumer group (set via config), and partitions are automatically balanced
 across any members of the consumer group.</p>
-<p>The field <code>max_batch_count</code> specifies the maximum number of prefetched
-messages to be batched together. When more than one message is batched they can
-be split into individual messages with the <code>split</code> processor.</p>
+<p>Partitions consumed by this input can be processed in parallel allowing it to
+utilise &lt;= N pipeline processing threads and parallel outputs where N is the
+number of partitions allocated to this consumer.</p>
+<p>The <code>batching</code> fields allow you to configure a
+<a href="../batching/#batch-policy">batching policy</a> which will be applied per
+partition. It is not currently possible to use
+<a href="../batching/#combined-batching">broker based batching</a> with this input type.</p>
 <p>The field <code>max_processing_period</code> should be set above the maximum
 estimated time taken to process a message.</p>
 <h3 id="tls_1">TLS</h3>
@@ -731,11 +813,9 @@ water mark offset of the partition at the time of ingestion and the current
 message offset.</p>
 <p>You can access these metadata fields using
 <a href="../config_interpolation/#metadata">function interpolation</a>.</p>
-<h2 id="kafka_cg"><code>kafka_cg</code></h2>
-<pre><code class="yaml">type: kafka_cg
-kafka_cg:
-  addresses:
-  - localhost:9092
+<h2 id="kinesis"><code>kinesis</code></h2>
+<pre><code class="yaml">type: kinesis
+kinesis:
   batching:
     byte_size: 0
     condition:
@@ -743,76 +823,6 @@ kafka_cg:
       static: false
     count: 1
     period: &quot;&quot;
-  client_id: benthos_kafka_input
-  commit_period: 1s
-  consumer_group: benthos_consumer_group
-  fetch_buffer_cap: 256
-  group:
-    heartbeat_interval: 3s
-    rebalance_timeout: 60s
-    session_timeout: 10s
-  max_processing_period: 100ms
-  sasl:
-    enabled: false
-    password: &quot;&quot;
-    user: &quot;&quot;
-  start_from_oldest: true
-  target_version: 2.1.0
-  tls:
-    client_certs: []
-    enabled: false
-    root_cas_file: &quot;&quot;
-    skip_cert_verify: false
-  topics:
-  - benthos_stream
-</code></pre>
-
-<p>EXPERIMENTAL: This input is considered experimental and is therefore subject to
-change outside of major version releases.</p>
-<p>Connects to a Kafka (0.9+) server. Offsets are managed within kafka as per the
-consumer group (set via config), and partitions are automatically balanced
-across any members of the consumer group.</p>
-<p>Partitions consumed by this client can be processed in parallel, meaning a
-single instance of this input can utilise any number of threads within a
-<code>pipeline</code> section of a config.</p>
-<p>WARNING: It is NOT safe to use a <code>batch</code> processor with this input,
-and it will shut down if that is the case. Instead, configure an appropriate
-<a href="../batching/#batch-policy">batch policy</a>.</p>
-<p>The field <code>max_processing_period</code> should be set above the maximum
-estimated time taken to process a message.</p>
-<h3 id="tls_2">TLS</h3>
-<p>Custom TLS settings can be used to override system defaults. This includes
-providing a collection of root certificate authorities, providing a list of
-client certificates to use for client verification and skipping certificate
-verification.</p>
-<p>Client certificates can either be added by file or by raw contents:</p>
-<pre><code class="yaml">enabled: true
-client_certs:
-  - cert_file: ./example.pem
-    key_file: ./example.key
-  - cert: foo
-    key: bar
-</code></pre>
-
-<h3 id="metadata_7">Metadata</h3>
-<p>This input adds the following metadata fields to each message:</p>
-<pre><code class="text">- kafka_key
-- kafka_topic
-- kafka_partition
-- kafka_offset
-- kafka_lag
-- kafka_timestamp_unix
-- All existing message headers (version 0.11+)
-</code></pre>
-
-<p>The field <code>kafka_lag</code> is the calculated difference between the high
-water mark offset of the partition at the time of ingestion and the current
-message offset.</p>
-<p>You can access these metadata fields using
-<a href="../config_interpolation/#metadata">function interpolation</a>.</p>
-<h2 id="kinesis"><code>kinesis</code></h2>
-<pre><code class="yaml">type: kinesis
-kinesis:
   client_id: benthos_consumer
   commit_period: 1s
   credentials:
@@ -837,6 +847,15 @@ kinesis:
 table name. Offsets will then be tracked per <code>client_id</code> per
 <code>shard_id</code>. When using this mode you should create a table with
 <code>namespace</code> as the primary key and <code>shard_id</code> as a sort key.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>. It is not currently possible to
+use <a href="../batching/#combined-batching">broker based batching</a> with this input
+type.</p>
+<p>This input currently provides a single continuous feed of data, and therefore
+by default will only utilise a single processing thread and parallel output.
+Take a look at the
+<a href="../pipeline/#single-consumer-without-buffer">pipelines documentation</a> for
+guides on how to work around this.</p>
 <h3 id="credentials">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
@@ -845,6 +864,13 @@ allowing you to transfer data across accounts. You can find out more
 <h2 id="kinesis_balanced"><code>kinesis_balanced</code></h2>
 <pre><code class="yaml">type: kinesis_balanced
 kinesis_balanced:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   credentials:
     id: &quot;&quot;
     profile: &quot;&quot;
@@ -867,12 +893,17 @@ kinesis_balanced:
 version releases.</p>
 <p>Receives messages from a Kinesis stream and automatically balances shards across
 consumers.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
 <h3 id="credentials_1">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_8">Metadata</h3>
+<h3 id="metadata_7">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- kinesis_shard
 - kinesis_partition_key
@@ -886,15 +917,20 @@ allowing you to transfer data across accounts. You can find out more
 mqtt:
   clean_session: true
   client_id: benthos_input
+  password: &quot;&quot;
   qos: 1
   topics:
   - benthos_topic
   urls:
   - tcp://localhost:1883
+  user: &quot;&quot;
 </code></pre>
 
 <p>Subscribe to topics on MQTT brokers.</p>
-<h3 id="metadata_9">Metadata</h3>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<h3 id="metadata_8">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- mqtt_duplicate
 - mqtt_qos
@@ -919,6 +955,9 @@ nanomsg:
 
 <p>The scalability protocols are common communication patterns. This input should
 be compatible with any implementation, but specifically targets Nanomsg.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>Currently only PULL and SUB sockets are supported.</p>
 <h2 id="nats"><code>nats</code></h2>
 <pre><code class="yaml">type: nats
@@ -932,9 +971,12 @@ nats:
 
 <p>Subscribe to a NATS subject. NATS is at-most-once, if you need at-least-once
 behaviour then look at NATS Stream.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>The urls can contain username/password semantics. e.g.
 nats://derek:pass@localhost:4222</p>
-<h3 id="metadata_10">Metadata</h3>
+<h3 id="metadata_9">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_subject
 </code></pre>
@@ -944,6 +986,14 @@ nats://derek:pass@localhost:4222</p>
 <h2 id="nats_stream"><code>nats_stream</code></h2>
 <pre><code class="yaml">type: nats_stream
 nats_stream:
+  ack_wait: 30s
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   client_id: benthos_client
   cluster_id: test-cluster
   durable_name: benthos_offset
@@ -966,7 +1016,12 @@ are consumed from the most recently published message.</p>
 durable queue do this the offsets are deleted. In order to avoid this you can
 stop the consumers from unsubscribing by setting the field
 <code>unsubscribe_on_close</code> to <code>false</code>.</p>
-<h3 id="metadata_11">Metadata</h3>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
+<h3 id="metadata_10">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- nats_stream_subject
 - nats_stream_sequence
@@ -977,6 +1032,13 @@ stop the consumers from unsubscribing by setting the field
 <h2 id="nsq"><code>nsq</code></h2>
 <pre><code class="yaml">type: nsq
 nsq:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   channel: benthos_stream
   lookupd_http_addresses:
   - localhost:4161
@@ -988,6 +1050,11 @@ nsq:
 </code></pre>
 
 <p>Subscribe to an NSQ instance topic and channel.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
 <h2 id="read_until"><code>read_until</code></h2>
 <pre><code class="yaml">type: read_until
 read_until:
@@ -1010,7 +1077,7 @@ message appears.</p>
 type reaches the end of a file it will shut down. By default this type will also
 shut down. If you wish for the input type to be restarted every time it shuts
 down until the condition is met then set <code>restart_input</code> to <code>true</code>.</p>
-<h3 id="metadata_12">Metadata</h3>
+<h3 id="metadata_11">Metadata</h3>
 <p>A metadata key <code>benthos_read_until</code> containing the value <code>final</code> is
 added to the first part of the message that triggers to input to stop.</p>
 <h2 id="redis_list"><code>redis_list</code></h2>
@@ -1022,6 +1089,9 @@ redis_list:
 </code></pre>
 
 <p>Pops messages from the beginning of a Redis list using the BLPop command.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <h2 id="redis_pubsub"><code>redis_pubsub</code></h2>
 <pre><code class="yaml">type: redis_pubsub
 redis_pubsub:
@@ -1033,6 +1103,9 @@ redis_pubsub:
 
 <p>Redis supports a publish/subscribe model, it's possible to subscribe to multiple
 channels using this input.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>In order to subscribe to channels using the <code>PSUBSCRIBE</code> command set
 the field <code>use_patterns</code> to <code>true</code>, then you can include glob-style
 patterns in your channel names. For example:</p>
@@ -1046,6 +1119,13 @@ verbatim.</p>
 <h2 id="redis_streams"><code>redis_streams</code></h2>
 <pre><code class="yaml">type: redis_streams
 redis_streams:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   body_key: body
   client_id: benthos_consumer
   commit_period: 1s
@@ -1063,6 +1143,11 @@ redis_streams:
 <p>The field <code>limit</code> specifies the maximum number of records to be
 received per request. When more than one record is returned they are batched and
 can be split into individual messages with the <code>split</code> processor.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
+<p>Use the <code>batching</code> fields to configure an optional
+<a href="../batching/#batch-policy">batching policy</a>.</p>
 <p>Redis stream entries are key/value pairs, as such it is necessary to specify the
 key that contains the body of the message. All other keys/value pairs are saved
 as metadata fields.</p>
@@ -1088,6 +1173,7 @@ s3:
   retries: 3
   sqs_body_path: Records.*.s3.object.key
   sqs_bucket_path: &quot;&quot;
+  sqs_endpoint: &quot;&quot;
   sqs_envelope_path: &quot;&quot;
   sqs_max_messages: 10
   sqs_url: &quot;&quot;
@@ -1127,7 +1213,7 @@ be processed multiple times.</p>
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_13">Metadata</h3>
+<h3 id="metadata_12">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code>- s3_key
 - s3_bucket
@@ -1162,12 +1248,15 @@ sqs:
 
 <p>Receive messages from an Amazon SQS URL, only the body is extracted into
 messages.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <h3 id="credentials_3">Credentials</h3>
 <p>By default Benthos will use a shared credentials file when connecting to AWS
 services. It's also possible to set them explicitly at the component level,
 allowing you to transfer data across accounts. You can find out more
 <a href="../aws/">in this document</a>.</p>
-<h3 id="metadata_14">Metadata</h3>
+<h3 id="metadata_13">Metadata</h3>
 <p>This input adds the following metadata fields to each message:</p>
 <pre><code class="text">- sqs_message_id
 - sqs_receipt_handle
@@ -1189,6 +1278,9 @@ stdin:
 messages are assumed single part and are line delimited. If the multipart option
 is set to true then lines are interpretted as message parts, and an empty line
 indicates the end of the message.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>If the delimiter field is left empty then line feed (\n) is used.</p>
 <h2 id="tcp"><code>tcp</code></h2>
 <pre><code class="yaml">type: tcp
@@ -1203,6 +1295,9 @@ tcp:
 <p>If multipart is set to false each line of data is read as a separate message. If
 multipart is set to true each line is read as a message part, and an empty line
 indicates the end of a message.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>If the delimiter field is left empty then line feed (\n) is used.</p>
 <h2 id="tcp_server"><code>tcp_server</code></h2>
 <pre><code class="yaml">type: tcp_server
@@ -1255,6 +1350,9 @@ websocket:
 </code></pre>
 
 <p>Connects to a websocket server and continuously receives messages.</p>
+<p>Messages consumed by this input can be processed in parallel, meaning a single
+instance of this input can utilise any number of threads within a
+<code>pipeline</code> section of a config.</p>
 <p>It is possible to configure an <code>open_message</code>, which when set to a
 non-empty string will be sent to the websocket server each time a connection is
 first established.</p></div>

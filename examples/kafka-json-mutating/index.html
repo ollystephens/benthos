@@ -275,7 +275,9 @@ increase the throughput of the output in case it becomes the bottleneck.</p>
         consumer_group: benthos_mutator_group
         topics:
         - data_stream
-        max_batch_count: 8 # Batch size: Tune this to increase output throughput
+        batching:
+          count: 8 # Batch size: Tune this to increase output throughput
+          period: 1s
 </code></pre>
 
 <p>The <code>kafka_balanced</code> input is used here, which automatically distributes the
@@ -286,7 +288,7 @@ this topic should be significantly higher than the total number of consumers in
 order to get a good distribution of messages.</p>
 <p>Using a broker allows us to tune the number of parallel consumers inside the
 process in order to reach our maximum CPU utilisation.</p>
-<p>We also specify a <code>max_batch_count</code>, which is the maximum number of messages to
+<p>We also specify a <code>batching.count</code>, which is the maximum number of messages to
 batch together when we have a backlog of prefetched messages. The advantage of
 this is that a batch will be sent as a single request on the Kafka producer
 output. By tuning the batch size we should be able to increase our output

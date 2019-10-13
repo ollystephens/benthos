@@ -206,6 +206,7 @@
             <li><a href="#prometheus">prometheus</a></li>
             <li><a href="#rename">rename</a></li>
             <li><a href="#statsd">statsd</a></li>
+            <li><a href="#stdout">stdout</a></li>
             <li><a href="#whitelist">whitelist</a></li>
     </ul>
 </div></div>
@@ -354,6 +355,30 @@ statsd:
 
 <p>Push metrics over a TCP or UDP connection using the
 <a href="https://github.com/statsd/statsd">StatsD protocol</a>.</p>
+<h2 id="stdout"><code>stdout</code></h2>
+<pre><code class="yaml">type: stdout
+stdout:
+  flush_metrics: false
+  push_interval: &quot;&quot;
+  static_fields:
+    '@service': benthos
+</code></pre>
+
+<p>EXPERIMENTAL: This component is considered experimental and is therefore subject
+to change outside of major version releases.</p>
+<p>It is possible to expose metrics without an aggregator service while running in
+serverless mode by having Benthos output metrics as JSON objects to stdout.  This
+is useful if you do not have Prometheus or Statsd endpoints and you cannot query
+the Benthos API for statistics (due to the short lived nature of serverless
+invocations).</p>
+<p>A series of JSON objects are emitted (one per line) grouped by the
+input/processor/output instance.  Separation into individual JSON objects instead
+of a single monolithic object allows for easy ingestion into document stores such
+as Elasticsearch.</p>
+<p>If defined, metrics are pushed at the configured push_interval, otherwise they
+are emitted when Benthos closes.</p>
+<p>flush_metrics dictates whether counter and timing metrics are reset to 0 after
+they are pushed out.</p>
 <h2 id="whitelist"><code>whitelist</code></h2>
 <pre><code class="yaml">type: whitelist
 whitelist:

@@ -202,8 +202,7 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#processing-pipelines">Processing Pipelines</a></li>
             <li><a href="#multiple-consumers">Multiple Consumers</a></li>
-            <li><a href="#single-consumer-without-buffer">Single Consumer Without Buffer</a></li>
-            <li><a href="#single-consumer-with-buffer">Single Consumer With Buffer</a></li>
+            <li><a href="#add-a-buffer">Add a Buffer</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -211,92 +210,58 @@
 <h1 id="processing-pipelines">Processing Pipelines</h1>
 <p>Within a Benthos configuration, in between <code>input</code> and <code>output</code>, is a <code>pipeline</code> section. This section describes an array of <a href="../processors/">processors</a> that are to be applied to <em>all</em> messages, and are not bound to any particular input or output.</p>
 <p>If you have processors that are heavy on CPU and aren't specific to a certain input or output they are best suited for the pipeline section. It is advantageous to use the pipeline section as it allows you to set an explicit number of parallel threads of execution which should ideally match the number of available logical CPU cores.</p>
-<p>For example, imagine we are consuming from a source <code>foo</code>. Our goal is to consume the stream as fast as possible, perform mutations on the JSON payload using the <a href="../processors/#jmespath"><code>jmespath</code> processor</a>, and write the resulting stream to a sink <code>bar</code>. The following patterns allow you to achieve a distribution of work across these processing threads for maximum horizontal scaling.</p>
+<p>By default almost all Benthos sources will utilise as many processing threads as have been configured, which makes horizontal scaling easy. For example, imagine we are consuming from a source <code>foo</code>. Our goal is to consume the stream as fast as possible, perform mutations on the JSON payload using the <a href="../processors/#jmespath"><code>jmespath</code> processor</a>, and write the resulting stream to a sink <code>bar</code>, we can do that with:</p>
+<pre><code class="yaml">input:
+  type: foo
+
+pipeline:
+  threads: 4
+  processors:
+    - jmespath:
+        query: &quot;reservations[].instances[].[tags[?Key=='Name'].Values[] | [0], type, state.name]&quot;
+
+output:
+  type: bar
+</code></pre>
+
+<p>However, this configuration would not be optimal if our input isn't able to utilise &gt;1 processing threads, which will be mentioned in its documentation (<a href="../inputs/#kafka"><code>kafka</code></a>, for example). It's also possible that the input source isn't able to provide enough traffic to fully saturate our processing threads. The following patterns can help you to achieve a distribution of work across these processing threads even under those circumstances.</p>
 <h3 id="multiple-consumers">Multiple Consumers</h3>
-<p>Sometimes our source of data can have many multiple connected clients and will distribute a stream of messages amongst them. In these circumstances it is possible to fully utilise a set of parallel processing threads by configuring the number of consumers to be greater than or equal to the number of threads. Ideally the number of consumers would be slightly higher than the number of threads in order to compensate for occasional IO stalls.</p>
-<p>We can configure this arrangement with a <a href="../inputs/#broker"><code>broker</code> input</a>:</p>
+<p>Sometimes our source of data can have many multiple connected clients and will distribute a stream of messages amongst them. In which case it is possible to increase utilisation of parallel processing threads by adding more consumers. This can be done with a <a href="../inputs/#broker"><code>broker</code> input</a>:</p>
 <pre><code class="yaml">input:
   broker:
     copies: 8
     inputs:
-      - type: foo
-buffer:
-  type: none
+      - type: baz
+
 pipeline:
   threads: 4
   processors:
     - jmespath:
         query: &quot;reservations[].instances[].[tags[?Key=='Name'].Values[] | [0], type, state.name]&quot;
+
 output:
   type: bar
-</code></pre>
-
-<p>With this config the pipeline within our Benthos instance would look something like the following:</p>
-<pre><code class="text">baz -\
-baz -\
-baz ---&gt; processors ---&gt; bar
-baz ---&gt; processors -/
-baz ---&gt; processors -/
-baz ---&gt; processors -/
-baz -/
-baz -/
 </code></pre>
 
 <p>The disadvantage of this set up is that increasing the number of consuming clients potentially puts unnecessary stress on your data source.</p>
-<h3 id="single-consumer-without-buffer">Single Consumer Without Buffer</h3>
-<p>Sometimes a source of data can only have a single consuming client. In these circumstances it is still possible to have the single stream of data processed on parallel processing threads and preserve our delivery guarantees. For this purpose we can do a batch and split:</p>
-<pre><code class="yaml">input:
-  kafka_balanced:
-    addresses: [ TODO ]
-    topics: [ foo, bar ]
-    consumer_group: foogroup
-    max_batch_count: 100
-  processors:
-    - split:
-        size: 25
-pipeline:
-  threads: 4
-  processors:
-    - jmespath:
-        query: &quot;reservations[].instances[].[tags[?Key=='Name'].Values[] | [0], type, state.name]&quot;
-output:
-  type: bar
-</code></pre>
-
-<p>When a batch at the input level is split into N smaller batches Benthos will automatically dispatch those batches in parallel across your processing threads. This action preserves transaction based resiliency. Most inputs have a native way of batching documents, if that is not the case you can precede your <a href="../processors/#split"><code>split</code> processor</a> with a <a href="../processors/#batch"><code>batch</code> processor</a>.</p>
-<p>With this config the pipeline within our Benthos instance would look something like the following:</p>
-<pre><code class="text">                  Batch       Split
-kafka_balanced -&gt; ######## -&gt; ## ---&gt; processors ---&gt; bar
-                              ## \--&gt; processors -/
-                              ## \--&gt; processors -/
-                              ## \--&gt; processors -/
-</code></pre>
-
-<p>However, this pattern caps the processing time of a whole batch with the slowest processing time of the split batches, as they are locked within a transaction. If there is wide variance in the expected processing time of message batches then it's possible to mitigate this effect by combining this pattern with the previous, allowing you to utilise all threads even when the number of brokered inputs is less than the thread count.</p>
-<h3 id="single-consumer-with-buffer">Single Consumer With Buffer</h3>
-<p>Sometimes batching documents up isn't a viable option, but we can still only have a single consuming client. In these circumstances it is possible to have the single stream of data processed on parallel processing threads by using a <a href="../buffers/">buffer</a>:</p>
+<h3 id="add-a-buffer">Add a Buffer</h3>
+<p><a href="../buffers/">Buffers</a> should be used with caution as they weaken the delivery guarantees of your pipeline. However, they can be very useful for horizontally scaling processing in cases where an input feed is sporadic, as they can level out throughput spikes and provide a backlog of messages during gaps. </p>
 <pre><code class="yaml">input:
   type: foo
+
 buffer:
   memory:
     limit: 5000000
+
 pipeline:
   threads: 4
   processors:
     - jmespath:
         query: &quot;reservations[].instances[].[tags[?Key=='Name'].Values[] | [0], type, state.name]&quot;
+
 output:
   type: bar
-</code></pre>
-
-<p>With this config the pipeline within our Benthos instance would look something like the following:</p>
-<pre><code class="text">foo -&gt; memory buffer ---&gt; processors ---&gt; bar
-          ( 5MB )    \--&gt; processors -/
-                     \--&gt; processors -/
-                     \--&gt; processors -/
-</code></pre>
-
-<p>However, using a buffer weakens the delivery guarantees that Benthos provides, making data loss possible during system crashes or disk corruption. This is less of a concern when your source of data is <a href="https://duckduckgo.com/?q=at+most+once">at-most-once</a>.</p></div>
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
