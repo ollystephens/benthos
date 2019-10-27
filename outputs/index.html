@@ -961,7 +961,7 @@ names to interpolated values, also evaluated per message of a batch:</p>
 
 <p>If the field <code>walk_metadata</code> is set to <code>true</code> then Benthos
 will walk all metadata fields of messages and add them to the list of hash
-fields to set. </p>
+fields to set.</p>
 <p>If the field <code>walk_json_object</code> is set to <code>true</code> then
 Benthos will walk each message as a JSON object, extracting keys and the string
 representation of their value and adds them to the list of hash fields to set.</p>
@@ -1051,6 +1051,7 @@ s3:
   path: ${!count:files}-${!timestamp_unix_nano}.txt
   region: eu-west-1
   timeout: 5s
+  kms_key_id: &quot;&quot;
 </code></pre>
 
 <p>Sends message parts as objects to an Amazon S3 bucket. Each object is uploaded
@@ -1276,7 +1277,7 @@ websocket:
         </footer>
         <script>
             var base_url = "..",
-                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
         <script src="../js/base.js" defer></script>
         <script src="../search/main.js" defer></script>
