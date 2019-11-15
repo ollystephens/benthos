@@ -207,6 +207,7 @@
             <li><a href="#dead-letter-queues">Dead Letter Queues</a></li>
             <li><a href="#contents">Contents</a></li>
             <li><a href="#amqp">amqp</a></li>
+            <li><a href="#amqp_0_9">amqp_0_9</a></li>
             <li><a href="#broker">broker</a></li>
             <li><a href="#cache">cache</a></li>
             <li><a href="#drop">drop</a></li>
@@ -291,6 +292,7 @@ a <a href="#broker"><code>broker</code></a> output with the 'try' pattern.</p>
 <h3 id="contents">Contents</h3>
 <ol>
 <li><a href="#amqp"><code>amqp</code></a></li>
+<li><a href="#amqp_0_9"><code>amqp_0_9</code></a></li>
 <li><a href="#broker"><code>broker</code></a></li>
 <li><a href="#cache"><code>cache</code></a></li>
 <li><a href="#drop"><code>drop</code></a></li>
@@ -348,6 +350,28 @@ amqp:
   url: amqp://guest:guest@localhost:5672/
 </code></pre>
 
+<p>DEPRECATED: This output is deprecated and scheduled for removal in Benthos V4.
+Please use <a href="#amqp_0_9"><code>amqp_0_9</code></a> instead.</p>
+<h2 id="amqp_0_9"><code>amqp_0_9</code></h2>
+<pre><code class="yaml">type: amqp_0_9
+amqp_0_9:
+  exchange: benthos-exchange
+  exchange_declare:
+    durable: true
+    enabled: false
+    type: direct
+  immediate: false
+  key: benthos-key
+  mandatory: false
+  persistent: false
+  tls:
+    client_certs: []
+    enabled: false
+    root_cas_file: &quot;&quot;
+    skip_cert_verify: false
+  url: amqp://guest:guest@localhost:5672/
+</code></pre>
+
 <p>Sends messages to an AMQP (0.91) exchange. AMQP is a messaging protocol used by
 various message brokers, including RabbitMQ. The metadata from each message are
 delivered as headers.</p>
@@ -362,6 +386,13 @@ settings can be enabled in the <code>tls</code> section.</p>
 <h2 id="broker"><code>broker</code></h2>
 <pre><code class="yaml">type: broker
 broker:
+  batching:
+    byte_size: 0
+    condition:
+      type: static
+      static: false
+    count: 1
+    period: &quot;&quot;
   copies: 1
   outputs: []
   pattern: fan_out
@@ -420,6 +451,11 @@ attempts to send to the next output in the list and so on.</p>
 targets have broken. For example, if you had an output type <code>http_client</code>
 but wished to reroute messages whenever the endpoint becomes unreachable you
 could use a try broker.</p>
+<h3 id="batching">Batching</h3>
+<p>It's possible to configure a <a href="../batching/#batch-policy">batch policy</a> with a
+broker using the <code>batching</code> fields, allowing you to create batches
+after your processing stages. Some inputs do not support broker based batching
+and specify this in their documentation.</p>
 <h3 id="utilising-more-outputs">Utilising More Outputs</h3>
 <p>When using brokered outputs with patterns such as round robin or greedy it is
 possible to have multiple messages in-flight at the same time. In order to fully
@@ -1048,10 +1084,10 @@ s3:
     token: &quot;&quot;
   endpoint: &quot;&quot;
   force_path_style_urls: false
+  kms_key_id: &quot;&quot;
   path: ${!count:files}-${!timestamp_unix_nano}.txt
   region: eu-west-1
   timeout: 5s
-  kms_key_id: &quot;&quot;
 </code></pre>
 
 <p>Sends message parts as objects to an Amazon S3 bucket. Each object is uploaded
@@ -1277,7 +1313,7 @@ websocket:
         </footer>
         <script>
             var base_url = "..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
         </script>
         <script src="../js/base.js" defer></script>
         <script src="../search/main.js" defer></script>

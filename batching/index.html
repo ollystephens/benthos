@@ -250,6 +250,29 @@
 </code></pre>
 
 <p>Some inputs do not support broker based batching and will specify this in their documentation.</p>
+<h3 id="batching-after-processing">Batching After Processing</h3>
+<p>When using inputs that support broker based batching you can choose to batch at the end of your processing with an <a href="../outputs/#broker">output <code>broker</code></a>:</p>
+<pre><code class="yaml">input:
+  type: foo
+
+pipeline:
+  processors:
+    - filter:
+        text:
+          operator: contains
+          value: bar
+
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+      - foo:
+          bar: baz
+    batching:
+      count: 50
+      period: 500ms
+</code></pre>
+
 <h2 id="shrinking-batches">Shrinking Batches</h2>
 <p>A message batch can be broken down into smaller batches using the <a href="../processors/#split"><code>split</code></a> processor:</p>
 <pre><code class="yaml"># Batch messages into one second bursts
@@ -288,7 +311,7 @@ input:
         </footer>
         <script>
             var base_url = "..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
         </script>
         <script src="../js/base.js" defer></script>
         <script src="../search/main.js" defer></script>
