@@ -229,6 +229,7 @@
             <li><a href="#insert_part">insert_part</a></li>
             <li><a href="#jmespath">jmespath</a></li>
             <li><a href="#json">json</a></li>
+            <li><a href="#json_schema">json_schema</a></li>
             <li><a href="#lambda">lambda</a></li>
             <li><a href="#log">log</a></li>
             <li><a href="#merge_json">merge_json</a></li>
@@ -328,6 +329,7 @@ In this case the <a href="#for_each"><code>for_each</code></a> processor can be 
 <li><a href="#insert_part"><code>insert_part</code></a></li>
 <li><a href="#jmespath"><code>jmespath</code></a></li>
 <li><a href="#json"><code>json</code></a></li>
+<li><a href="#json_schema"><code>json_schema</code></a></li>
 <li><a href="#lambda"><code>lambda</code></a></li>
 <li><a href="#log"><code>log</code></a></li>
 <li><a href="#merge_json"><code>merge_json</code></a></li>
@@ -1041,6 +1043,63 @@ contains keys that aren't strings those fields will be ignored.</p>
 <p>Splits a string field by a value and replaces the original string with an array
 containing the results of the split. This operator requires both the path value
 and the contents of the <code>value</code> field to be strings.</p>
+<h2 id="json_schema"><code>json_schema</code></h2>
+<pre><code class="yaml">type: json_schema
+json_schema:
+  parts: []
+  schema: &quot;&quot;
+  schema_path: &quot;&quot;
+</code></pre>
+
+<p>Checks messages against a provided JSONSchema definition but does not change the
+payload under any circumstances. If a message does not match the schema it can
+be caught using error handling methods outlined <a href="../error_handling/">here</a>.</p>
+<p>Please refer to the <a href="https://json-schema.org/">JSON Schema website</a> for
+information and tutorials regarding the syntax of the schema.</p>
+<p>For example, with the following JSONSchema document:</p>
+<pre><code class="json">{
+    &quot;$id&quot;: &quot;https://example.com/person.schema.json&quot;,
+    &quot;$schema&quot;: &quot;http://json-schema.org/draft-07/schema#&quot;,
+    &quot;title&quot;: &quot;Person&quot;,
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;firstName&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;The person's first name.&quot;
+      },
+      &quot;lastName&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;The person's last name.&quot;
+      },
+      &quot;age&quot;: {
+        &quot;description&quot;: &quot;Age in years which must be equal to or greater than zero.&quot;,
+        &quot;type&quot;: &quot;integer&quot;,
+        &quot;minimum&quot;: 0
+      }
+    }
+}
+</code></pre>
+
+<p>And the following Benthos configuration:</p>
+<pre><code class="yaml">pipeline:
+  processors:
+  - json_schema:
+      schema_path: &quot;file://path_to_schema.json&quot;
+  - catch:
+    - log:
+        level: ERROR
+        message: &quot;Schema validation failed due to: ${!error}&quot;
+</code></pre>
+
+<p>If a payload being processed looked like:</p>
+<pre><code class="json">{&quot;firstName&quot;:&quot;John&quot;,&quot;lastName&quot;:&quot;Doe&quot;,&quot;age&quot;:-21}
+</code></pre>
+
+<p>Then the payload would be unchanged but a log message would appear explaining
+the fault. This gives you flexibility in how you may handle schema errors, but
+for a simpler use case you might instead wish to use the
+<a href="../conditions/#json_schema"><code>json_schema</code></a> condition with a
+<a href="#filter"><code>filter</code></a>.</p>
 <h2 id="lambda"><code>lambda</code></h2>
 <pre><code class="yaml">type: lambda
 lambda:
@@ -1709,6 +1768,30 @@ for each message of the batch place it within a
 <h4 id="quote"><code>quote</code></h4>
 <p>Returns a doubled-quoted string, using escape sequences (\t, \n, \xFF, \u0100)
 for control characters and other non-printable characters.</p>
+<h4 id="regexp_expand"><code>regexp_expand</code></h4>
+<p>Expands each matched occurrence of the argument regular expression according to
+a template specified with the <code>value</code> field, and replaces the message
+with the aggregated results.</p>
+<p>Inside the template $ signs are interpreted as submatch expansions, e.g. $1
+represents the text of the first submatch.</p>
+<p>For example, given the following config:</p>
+<pre><code class="yaml">  - text:
+      operator: regexp_expand
+      arg: &quot;(?m)(?P&lt;key&gt;\\w+):\\s+(?P&lt;value&gt;\\w+)$&quot;
+      value: &quot;$key=$value\n&quot;
+</code></pre>
+
+<p>And a message containing:</p>
+<pre><code class="text">option1: value1
+# comment line
+option2: value2
+</code></pre>
+
+<p>The resulting payload would be:</p>
+<pre><code class="text">option1=value1
+option2=value2
+</code></pre>
+
 <h4 id="replace"><code>replace</code></h4>
 <p>Replaces all occurrences of the argument in a message with a value.</p>
 <h4 id="replace_regexp"><code>replace_regexp</code></h4>
