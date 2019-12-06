@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Added
+
+- The `statsd` metrics type now supports Datadog or InfluxDB tagging.
+
 ### Changed
 
 - The `http` processor now gracefully handles empty responses.

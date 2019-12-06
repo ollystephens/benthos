@@ -182,10 +182,19 @@ statsd:
   flush_period: 100ms
   network: udp
   prefix: benthos
+  tag_format: none
 ```
 
-Push metrics over a TCP or UDP connection using the
-[StatsD protocol](https://github.com/statsd/statsd).
+Pushes metrics using the [StatsD protocol](https://github.com/statsd/statsd).
+Supported tagging formats are 'none', 'datadog' and 'influxdb'.
+
+The 'network' field is deprecated and scheduled for removal. If you currently
+rely on sending Statsd metrics over TCP and want it to be supported long term
+please [raise an issue](https://github.com/Jeffail/benthos/issues).
+
+WARNING: The underlying client library has recently been changed. If you have
+noticed regressions then you can force Benthos to use the old library by setting
+the field `tag_format` to `legacy`.
 
 ## `stdout`
 
