@@ -31,12 +31,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/message"
-	"github.com/Jeffail/benthos/v3/lib/message/batch"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
-	"github.com/Jeffail/benthos/v3/lib/types"
-	btls "github.com/Jeffail/benthos/v3/lib/util/tls"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/message"
+	"github.com/ollystephens/benthos/v3/lib/message/batch"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/types"
+	btls "github.com/ollystephens/benthos/v3/lib/util/tls"
 	"github.com/Shopify/sarama"
 )
 

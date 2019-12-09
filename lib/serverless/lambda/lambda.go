@@ -25,9 +25,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/config"
-	"github.com/Jeffail/benthos/v3/lib/serverless"
-	"github.com/Jeffail/benthos/v3/lib/util/text"
+	"github.com/ollystephens/benthos/v3/lib/config"
+	"github.com/ollystephens/benthos/v3/lib/serverless"
+	"github.com/ollystephens/benthos/v3/lib/util/text"
 	"github.com/aws/aws-lambda-go/lambda"
 	"gopkg.in/yaml.v3"
 )

@@ -28,8 +28,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/message"
-	"github.com/Jeffail/benthos/v3/lib/types"
+	"github.com/ollystephens/benthos/v3/lib/message"
+	"github.com/ollystephens/benthos/v3/lib/types"
 )
 
 //------------------------------------------------------------------------------

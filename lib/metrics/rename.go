@@ -27,7 +27,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/log"
 )
 
 //------------------------------------------------------------------------------

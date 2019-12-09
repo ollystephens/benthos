@@ -26,14 +26,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/input/reader"
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/message/batch"
-	"github.com/Jeffail/benthos/v3/lib/message/tracing"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
-	"github.com/Jeffail/benthos/v3/lib/response"
-	"github.com/Jeffail/benthos/v3/lib/types"
-	"github.com/Jeffail/benthos/v3/lib/util/throttle"
+	"github.com/ollystephens/benthos/v3/lib/input/reader"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/message/batch"
+	"github.com/ollystephens/benthos/v3/lib/message/tracing"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/response"
+	"github.com/ollystephens/benthos/v3/lib/types"
+	"github.com/ollystephens/benthos/v3/lib/util/throttle"
 	"gopkg.in/yaml.v3"
 )
 

@@ -23,10 +23,10 @@
 package input
 
 import (
-	"github.com/Jeffail/benthos/v3/lib/input/reader"
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
-	"github.com/Jeffail/benthos/v3/lib/types"
+	"github.com/ollystephens/benthos/v3/lib/input/reader"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/types"
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ ZMQ4 is supported but currently depends on C bindings. Since this is an
 annoyance when building or using Benthos it is not compiled by default.
 
 Build it into your project by getting libzmq installed on your machine, then
-build with the tag: 'go install -tags "ZMQ4" github.com/Jeffail/benthos/v3/cmd/...'
+build with the tag: 'go install -tags "ZMQ4" github.com/ollystephens/benthos/v3/cmd/...'
 
 Messages consumed by this input can be processed in parallel, meaning a single
 instance of this input can utilise any number of threads within a

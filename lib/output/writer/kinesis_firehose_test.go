@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/message"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/message"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"

@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
-	"github.com/Jeffail/benthos/v3/lib/types"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/types"
 	jmespath "github.com/jmespath/go-jmespath"
 	"github.com/opentracing/opentracing-go"
 )

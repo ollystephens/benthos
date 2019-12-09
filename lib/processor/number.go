@@ -26,10 +26,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
-	"github.com/Jeffail/benthos/v3/lib/types"
-	"github.com/Jeffail/benthos/v3/lib/util/text"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/types"
+	"github.com/ollystephens/benthos/v3/lib/util/text"
 	"github.com/opentracing/opentracing-go"
 )
 

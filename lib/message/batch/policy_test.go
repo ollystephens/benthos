@@ -25,10 +25,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/condition"
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/message"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/condition"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/message"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
 )
 
 func TestPolicyBasic(t *testing.T) {

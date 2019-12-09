@@ -29,7 +29,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/log"
 	"github.com/Jeffail/gabs/v2"
 )
 

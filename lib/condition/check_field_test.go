@@ -23,9 +23,9 @@ package condition
 import (
 	"testing"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/message"
-	"github.com/Jeffail/benthos/v3/lib/metrics"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/message"
+	"github.com/ollystephens/benthos/v3/lib/metrics"
 )
 
 func TestCheckFieldString(t *testing.T) {

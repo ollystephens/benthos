@@ -23,8 +23,8 @@
 package buffer
 
 import (
-	"github.com/Jeffail/benthos/v3/lib/buffer/parallel"
-	"github.com/Jeffail/benthos/v3/lib/message/batch"
+	"github.com/ollystephens/benthos/v3/lib/buffer/parallel"
+	"github.com/ollystephens/benthos/v3/lib/message/batch"
 )
 
 //------------------------------------------------------------------------------

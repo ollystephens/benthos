@@ -28,8 +28,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Jeffail/benthos/v3/lib/log"
-	"github.com/Jeffail/benthos/v3/lib/util/config"
+	"github.com/ollystephens/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/util/config"
 )
 
 //------------------------------------------------------------------------------

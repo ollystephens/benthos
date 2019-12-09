@@ -21,7 +21,7 @@
 package metrics
 
 import (
-	"github.com/Jeffail/benthos/v3/lib/log"
+	"github.com/ollystephens/benthos/v3/lib/log"
 )
 
 //------------------------------------------------------------------------------
