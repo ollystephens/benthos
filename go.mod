@@ -1,4 +1,4 @@
-module github.com/Jeffail/benthos/v3
+module github.com/ollystephens/benthos/v3
 
 require (
 	cloud.google.com/go/pubsub v1.0.1
